@@ -18,12 +18,11 @@ import java.awt.SystemColor;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import com.toedter.calendar.JCalendar;
 
 public class VentanaRegistro extends JPanel {
 	private JFrame ventana;
 	private JPanel jpanelAnterior;
-	private JTextField textField;
-	private JTextField textField_1;
 	private JTextField textNombre;
 	private JTextField textPhone;
 	private JTextField txtFnacimiento;
@@ -38,6 +37,7 @@ public class VentanaRegistro extends JPanel {
 	private JTextField textUsuario_W;
 	private JPasswordField passwordClave_W;
 	private JPasswordField passwordConfirmación_W;
+	private JCalendar calendar;
 	
 
 	/**
@@ -65,27 +65,13 @@ public class VentanaRegistro extends JPanel {
 		});
 		panel_Sur.add(btnCancelar);
 		
-		textField = new JTextField();
-		textField.setEnabled(false);
-		textField.setColumns(10);
-		textField.setBorder(null);
-		textField.setBackground(SystemColor.menu);
-		add(textField, BorderLayout.EAST);
-		
-		textField_1 = new JTextField();
-		textField_1.setEnabled(false);
-		textField_1.setColumns(10);
-		textField_1.setBorder(null);
-		textField_1.setBackground(SystemColor.menu);
-		add(textField_1, BorderLayout.WEST);
-		
 		JPanel panel_Central = new JPanel();
 		add(panel_Central, BorderLayout.CENTER);
 		GridBagLayout gbl_panel_Central = new GridBagLayout();
-		gbl_panel_Central.columnWidths = new int[]{58, 91, 98, 55, 0};
-		gbl_panel_Central.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_panel_Central.columnWidths = new int[]{58, 91, 98, 22, 0};
+		gbl_panel_Central.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_panel_Central.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_panel_Central.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_Central.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		panel_Central.setLayout(gbl_panel_Central);
 		
 		textNombre = new JTextField();
@@ -211,7 +197,7 @@ public class VentanaRegistro extends JPanel {
 		txtConfirmacion.setEditable(false);
 		txtConfirmacion.setText("Confirmación:");
 		GridBagConstraints gbc_txtConfirmacion = new GridBagConstraints();
-		gbc_txtConfirmacion.insets = new Insets(0, 0, 0, 5);
+		gbc_txtConfirmacion.insets = new Insets(0, 0, 5, 5);
 		gbc_txtConfirmacion.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtConfirmacion.gridx = 1;
 		gbc_txtConfirmacion.gridy = 6;
@@ -220,7 +206,7 @@ public class VentanaRegistro extends JPanel {
 		
 		passwordConfirmación_W = new JPasswordField();
 		GridBagConstraints gbc_passwordConfirmación_W = new GridBagConstraints();
-		gbc_passwordConfirmación_W.insets = new Insets(0, 0, 0, 5);
+		gbc_passwordConfirmación_W.insets = new Insets(0, 0, 5, 5);
 		gbc_passwordConfirmación_W.fill = GridBagConstraints.HORIZONTAL;
 		gbc_passwordConfirmación_W.gridx = 2;
 		gbc_passwordConfirmación_W.gridy = 6;
@@ -236,6 +222,9 @@ public class VentanaRegistro extends JPanel {
 		txtpnBienvenidoaAAppchat.setEditable(false);
 		txtpnBienvenidoaAAppchat.setBackground(SystemColor.menu);
 		panel_Norte.add(txtpnBienvenidoaAAppchat);
+		
+		calendar = new JCalendar();
+		add(calendar, BorderLayout.EAST);
 
 	}
 }

@@ -30,7 +30,7 @@ import javax.swing.JPasswordField;
 
 public class VentanaLogin {
 
-	private JFrame frame;   
+	private JFrame frame;
 	private JTextField relleno;
 	private JTextField relleno_1;
 	private JPanel panel_Principal;
@@ -73,6 +73,7 @@ public class VentanaLogin {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		//Ventana del login y registro
 		frame = new JFrame();
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 450, 300);
@@ -89,10 +90,22 @@ public class VentanaLogin {
 		JPanel panel_1 = new JPanel();
 		frame.getContentPane().add(panel_1, BorderLayout.SOUTH);
 		
-		JButton btnAceptar = new JButton("Aceptar");
+		JButton btnAceptar = new JButton("Aceptar");              //TO DO Hacer todo el proceso de login
+		btnAceptar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				VentanaPrincipal framePrincipal = new VentanaPrincipal();
+				framePrincipal.setVisible(true);
+				frame.dispose();
+			}
+		});
 		panel_1.add(btnAceptar);
 		
 		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+			}
+		});
 		panel_1.add(btnCancelar);
 		
 		JButton btnRegistro = new JButton("Registro");   //?????????????????????????????????????
