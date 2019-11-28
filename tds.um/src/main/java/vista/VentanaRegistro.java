@@ -12,6 +12,7 @@ import java.awt.Insets;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.JTextPane;
 import java.awt.SystemColor;
@@ -19,6 +20,7 @@ import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import com.toedter.calendar.JCalendar;
+
 
 public class VentanaRegistro extends JPanel {
 	private JFrame ventana;
@@ -54,6 +56,39 @@ public class VentanaRegistro extends JPanel {
 		add(panel_Sur, BorderLayout.SOUTH);
 		
 		JButton btnRegistrar = new JButton("Registrar");
+		btnRegistrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				boolean OK=false;
+				OK=checkFields();
+				if (OK) {
+						boolean registrado=false;
+						registrado = ControladorAsistentes.getUnicaInstancia().registrarAsistente(
+										txtNombre.getText(),
+										txtApellidos.getText(),
+										txtDNI.getText(),
+										Integer.parseInt(txtEdad.getText()),
+										txtMovil.getText(),
+										txtEmail.getText(),
+										txtUsuario.getText(),
+										new String(txtPassword.getPassword()));
+						if (registrado) {
+							JOptionPane.showMessageDialog(
+										ventana,
+										"Asistente registrado correctamente.",
+										"Registro",
+										JOptionPane.INFORMATION_MESSAGE);
+							ventana.setContentPane(jpanelAnterior);
+							ventana.revalidate();
+						} else JOptionPane.showMessageDialog(ventana,
+								"No se ha podido llevar a cabo el registro.\n",
+								"Registro",
+								JOptionPane.ERROR_MESSAGE);
+						ventana.setTitle("Login Gestor Eventos");	
+				}
+				
+			}
+		});
 		panel_Sur.add(btnRegistrar);
 		
 		JButton btnCancelar = new JButton("Cancelar");
@@ -227,4 +262,44 @@ public class VentanaRegistro extends JPanel {
 		add(calendar, BorderLayout.EAST);
 
 	}
+	
+	private boolean checkFields() {
+		boolean salida=true;
+		/*borrar todos los errores en pantalla*/
+		if (txtNombre.getText().trim().isEmpty()) {
+			lblNombreError.setVisible(true); salida=false;
+		}
+		if (txtApellidos.getText().trim().isEmpty()) {
+			lblApellidosError.setVisible(true); salida=false;
+		}
+		if (txtDNI.getText().trim().isEmpty()) {
+			lblDNIError.setVisible(true); salida=false;
+		}
+		if (txtEdad.getText().trim().isEmpty()) {
+			lblEdadError.setVisible(true); salida=false;
+		}
+		if (txtEmail.getText().trim().isEmpty()) {
+			lblEmailError.setVisible(true); salida=false;
+		}
+		if (txtUsuario.getText().trim().isEmpty()) {
+			lblUsuarioError.setText("El usuario es obligatorio");
+			lblUsuarioError.setVisible(true); salida=false;
+		}
+		String password = new String(txtPassword.getPassword());
+		String password2 = new String(txtPasswordChk.getPassword());
+		if (password.equals("")) {
+			lblPasswordError.setText("El password no puede estar vacio");
+			lblPasswordError.setVisible(true); salida=false;
+		} else if (!password.equals(password2)) {
+			lblPasswordError.setText("Los dos passwords no coinciden");
+			lblPasswordError.setVisible(true); salida=false;
+		}
+		/* Comprobar que no exista otro usuario con igual login */
+		if (ControladorAsistentes.getUnicaInstancia().esAsistenteRegistrado(txtUsuario.getText())) {
+			lblUsuarioError.setText("Ya existe ese usuario");
+			lblUsuarioError.setVisible(true); salida=false;
+		}
+		return salida;
+	}
+	
 }

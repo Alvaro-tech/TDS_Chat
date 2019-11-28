@@ -1,5 +1,7 @@
 package ProyectoTDS.tds.um;
 
+// \Users\alvar\Desktop\Universidad\Persistencia\H2
+// java -jar ServidorPersistencia.jar
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
