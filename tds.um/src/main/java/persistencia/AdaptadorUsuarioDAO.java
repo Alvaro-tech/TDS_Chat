@@ -42,10 +42,9 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 		String movil = servPersistencia.recuperarPropiedadEntidad(eUsuario, "movil");
 		String clave = servPersistencia.recuperarPropiedadEntidad(eUsuario, "clave");
 		String saludo = servPersistencia.recuperarPropiedadEntidad(eUsuario, "saludo");
-
 		
-		//public Usuario(String nombre, String email, LocalDate fecha, String movil, String clave)
-		Usuario Usuario = new Usuario(nombre, email, fecha, movil, clave);
+		//public Usuario(String nombre, String email, String fecha, String movil, String clave)
+		Usuario Usuario = new Usuario(nombre, email, fecha, movil, clave, saludo);
 		Usuario.setId(eUsuario.getId());
 		return Usuario;
 	}
@@ -112,9 +111,11 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 
 	public void updateSaludo(Usuario usuario) {
 		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getId());
-		System.out.println(usuario.getId() + usuario.getMovil());
+		System.out.println("COsas cogiendo al usuario:" + usuario.getId() + usuario.getMovil() + usuario.getSaludo());
+		System.out.println("Cosas cogiendo al eusaurio" + eUsuario.getId());
 		servPersistencia.eliminarPropiedadEntidad(eUsuario, "saludo");
 		servPersistencia.anadirPropiedadEntidad(eUsuario, "saludo",usuario.getSaludo());
+		System.out.println("Saludo al final:" + servPersistencia.recuperarPropiedadEntidad(eUsuario, "saludo"));
 		
 	}
 	

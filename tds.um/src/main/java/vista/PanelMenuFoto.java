@@ -36,13 +36,13 @@ public class PanelMenuFoto extends JPanel {
 	private JTextField textRelleno;
 	private JTextField textRelleno1;
 	
-	private Usuario usuario;
+	private  Usuario usuario;
 
 	/**
 	 * Create the panel.
 	 */
-	public PanelMenuFoto(final Usuario usuario) {
-		this.usuario = usuario;
+	public PanelMenuFoto(Usuario usuariop) {
+		this.usuario = usuariop;
 		
 		setLayout(new BorderLayout(0, 0));
 		
@@ -108,8 +108,9 @@ public class PanelMenuFoto extends JPanel {
 		btnCambiarSaludo = new JButton("Cambiar Saludo");
 		btnCambiarSaludo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Texto en saludo: " + usuario.getSaludo());  /////////////////////////////
 				usuario.setSaludo(textSaludoField.getText());
-				ControladorUsuarios.getUnicaInstancia().updatePerfil(usuario);
+				ControladorUsuarios.getUnicaInstancia().updateSaludo(usuario);
 			}
 		});
 		
@@ -149,6 +150,7 @@ public class PanelMenuFoto extends JPanel {
 		txtSaludo.setColumns(10);
 		
 		textSaludoField = new JTextField();
+		System.out.println("El saludo antes de hacer nada de nada: " + usuario.getSaludo() + " y su id es " + usuario.getId()); ///////////////////
 		textSaludoField.setText(usuario.getSaludo());
 		GridBagConstraints gbc_textSaludoField = new GridBagConstraints();
 		gbc_textSaludoField.insets = new Insets(0, 0, 5, 5);

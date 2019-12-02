@@ -31,6 +31,7 @@ import java.awt.Component;
 import javax.swing.JPasswordField;
 
 import controlador.ControladorUsuarios;
+import modelo.CatalogoUsuarios;
 
 
 public class VentanaLogin {
@@ -101,12 +102,11 @@ public class VentanaLogin {
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
+				
 				String movil = textMovil_W.getText();
 				String password = new String (textPasswrd_W.getPassword());
 				
-				boolean ControlUser = ControladorUsuarios.getUnicaInstancia().loginUsuario(movil, password);
-				
-				
+				boolean ControlUser = ControladorUsuarios.getUnicaInstancia().loginUsuario(movil, password);				
 				
 				//Cambio de panel
 				if (ControlUser) {

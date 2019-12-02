@@ -51,7 +51,7 @@ public class ControladorUsuarios {
 
 			if (esUsuarioRegistrado(movil)) return false;
 			//Usuario(String nombre, String email, String fecha, String movil, String clave)
-			Usuario Usuario = new Usuario(nombre,email,fecha,movil, clave);
+			Usuario Usuario = new Usuario(nombre,email,fecha,movil, clave); //TODO: Arreglar esto para que se ponga el estado por defecto y no se quede en blanco
 			
 			AdaptadorUsuarioDAO UsuarioDAO = (AdaptadorUsuarioDAO) factoria.getUsuarioDAO(); /*Adaptador DAO para almacenar el nuevo Usuario en la BD*/
 			UsuarioDAO.create(Usuario);
@@ -61,7 +61,7 @@ public class ControladorUsuarios {
 	}
 	
 	public boolean borrarUsuario(Usuario Usuario) {
-		if (!esUsuarioRegistrado(Usuario.getLogin())) return false;
+		if (!esUsuarioRegistrado(Usuario.getMovil())) return false;
 		
 		AdaptadorUsuarioDAO UsuarioDAO = (AdaptadorUsuarioDAO) factoria.getUsuarioDAO();  /*Adaptador DAO para borrar el Usuario de la BD*/
 		UsuarioDAO.delete(Usuario);
@@ -72,9 +72,7 @@ public class ControladorUsuarios {
 
 	public void updateSaludo(Usuario usuario) {
 		AdaptadorUsuarioDAO UsuarioDAO = (AdaptadorUsuarioDAO) factoria.getUsuarioDAO();
-		UsuarioDAO.updateSaludo(usuario);
-		//CatalogoUsuarios.getUnicaInstancia().updateSaludo(usuario);
-		
+		UsuarioDAO.updateSaludo(usuario);		
 		
 	}
 }

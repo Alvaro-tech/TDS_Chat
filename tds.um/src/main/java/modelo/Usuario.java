@@ -12,11 +12,11 @@ public class Usuario {
 	//TODO: Imagen fotoPerfil; //libreria imagen
 	boolean premium;
 	//Lista de chats
-	HashSet<Chat> chats = new HashSet<Chat>();
+	HashSet<Chat> chatsInd = new HashSet<Chat>();
+	HashSet<Chat> chatsGroup = new HashSet<Chat>();
 	//lista de contactos que tiene un usuario
 	HashSet<Usuario> contactos = new HashSet<Usuario>();
 	Integer id;
-	String login;
 	String saludo;
 	
 	//constructor
@@ -28,12 +28,19 @@ public class Usuario {
 		this.clave = clave;
 		this.premium = false;
 		this.user = this; //?
-	//	this.id = id;
-		this.login=movil;
-		this.saludo="Hey there, I'm using TDSchat.";
-		
+		String saludo = "Hey there, I'm using TDSchat.";
 	}
 	
+	public Usuario(String nombre, String email, String fecha, String movil, String clave, String saludop) { //TODO: ID??
+		this.nombre = nombre;
+		this.email = email;
+		this.fechaNacimiento = fecha;
+		this.movil = movil;
+		this.clave = clave;
+		this.premium = false;
+		this.user = this; //?
+		this.saludo = saludop;
+	}
 	
 	//gets y sets
 	public String getNombre() {
@@ -78,10 +85,6 @@ public class Usuario {
 		return id;
 	}
 
-
-	public String getLogin() {
-		return login;
-	}
 	
 	public String getSaludo() {
 		return saludo;

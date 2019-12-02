@@ -69,6 +69,8 @@ public class CatalogoUsuarios {
 		 for (Usuario cli: UsuariosBD) 
 			     Usuarios.put(cli.getMovil(),cli);
 	}
+
+	
 	
 	
 }
