@@ -8,7 +8,7 @@ import java.util.Map;
 
 import persistencia.DAOException;
 import persistencia.FactoriaDAO;
-import persistencia.IAdaptadorClienteDAO;
+import persistencia.IAdaptadorUsuarioDAO;
 
 
 /* El cat�logo mantiene los objetos en memoria, en una tabla hash
@@ -17,17 +17,17 @@ import persistencia.IAdaptadorClienteDAO;
  * directamente la base de datos
  */
 public class CatalogoUsuarios {
-	private Map<String,Cliente> clientes; 
+	private Map<String,Usuario> Usuarios;  //Los usuarios se guardan mediante Teléfono Móvil
 	private static CatalogoUsuarios unicaInstancia = new CatalogoUsuarios();
 	
 	private FactoriaDAO dao;
-	private IAdaptadorClienteDAO adaptadorCliente;
+	private IAdaptadorUsuarioDAO adaptadorUsuario;
 	
 	private CatalogoUsuarios() {
 		try {
   			dao = FactoriaDAO.getInstancia(FactoriaDAO.DAO_TDS);
-  			adaptadorCliente = dao.getClienteDAO();
-  			clientes = new HashMap<String,Cliente>();
+  			adaptadorUsuario = dao.getUsuarioDAO();
+  			Usuarios = new HashMap<String,Usuario>();
   			this.cargarCatalogo();
   		} catch (DAOException eDAO) {
   			eDAO.printStackTrace();
@@ -38,36 +38,37 @@ public class CatalogoUsuarios {
 		return unicaInstancia;
 	}
 	
-	/*devuelve todos los clientes*/
-	public List<Cliente> getClientes(){
-		ArrayList<Cliente> lista = new ArrayList<Cliente>();
-		for (Cliente c:clientes.values()) 
+	/*devuelve todos los Usuarios*/
+	public List<Usuario> getUsuarios(){
+		ArrayList<Usuario> lista = new ArrayList<Usuario>();
+		for (Usuario c:Usuarios.values()) 
 			lista.add(c);
 		return lista;
 	}
 	
-	public Cliente getCliente(int codigo) {
-		for (Cliente c:clientes.values()) {
-			if (c.getCodigo()==codigo) return c;
+	public Usuario getUsuario(int codigo) {
+		for (Usuario c:Usuarios.values()) {
+			if (c.getId()==codigo) return c;
 		}
 		return null;
 	}
-	public Cliente getCliente(String dni) {
-		return clientes.get(dni); 
+	public Usuario getUsuario(String movil) {
+		return Usuarios.get(movil); 
 	}
 	
-	public void addCliente(Cliente cli) {
-		clientes.put(cli.getDni(),cli);
+	public void addUsuario(Usuario cli) {
+		Usuarios.put(cli.getMovil(),cli);
 	}
-	public void removeCliente (Cliente cli) {
-		clientes.remove(cli.getDni());
+	public void removeUsuario (Usuario cli) {
+		Usuarios.remove(cli.getMovil());
 	}
 	
-	/*Recupera todos los clientes para trabajar con ellos en memoria*/
+	/*Recupera todos los Usuarios para trabajar con ellos en memoria*/
 	private void cargarCatalogo() throws DAOException {
-		 List<Cliente> clientesBD = adaptadorCliente.recuperarTodosClientes();
-		 for (Cliente cli: clientesBD) 
-			     clientes.put(cli.getDni(),cli);
+		 List<Usuario> UsuariosBD = adaptadorUsuario.getAll();
+		 for (Usuario cli: UsuariosBD) 
+			     Usuarios.put(cli.getMovil(),cli);
 	}
+	
 	
 }

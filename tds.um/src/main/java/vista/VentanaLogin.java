@@ -3,6 +3,7 @@ package vista;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTextPane;
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -21,12 +22,16 @@ import java.awt.Insets;
 import java.awt.Panel;
 import java.awt.TextField;
 import java.awt.event.ActionListener;
+import java.awt.font.TextMeasurer;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.ComponentOrientation;
 import javax.swing.JTextArea;
 import java.awt.Component;
 import javax.swing.JPasswordField;
+
+import controlador.ControladorUsuarios;
+
 
 public class VentanaLogin {
 
@@ -37,8 +42,8 @@ public class VentanaLogin {
 	private JTextPane textPane;
 	private JTextPane textPane_1;
 	private JPanel panel_Org;
-	private JTextField textName;
-	private JTextField textName_W;
+	private JTextField textMovil;
+	private JTextField textMovil_W;
 	private JPasswordField textPasswrd_W;
 	private JTextField txtPassword;
 	private Component verticalStrut;
@@ -46,6 +51,8 @@ public class VentanaLogin {
 	private Component verticalStrut_3;
 	private Component verticalStrut_2;
 
+	
+	
 	/**
 	 * Launch the application.
 	 */
@@ -90,12 +97,30 @@ public class VentanaLogin {
 		JPanel panel_1 = new JPanel();
 		frame.getContentPane().add(panel_1, BorderLayout.SOUTH);
 		
-		JButton btnAceptar = new JButton("Aceptar");              //TO DO Hacer todo el proceso de login
+		JButton btnAceptar = new JButton("Aceptar");              //TODO: Hacer todo el proceso de login
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				VentanaPrincipal framePrincipal = new VentanaPrincipal();
+				
+				String movil = textMovil_W.getText();
+				String password = new String (textPasswrd_W.getPassword());
+				
+				boolean ControlUser = ControladorUsuarios.getUnicaInstancia().loginUsuario(movil, password);
+				
+				
+				
+				//Cambio de panel
+				if (ControlUser) {
+				System.out.println(ControladorUsuarios.getUnicaInstancia().getusuarioActual().getMovil());
+			//	VentanaPrincipal framePrincipal = new VentanaPrincipal(ControladorUsuarios.getUnicaInstancia().getusuarioActual()); //TODO: Preguntar esto
+				VentanaPrincipal framePrincipal = new VentanaPrincipal(); //TODO: Preguntar esto
 				framePrincipal.setVisible(true);
 				frame.dispose();
+				} else {
+					JOptionPane.showMessageDialog(frame,
+							"No se encontró usuario con esa combinación Teléfono/Contraseña\n",
+							"Registro",
+							JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		panel_1.add(btnAceptar);
@@ -171,27 +196,27 @@ public class VentanaLogin {
 		gbc_verticalStrut_1.gridy = 1;
 		panel_Org.add(verticalStrut_1, gbc_verticalStrut_1);
 		
-		textName = new JTextField();
-		textName.setEditable(false);
-		textName.setBorder(null);
-		textName.setBackground(SystemColor.control);
-		textName.setText("Nombre:");
-		GridBagConstraints gbc_textName = new GridBagConstraints();
-		gbc_textName.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textName.insets = new Insets(0, 0, 5, 5);
-		gbc_textName.gridx = 3;
-		gbc_textName.gridy = 2;
-		panel_Org.add(textName, gbc_textName);
-		textName.setColumns(6);
+		textMovil = new JTextField();
+		textMovil.setEditable(false);
+		textMovil.setBorder(null);
+		textMovil.setBackground(SystemColor.control);
+		textMovil.setText("Nº Teléfono:");
+		GridBagConstraints gbc_textMovil = new GridBagConstraints();
+		gbc_textMovil.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textMovil.insets = new Insets(0, 0, 5, 5);
+		gbc_textMovil.gridx = 3;
+		gbc_textMovil.gridy = 2;
+		panel_Org.add(textMovil, gbc_textMovil);
+		textMovil.setColumns(6);
 		
-		textName_W = new JTextField();
-		GridBagConstraints gbc_textName_W = new GridBagConstraints();
-		gbc_textName_W.insets = new Insets(0, 0, 5, 5);
-		gbc_textName_W.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textName_W.gridx = 4;
-		gbc_textName_W.gridy = 2;
-		panel_Org.add(textName_W, gbc_textName_W);
-		textName_W.setColumns(10);
+		textMovil_W = new JTextField();
+		GridBagConstraints gbc_textMovil_W = new GridBagConstraints();
+		gbc_textMovil_W.insets = new Insets(0, 0, 5, 5);
+		gbc_textMovil_W.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textMovil_W.gridx = 4;
+		gbc_textMovil_W.gridy = 2;
+		panel_Org.add(textMovil_W, gbc_textMovil_W);
+		textMovil_W.setColumns(10);
 		
 		txtPassword = new JTextField();
 		txtPassword.setEditable(false);

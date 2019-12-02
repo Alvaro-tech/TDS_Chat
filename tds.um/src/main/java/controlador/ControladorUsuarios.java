@@ -1,13 +1,19 @@
 package controlador;
 
+import modelo.CatalogoUsuarios;
+import modelo.Usuario;
+import persistencia.AdaptadorUsuarioDAO;
+import persistencia.DAOException;
+import persistencia.FactoriaDAO;
+
 public class ControladorUsuarios {
 	
-	private Asistente asistenteActual;
-	private static ControladorAsistentes unicaInstancia;
+	private Usuario usuarioActual;
+	private static ControladorUsuarios unicaInstancia;
 	private FactoriaDAO factoria;
 	
-	private ControladorAsistentes() {
-		asistenteActual = null;
+	private ControladorUsuarios() {
+		usuarioActual = null;
 		try {
 			factoria = FactoriaDAO.getInstancia();
 		} catch (DAOException e) {
@@ -15,55 +21,60 @@ public class ControladorUsuarios {
 		}	
 	}
 	
-	public static ControladorAsistentes getUnicaInstancia() {
-		if (unicaInstancia == null) unicaInstancia = new ControladorAsistentes();
+	public static ControladorUsuarios getUnicaInstancia() {
+		if (unicaInstancia == null) unicaInstancia = new ControladorUsuarios();
 		return unicaInstancia;
 	}
 	
-	public Asistente getAsistenteActual() {
-		return asistenteActual;
+	public Usuario getusuarioActual() {
+		return usuarioActual;
 	}
 	
-	public boolean esAsistenteRegistrado(String login) {
-		return CatalogoAsistentes.getUnicaInstancia().getAsistente(login)!=null;
+	public boolean esUsuarioRegistrado(String movil) {
+		return CatalogoUsuarios.getUnicaInstancia().getUsuario(movil)!=null;
 	}
 	
-	public boolean loginAsistente(String nombre,String password) {
-		Asistente asistente = CatalogoAsistentes.getUnicaInstancia().getAsistente(nombre);
-		if (asistente != null && asistente.getPassword().equals(password)) {
-				this.asistenteActual = asistente;
+	public boolean loginUsuario(String movil,String password) {
+		Usuario Usuario = CatalogoUsuarios.getUnicaInstancia().getUsuario(movil);
+		if (Usuario != null && Usuario.getClave().equals(password)) {
+				this.usuarioActual = Usuario;
 				return true;
 		}
 		return false;
 	}
 	
-	public boolean registrarAsistente(String nombre,
-									String apellidos, 
-									String dni,
-									int edad,
+	public boolean registrarUsuario(String nombre,
+									String email, 
+									String fecha,
 									String movil,
-									String email,
-									String login,
-									String password) {
+									String clave) {
 
-			if (esAsistenteRegistrado(login)) return false;
-			Asistente asistente = new Asistente(nombre,apellidos,dni,edad,movil, email,login,password);
+			if (esUsuarioRegistrado(movil)) return false;
+			//Usuario(String nombre, String email, String fecha, String movil, String clave)
+			Usuario Usuario = new Usuario(nombre,email,fecha,movil, clave);
 			
-			UsuarioDAO asistenteDAO = factoria.getAsistenteDAO(); /*Adaptador DAO para almacenar el nuevo Asistente en la BD*/
-			asistenteDAO.create(asistente);
+			AdaptadorUsuarioDAO UsuarioDAO = (AdaptadorUsuarioDAO) factoria.getUsuarioDAO(); /*Adaptador DAO para almacenar el nuevo Usuario en la BD*/
+			UsuarioDAO.create(Usuario);
 			
-			CatalogoAsistentes.getUnicaInstancia().addAsistente(asistente);
+			CatalogoUsuarios.getUnicaInstancia().addUsuario(Usuario);
 			return true;
 	}
 	
-	public boolean borrarAsistente(Asistente asistente) {
-		if (!esAsistenteRegistrado(asistente.getLogin())) return false;
+	public boolean borrarUsuario(Usuario Usuario) {
+		if (!esUsuarioRegistrado(Usuario.getLogin())) return false;
 		
-		UsuarioDAO asistenteDAO = factoria.getAsistenteDAO();  /*Adaptador DAO para borrar el Asistente de la BD*/
-		asistenteDAO.delete(asistente);
+		AdaptadorUsuarioDAO UsuarioDAO = (AdaptadorUsuarioDAO) factoria.getUsuarioDAO();  /*Adaptador DAO para borrar el Usuario de la BD*/
+		UsuarioDAO.delete(Usuario);
 		
-		CatalogoAsistentes.getUnicaInstancia().removeAsistente(asistente);
+		CatalogoUsuarios.getUnicaInstancia().removeUsuario(Usuario);
 		return true;
 	}
 
+	public void updateSaludo(Usuario usuario) {
+		AdaptadorUsuarioDAO UsuarioDAO = (AdaptadorUsuarioDAO) factoria.getUsuarioDAO();
+		UsuarioDAO.updateSaludo(usuario);
+		//CatalogoUsuarios.getUnicaInstancia().updateSaludo(usuario);
+		
+		
+	}
 }

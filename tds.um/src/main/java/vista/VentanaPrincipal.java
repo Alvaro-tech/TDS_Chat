@@ -6,6 +6,10 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import controlador.ControladorUsuarios;
+import modelo.Usuario;
+
 import javax.swing.JToolBar;
 import java.awt.GridBagLayout;
 import javax.swing.JButton;
@@ -23,10 +27,12 @@ import javax.swing.JTable;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+
 public class VentanaPrincipal extends JFrame {
 	JPanel panellzq = new JPanel();
 	JPanel panelDividido = new JPanel();
 	JPanel panelDer = new JPanel();
+	Usuario usuario;
 
 	private JPanel panelVentanaPrincipal;
 
@@ -51,6 +57,10 @@ public class VentanaPrincipal extends JFrame {
 	 */
 	public VentanaPrincipal() {
 		
+		usuario = ControladorUsuarios.getUnicaInstancia().getusuarioActual(); //TODO: Preguntar esto
+
+		System.out.println(usuario.getNombre());
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(300, 40, 850, 600);
 		panelVentanaPrincipal = new JPanel();
@@ -65,7 +75,7 @@ public class VentanaPrincipal extends JFrame {
 		btnFoto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				PanelMenuFoto nuevo = new PanelMenuFoto();
+				PanelMenuFoto nuevo = new PanelMenuFoto(usuario);
 				panelDividido.remove(panellzq);
 				panellzq = nuevo; 
 				

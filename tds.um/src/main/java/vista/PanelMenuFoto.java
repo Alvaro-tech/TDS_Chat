@@ -5,6 +5,10 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.BorderLayout;
 import javax.swing.JTextField;
+
+import controlador.ControladorUsuarios;
+import modelo.Usuario;
+
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
@@ -15,6 +19,8 @@ import javax.swing.JButton;
 import java.awt.Component;
 import javax.swing.Box;
 import java.awt.SystemColor;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class PanelMenuFoto extends JPanel {
 	private JTextField txtNombre;
@@ -29,11 +35,15 @@ public class PanelMenuFoto extends JPanel {
 	private JButton btnCambiarSaludo;
 	private JTextField textRelleno;
 	private JTextField textRelleno1;
+	
+	private Usuario usuario;
 
 	/**
 	 * Create the panel.
 	 */
-	public PanelMenuFoto() {
+	public PanelMenuFoto(final Usuario usuario) {
+		this.usuario = usuario;
+		
 		setLayout(new BorderLayout(0, 0));
 		
 		JPanel panelPrincipal = new JPanel();
@@ -96,6 +106,13 @@ public class PanelMenuFoto extends JPanel {
 		panelBotones.add(btnCambiarFoto);
 		
 		btnCambiarSaludo = new JButton("Cambiar Saludo");
+		btnCambiarSaludo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				usuario.setSaludo(textSaludoField.getText());
+				ControladorUsuarios.getUnicaInstancia().updatePerfil(usuario);
+			}
+		});
+		
 		panelBotones.add(btnCambiarSaludo);
 		
 		txtNombre = new JTextField();
@@ -110,6 +127,8 @@ public class PanelMenuFoto extends JPanel {
 		txtNombre.setColumns(10);
 		
 		textNameField = new JTextField();
+		textNameField.setEditable(false);
+		textNameField.setText(usuario.getNombre());
 		GridBagConstraints gbc_textNameField = new GridBagConstraints();
 		gbc_textNameField.insets = new Insets(0, 0, 5, 5);
 		gbc_textNameField.fill = GridBagConstraints.HORIZONTAL;
@@ -130,6 +149,7 @@ public class PanelMenuFoto extends JPanel {
 		txtSaludo.setColumns(10);
 		
 		textSaludoField = new JTextField();
+		textSaludoField.setText(usuario.getSaludo());
 		GridBagConstraints gbc_textSaludoField = new GridBagConstraints();
 		gbc_textSaludoField.insets = new Insets(0, 0, 5, 5);
 		gbc_textSaludoField.fill = GridBagConstraints.HORIZONTAL;

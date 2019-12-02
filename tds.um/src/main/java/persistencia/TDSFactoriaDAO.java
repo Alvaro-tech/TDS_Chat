@@ -1,8 +1,15 @@
 package persistencia;
 
 public class TDSFactoriaDAO extends FactoriaDAO {
-	public TDSFactoriaDAO () {
+	public TDSFactoriaDAO () {}
+
+	@Override
+	public IAdaptadorUsuarioDAO getUsuarioDAO() {
+		return AdaptadorUsuarioDAO.getUnicaInstancia();
 	}
+};
+
+
 	/*
 	@Override
 	public IAdaptadorVentaDAO getVentaDAO() {
@@ -24,4 +31,4 @@ public class TDSFactoriaDAO extends FactoriaDAO {
 		return AdaptadorClienteTDS.getUnicaInstancia();
 	}
 */
-}
+

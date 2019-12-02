@@ -28,6 +28,8 @@ public abstract class FactoriaDAO {
 
 	/* Constructor */
 	protected FactoriaDAO (){}
+	
+	public abstract IAdaptadorUsuarioDAO getUsuarioDAO();
 		
 		
 	// Metodos factoria que devuelven adaptadores que implementen estos interfaces

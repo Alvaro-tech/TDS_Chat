@@ -21,6 +21,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import com.toedter.calendar.JCalendar;
 
+import controlador.ControladorUsuarios;
+
 
 public class VentanaRegistro extends JPanel {
 	private JFrame ventana;
@@ -63,15 +65,12 @@ public class VentanaRegistro extends JPanel {
 				OK=checkFields();
 				if (OK) {
 						boolean registrado=false;
-						registrado = ControladorAsistentes.getUnicaInstancia().registrarAsistente(
-										txtNombre.getText(),
-										txtApellidos.getText(),
-										txtDNI.getText(),
-										Integer.parseInt(txtEdad.getText()),
-										txtMovil.getText(),
-										txtEmail.getText(),
-										txtUsuario.getText(),
-										new String(txtPassword.getPassword()));
+						registrado = ControladorUsuarios.getUnicaInstancia().registrarUsuario(
+										textName_W.getText(),
+										textEmail_W.getText(),
+										textFnacimiento_W.getText(),
+										textPhone_W.getText(),										
+										new String(passwordClave_W.getPassword()));
 						if (registrado) {
 							JOptionPane.showMessageDialog(
 										ventana,
@@ -85,7 +84,11 @@ public class VentanaRegistro extends JPanel {
 								"Registro",
 								JOptionPane.ERROR_MESSAGE);
 						ventana.setTitle("Login Gestor Eventos");	
-				}
+				} else JOptionPane.showMessageDialog(ventana,
+						"No se ha podido llevar a cabo el registro. Parámetros incorrectos\n",
+						"Registro",
+						JOptionPane.ERROR_MESSAGE);
+				ventana.setTitle("Login Gestor Eventos");	
 				
 			}
 		});
@@ -262,42 +265,29 @@ public class VentanaRegistro extends JPanel {
 		add(calendar, BorderLayout.EAST);
 
 	}
-	
+
 	private boolean checkFields() {
 		boolean salida=true;
 		/*borrar todos los errores en pantalla*/
-		if (txtNombre.getText().trim().isEmpty()) {
-			lblNombreError.setVisible(true); salida=false;
+		if (textName_W.getText().trim().isEmpty()) {
+			 salida=false;
 		}
-		if (txtApellidos.getText().trim().isEmpty()) {
-			lblApellidosError.setVisible(true); salida=false;
+		if (textEmail_W.getText().trim().isEmpty()) {
+			 salida=false;
 		}
-		if (txtDNI.getText().trim().isEmpty()) {
-			lblDNIError.setVisible(true); salida=false;
+		if (textFnacimiento_W.getText().trim().isEmpty()) {
+			 salida=false;
 		}
-		if (txtEdad.getText().trim().isEmpty()) {
-			lblEdadError.setVisible(true); salida=false;
-		}
-		if (txtEmail.getText().trim().isEmpty()) {
-			lblEmailError.setVisible(true); salida=false;
-		}
-		if (txtUsuario.getText().trim().isEmpty()) {
-			lblUsuarioError.setText("El usuario es obligatorio");
-			lblUsuarioError.setVisible(true); salida=false;
-		}
-		String password = new String(txtPassword.getPassword());
-		String password2 = new String(txtPasswordChk.getPassword());
+		String password = new String(passwordClave_W.getPassword());
+		String password2 = new String(passwordConfirmación_W.getPassword());
 		if (password.equals("")) {
-			lblPasswordError.setText("El password no puede estar vacio");
-			lblPasswordError.setVisible(true); salida=false;
+			salida=false;
 		} else if (!password.equals(password2)) {
-			lblPasswordError.setText("Los dos passwords no coinciden");
-			lblPasswordError.setVisible(true); salida=false;
+			 salida=false;
 		}
 		/* Comprobar que no exista otro usuario con igual login */
-		if (ControladorAsistentes.getUnicaInstancia().esAsistenteRegistrado(txtUsuario.getText())) {
-			lblUsuarioError.setText("Ya existe ese usuario");
-			lblUsuarioError.setVisible(true); salida=false;
+		if (ControladorUsuarios.getUnicaInstancia().esUsuarioRegistrado(txtUsuario.getText())) {
+			 salida=false;
 		}
 		return salida;
 	}

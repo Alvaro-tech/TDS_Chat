@@ -1,12 +1,11 @@
 package modelo;
 
-import java.time.LocalDate;
 import java.util.HashSet;
 
 public class Usuario {
 	String nombre;
 	String email;
-	LocalDate fechaNacimiento;
+	String fechaNacimiento;
 	String movil;
 	Usuario user; //tu propio usuario
 	String clave; //contraseña
@@ -16,16 +15,23 @@ public class Usuario {
 	HashSet<Chat> chats = new HashSet<Chat>();
 	//lista de contactos que tiene un usuario
 	HashSet<Usuario> contactos = new HashSet<Usuario>();
+	Integer id;
+	String login;
+	String saludo;
 	
 	//constructor
-	public Usuario(String nombre, String email, LocalDate fecha, String movil, String clave) {
+	public Usuario(String nombre, String email, String fecha, String movil, String clave) { //TODO: ID??
 		this.nombre = nombre;
 		this.email = email;
 		this.fechaNacimiento = fecha;
 		this.movil = movil;
 		this.clave = clave;
 		this.premium = false;
-		this.user = this;
+		this.user = this; //?
+	//	this.id = id;
+		this.login=movil;
+		this.saludo="Hey there, I'm using TDSchat.";
+		
 	}
 	
 	
@@ -34,7 +40,7 @@ public class Usuario {
 		return nombre;
 	}
 	
-	public LocalDate getFechaNacimiento() {
+	public String getFecha() {
 		return fechaNacimiento;
 	}
 
@@ -54,11 +60,36 @@ public class Usuario {
 		this.premium = premium;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+	
+	public String getClave() {
+		return clave;
+	}
 
+
+	public void setId(int id) {
+		this.id=id;
+	}
+
+
+	public Integer getId() {
+		return id;
+	}
+
+
+	public String getLogin() {
+		return login;
+	}
 	
+	public String getSaludo() {
+		return saludo;
+	}
 	
-	
-	
+	public String setSaludo(String saludo) {
+		return this.saludo = saludo;
+	}
 	
 	
 }
