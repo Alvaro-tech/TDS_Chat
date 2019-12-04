@@ -1,5 +1,6 @@
 package modelo;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class Usuario {
@@ -15,7 +16,7 @@ public class Usuario {
 	HashSet<Chat> chatsInd = new HashSet<Chat>();
 	HashSet<Chat> chatsGroup = new HashSet<Chat>();
 	//lista de contactos que tiene un usuario
-	HashSet<Usuario> contactos = new HashSet<Usuario>();
+	HashMap<String, String> contactos = new HashMap<String, String>(); //Clave movil, Valor Usuario (Con el nombre que tu le hayas dado)
 	Integer id;
 	String saludo;
 	
