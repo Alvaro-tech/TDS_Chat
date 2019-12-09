@@ -2,12 +2,14 @@ package modelo;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 
 public class ChatGrupo extends Chat{
 	HashSet<Usuario> participantes = new HashSet<Usuario>();
 	HashSet<Usuario> administradores = new HashSet<Usuario>();
 	
-	public ChatGrupo(Usuario user, Usuario ... participantes) { //se pasa como argumento al usuario que lo crea
+	public ChatGrupo(String nombre, int id, Usuario user, Usuario ... participantes) { //se pasa como argumento al usuario que lo crea
+		super(nombre,id);
 		administradores.add(user);
 		for (Usuario u : participantes) {
 			this.participantes.add(u);
@@ -64,6 +66,13 @@ public class ChatGrupo extends Chat{
 			deleteAdministradores(user, adminAux);
 		}
 		
+	}
+
+
+	@Override
+	protected LinkedList<Mensaje> filtroUsuario(LinkedList<Mensaje> listaAfiltrar) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

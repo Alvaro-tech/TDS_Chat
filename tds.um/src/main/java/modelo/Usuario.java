@@ -13,14 +13,14 @@ public class Usuario {
 	//TODO: Imagen fotoPerfil; //libreria imagen
 	boolean premium;
 	//Lista de chats
-	HashSet<Chat> chatsInd = new HashSet<Chat>();
-	HashSet<Chat> chatsGroup = new HashSet<Chat>();
+	HashSet<ChatIndividual> chatsInd = new HashSet<ChatIndividual>();
+	HashSet<ChatGrupo> chatsGroup = new HashSet<ChatGrupo>();
 	//lista de contactos que tiene un usuario
-	HashMap<String, String> contactos = new HashMap<String, String>(); //Clave movil, Valor Usuario (Con el nombre que tu le hayas dado)
+	HashMap<String, Usuario> contactos = new HashMap<String, Usuario>(); //Clave nombre Personal , Valor Usuario 
 	Integer id;
 	String saludo;
 	
-	//constructor
+	//constructores
 	public Usuario(String nombre, String email, String fecha, String movil, String clave) { //TODO: ID??
 		this.nombre = nombre;
 		this.email = email;
@@ -29,7 +29,8 @@ public class Usuario {
 		this.clave = clave;
 		this.premium = false;
 		this.user = this; //?
-		String saludo = "Hey there, I'm using TDSchat.";
+		this.saludo = "Hey there, I'm using TDSchat.";
+		
 	}
 	
 	public Usuario(String nombre, String email, String fecha, String movil, String clave, String saludop) { //TODO: ID??
@@ -95,5 +96,71 @@ public class Usuario {
 		return this.saludo = saludo;
 	}
 	
+	public HashMap<String, Usuario> getContactos() {
+		return contactos;
+	}
+
+	public void setContactos(HashMap<String, Usuario> contactos) {
+		this.contactos = contactos;
+	}
+	
+	public HashSet<ChatIndividual> getChatsInd() {
+		return chatsInd;
+	}
+
+	public HashSet<ChatGrupo> getChatsGroup() {
+		return chatsGroup;
+	}
+
+
+	//########### Otros Métodos ###############
+	
+	public void agregarContacto(String NombrePersonal, Usuario contacto) {
+		contactos.put(NombrePersonal, contacto);
+	}
+	
+	public void agregarChatIndividual(ChatIndividual chat) {
+		chatsInd.add(chat);
+	}
+	
+	public void agregarChatGrupo(ChatGrupo chat) {
+		chatsGroup.add(chat);
+	}
+	
+	public ChatIndividual empezarChatIndividual(String nombre) { //TODO: Comprobar que la conversacion no existe ya, recorrer los chats, comparando id's(?)
+		Usuario DatosUsuario = contactos.get(nombre);
+		
+		//if (!chatsInd.contains(chat)) {
+		ChatIndividual nuevoChat = new ChatIndividual(DatosUsuario.getMovil(),nombre);
+		chatsInd.add(nuevoChat);
+		//}
+		return nuevoChat;
+		
+	}
+	
+	public void empezarChatGrupo (String nombre) {  //TODO:
+		
+	}
+		
+	
+	public void eliminarChatIndividual(ChatIndividual chat) { //TODO: Esto habrá que cambiarlo a borrarlo por nombre?
+		if (chatsInd.contains(chat)) {
+			chatsInd.remove(chat);
+		}
+	}
+		
+		public void eliminarChatGrupo(ChatGrupo chat) { //TODO: Esto habrá que cambiarlo a borrarlo por nombre?
+			if (chatsGroup.contains(chat)) {
+				chatsGroup.remove(chat);
+			}
+		
+	}
+	
+	
+	
+	
+	
 	
 }
+	
+

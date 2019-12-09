@@ -102,7 +102,7 @@ public class VentanaPrincipal extends JFrame {
 		JMenu mnMenu = new JMenu("Opciones");
 		menuBar.add(mnMenu);
 		
-		JMenuItem mntmCrearContacto = new JMenuItem("Crear Contacto");
+		JMenuItem mntmCrearContacto = new JMenuItem("Añadir Contacto");
 		mntmCrearContacto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				PanelCrearContacto nuevo = new PanelCrearContacto();
@@ -118,6 +118,13 @@ public class VentanaPrincipal extends JFrame {
 		mnMenu.add(mntmModificarGrupo);
 		
 		JMenuItem mntmMostrarContactos = new JMenuItem("Mostrar Contactos");
+		mntmMostrarContactos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ControladorUsuarios.getUnicaInstancia().mostrarUsuario();
+				};
+				
+			}
+		);
 		mnMenu.add(mntmMostrarContactos);
 		
 		JMenuItem mntmPremium = new JMenuItem("Premium");

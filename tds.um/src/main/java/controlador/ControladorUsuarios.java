@@ -75,4 +75,21 @@ public class ControladorUsuarios {
 		UsuarioDAO.updateSaludo(usuario);		
 		
 	}
+	
+	// ##################### Otra funcionalidad #######################
+	
+	public void addUsuario (String nombre, String movil) {
+		Usuario contacto = CatalogoUsuarios.getUnicaInstancia().getUsuario(movil);
+		System.out.println("COntacto a agregar, buscado en el mapa: " + contacto.getMovil());
+		usuarioActual.agregarContacto(nombre, contacto);
+		AdaptadorUsuarioDAO UsuarioDAO = (AdaptadorUsuarioDAO) factoria.getUsuarioDAO();
+		UsuarioDAO.updateContactos(ControladorUsuarios.getUnicaInstancia().usuarioActual);	
+	}
+	
+	public void mostrarUsuario() {
+		System.out.println("Mostrar Usuarios:");
+		for(String u : usuarioActual.getContactos().keySet()) {
+			System.out.println("# -> Nombre: " + u + "Movil " + usuarioActual.getContactos().get(u).getMovil());
+		}
+	}
 }

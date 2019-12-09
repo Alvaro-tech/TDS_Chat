@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
@@ -19,7 +20,6 @@ import modelo.Usuario;
  * 
  */
 
-//TODO: Hacer todas las propiedades necesarias para Usuario.
 public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividualDAO {
 	
 	private ServicioPersistencia servPersistencia;
@@ -36,55 +36,93 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 		servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
 	}
 	
-	private Mensaje entidadToMensaje(Entidad eChatIndividual) {
+	private ChatIndividual entidadToChatInd(Entidad eChatIndividual) {
 		
-		String usuario = servPersistencia.recuperarPropiedadEntidad(eChatIndividual, "usuario");
-		String texto = servPersistencia.recuperarPropiedadEntidad(eChatIndividual, "texto");
-		String fecha = servPersistencia.recuperarPropiedadEntidad(eChatIndividual, "fecha"); //TODO: Creo que no se carga bien
+		String nombre = servPersistencia.recuperarPropiedadEntidad(eChatIndividual, "usuario");
+		String movil = servPersistencia.recuperarPropiedadEntidad(eChatIndividual, "texto");
+		String historial = servPersistencia.recuperarPropiedadEntidad(eChatIndividual, "historial");
+
 		
 		
-		Mensaje mensaje = new Mensaje(usuario, texto, fecha);
-		mensaje.setId(eMensaje.getId());
-		return mensaje;
+		ChatIndividual chataux = new ChatIndividual(movil ,nombre);
+		chataux.setId(eChatIndividual.getId());
+		
+		for (Mensaje iterador : ObtenerListadoMensajesDesdeId(historial)) {
+			chataux.almacenarMensaje(iterador);
+		}
+		return chataux;
 	}
 	
-	private Entidad MensajeToEntidad(Mensaje mensaje) {
+	private Entidad ChatIndToEntidad(ChatIndividual chat) {
 		Entidad  eMensaje = new Entidad();
-		eMensaje.setNombre("Mensaje"); 
+		eMensaje.setNombre("ChatIndividual"); 
 	
 		eMensaje.setPropiedades(
 				new ArrayList<Propiedad>(Arrays.asList(
-						new Propiedad("usuario", mensaje.getUsuario()), 
-						new Propiedad("fecha", mensaje.getFecha().toString()),
-						new Propiedad("texto", mensaje.getTexto())
+						new Propiedad("movil", chat.getmovil()), 
+						new Propiedad("nombre", chat.getNombre()),
+						new Propiedad("historial", obtenerIdListadoMensajes(chat.getHistorial()))
 						))
 				);
 		return eMensaje;
 	}
 
 	public void create(ChatIndividual Usuario) {
-		// TODO Auto-generated method stub
+		Entidad eUsuario;
+		eUsuario = this.ChatIndToEntidad(Usuario);
+		eUsuario = servPersistencia.registrarEntidad(eUsuario);
+		Usuario.setId(eUsuario.getId());
 		
 	}
 
 	public boolean delete(ChatIndividual Usuario) {
-		// TODO Auto-generated method stub
-		return false;
+		Entidad eUsuario;
+		eUsuario = servPersistencia.recuperarEntidad(Usuario.getId());
+		return servPersistencia.borrarEntidad(eUsuario);
 	}
 
-	public void updatePerfil(ChatIndividual Usuario) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	public ChatIndividual get(int id) {
+		Entidad eUsuario = servPersistencia.recuperarEntidad(id);
+		return entidadToChatInd(eUsuario);
+	}
+
+	public List<ChatIndividual> getAll(int idPadre) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<ChatIndividual> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+	public void updateHistorial(ChatIndividual Usuario) {
+		Entidad eUsuario = servPersistencia.recuperarEntidad(Usuario.getId());
+
+		servPersistencia.eliminarPropiedadEntidad(eUsuario, "historial");
+		System.out.println("Despues del update:");
+		servPersistencia.anadirPropiedadEntidad(eUsuario, "historial", obtenerIdListadoMensajes(Usuario.getHistorial()));
+		
+		
+	}
+	//// FUncionalidad auxiliar
+	
+	private String obtenerIdListadoMensajes(LinkedList<Mensaje> listaMensajes) {
+		String aux = "";
+		for(Mensaje iterador : listaMensajes) {
+			aux += iterador.getId() + " ";
+		}
+		
+		return aux.trim();
+	}
+	
+	private List<Mensaje> ObtenerListadoMensajesDesdeId (String chatsG){
+		List<Mensaje> listado = new LinkedList<Mensaje>();
+		
+		StringTokenizer strTok = new StringTokenizer(chatsG, " ");
+		while (strTok.hasMoreTokens()) {
+			String id = (String) strTok.nextElement(); 
+        	Mensaje mensajeAux = AdaptadorMensajeDAO.getUnicaInstancia().get(Integer.valueOf(id));
+			listado.add(mensajeAux);
+			}
+		
+		return listado;
 	}
 
 	

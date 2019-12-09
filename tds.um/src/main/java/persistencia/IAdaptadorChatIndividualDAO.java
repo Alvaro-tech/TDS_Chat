@@ -8,8 +8,8 @@ public interface IAdaptadorChatIndividualDAO {
 	
 	void create(ChatIndividual Usuario);
 	boolean delete(ChatIndividual Usuario);
-	void updatePerfil(ChatIndividual Usuario);
+	void updateHistorial(ChatIndividual Usuario);
 	ChatIndividual get(int id);
-	List<ChatIndividual> getAll();
+	List<ChatIndividual> getAll(int idPadre);
 	
 }
