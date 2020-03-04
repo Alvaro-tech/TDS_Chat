@@ -1,7 +1,10 @@
 package modelo;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Usuario {
 	String nombre;
@@ -30,7 +33,6 @@ public class Usuario {
 		this.premium = false;
 		this.user = this; //?
 		this.saludo = "Hey there, I'm using TDSchat.";
-		
 	}
 	
 	public Usuario(String nombre, String email, String fecha, String movil, String clave, String saludop) { //TODO: ID??
@@ -156,7 +158,21 @@ public class Usuario {
 		
 	}
 	
-	
+	public String[] listaDeContactos() {
+		LinkedList <String> aux = new LinkedList<String>();
+		for (String u : this.contactos.keySet()) {
+			aux.add(u);
+		}
+		  // Converting LinkedList to Object Array 
+        Object[] objArray = aux.toArray();
+  
+        // Convert Object[] to String[] 
+        String[] array = Arrays.copyOf(objArray, 
+                                       objArray.length, 
+                                       String[].class); 
+		return array;
+		
+}
 	
 	
 	
