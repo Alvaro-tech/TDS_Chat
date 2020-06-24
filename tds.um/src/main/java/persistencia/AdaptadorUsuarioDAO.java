@@ -175,6 +175,7 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 	}
 	
 	// -------------------Funciones auxiliares-----------------------------
+	//TODO: Estas funciones existen aqui porque son necesarias, pero habria que mover su funcionamiento (código) a sus adaptadores pertinentes
 	
 	//Funciones para trabajar con Mapas (HashMap)
 	//Esta función es utilizada a la hora de guardar la nueva entidad, salvar las id u los nombres personalizados de tu lista de contactos

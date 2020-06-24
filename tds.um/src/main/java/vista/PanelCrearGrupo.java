@@ -8,6 +8,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -43,6 +44,10 @@ public class PanelCrearGrupo extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textGroupName;
 	private JTextField textTitulo;
+	private DefaultListModel modeloCont = new DefaultListModel<Object>();
+	private DefaultListModel modeloMim = new DefaultListModel<Object>();
+
+
 
 	/**
 	 * Launch the application.
@@ -62,7 +67,7 @@ public class PanelCrearGrupo extends JDialog {
 	 */
 	public PanelCrearGrupo() {
 		final JList<Object> listCont = new JList<Object>();
-		final JList <Object> list = new JList<Object>();
+		final JList <Object> listMim = new JList<Object>();
 		
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
@@ -103,17 +108,11 @@ public class PanelCrearGrupo extends JDialog {
 					listCont.setValueIsAdjusting(true);
 					listCont.setBackground(SystemColor.controlHighlight);
 					listCont.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Contactos", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 120, 215)));
-					listCont.setModel(new AbstractListModel<Object>() {
-						private static final long serialVersionUID = 1L;
-						String[] values = ControladorUsuarios.getUnicaInstancia().getusuarioActual().listaDeContactos();
-						public int getSize() {
-							return values.length;
-						}
-						public Object getElementAt(int index) {
-							return values[index];
-						}
+					listCont.setModel(modeloCont);
+					String[] aux =(ControladorUsuarios.getUnicaInstancia().getusuarioActual().getlistaDeContactos());
+					for(String i : aux) {
+						modeloCont.addElement(i);
 					}
-					);						
 					}
 				}
 			}
@@ -179,7 +178,11 @@ public class PanelCrearGrupo extends JDialog {
 			JButton btnAdd = new JButton("-->");
 			btnAdd.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {	
-					String contacto = (String) listCont.getSelectedValue();
+					try {
+						String contacto = (String) listCont.getSelectedValue();
+						modeloMim.addElement(contacto);
+					} catch (Exception e) {
+					}
 				}
 			});
 			{
@@ -199,6 +202,16 @@ public class PanelCrearGrupo extends JDialog {
 			Central.add(btnAdd, gbc_btnAdd);
 			{
 				JButton btnDelete = new JButton("<--");
+				btnDelete.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						try {
+							int aux = listMim.getSelectedIndex();
+							modeloMim.remove(aux);
+						} catch (Exception e) {
+						}
+					}
+					
+				});
 				GridBagConstraints gbc_btnDelete = new GridBagConstraints();
 				gbc_btnDelete.insets = new Insets(0, 0, 0, 5);
 				gbc_btnDelete.anchor = GridBagConstraints.NORTH;
@@ -231,19 +244,10 @@ public class PanelCrearGrupo extends JDialog {
 				panelDer.add(scrollPane, gbc_scrollPane);
 				{
 					//JList <Object> list = new JList<Object>();
-					list.setModel(new AbstractListModel<Object>() {
-						private static final long serialVersionUID = 2L;
-						String[] values = new String[] {};
-						public int getSize() {
-							return values.length;
-						}
-						public Object getElementAt(int index) {
-							return values[index];
-						}
-					});
-					scrollPane.setViewportView(list);
-					list.setBackground(SystemColor.controlHighlight);
-					list.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Miembros", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 120, 215)));
+					listMim.setModel(modeloMim);
+					scrollPane.setViewportView(listMim);
+					listMim.setBackground(SystemColor.controlHighlight);
+					listMim.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Miembros", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 120, 215)));
 				}
 			}
 		}

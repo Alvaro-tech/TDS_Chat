@@ -158,7 +158,7 @@ public class Usuario {
 		
 	}
 	
-	public String[] listaDeContactos() {
+	public String[] getlistaDeContactos() {
 		LinkedList <String> aux = new LinkedList<String>();
 		for (String u : this.contactos.keySet()) {
 			aux.add(u);

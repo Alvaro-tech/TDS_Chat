@@ -18,6 +18,7 @@ import javax.swing.JTextPane;
 import java.awt.SystemColor;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.util.Date;
 import java.awt.event.ActionEvent;
 import com.toedter.calendar.JCalendar;
 
@@ -263,6 +264,10 @@ public class VentanaRegistro extends JPanel {
 		
 		calendar = new JCalendar();
 		add(calendar, BorderLayout.EAST);
+		Date aux = calendar.getDate();
+		
+		System.out.println("Fecha: " + aux.toString());
+		aux.toString();
 
 	}
 
