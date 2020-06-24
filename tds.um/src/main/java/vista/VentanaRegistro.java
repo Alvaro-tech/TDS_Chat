@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 import com.toedter.calendar.JCalendar;
 
 import controlador.ControladorUsuarios;
+import com.toedter.calendar.JDateChooser;
 
 
 public class VentanaRegistro extends JPanel {
@@ -37,12 +38,11 @@ public class VentanaRegistro extends JPanel {
 	private JTextField txtConfirmacion;
 	private JTextField textName_W;
 	private JTextField textPhone_W;
-	private JTextField textFnacimiento_W;
 	private JTextField textEmail_W;
 	private JTextField textUsuario_W;
 	private JPasswordField passwordClave_W;
 	private JPasswordField passwordConfirmación_W;
-	private JCalendar calendar;
+	private JDateChooser dateChooser;
 	
 
 	/**
@@ -69,7 +69,7 @@ public class VentanaRegistro extends JPanel {
 						registrado = ControladorUsuarios.getUnicaInstancia().registrarUsuario(
 										textName_W.getText(),
 										textEmail_W.getText(),
-										textFnacimiento_W.getText(),
+										dateChooser.getDateFormatString(),
 										textPhone_W.getText(),										
 										new String(passwordClave_W.getPassword()));
 						if (registrado) {
@@ -107,9 +107,9 @@ public class VentanaRegistro extends JPanel {
 		JPanel panel_Central = new JPanel();
 		add(panel_Central, BorderLayout.CENTER);
 		GridBagLayout gbl_panel_Central = new GridBagLayout();
-		gbl_panel_Central.columnWidths = new int[]{58, 91, 98, 22, 0};
-		gbl_panel_Central.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_panel_Central.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_Central.columnWidths = new int[]{58, 91, 240, 75, 0};
+		gbl_panel_Central.rowHeights = new int[]{0, 0, 29, 0, 0, 0, 0, 0, 0, 0};
+		gbl_panel_Central.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		gbl_panel_Central.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		panel_Central.setLayout(gbl_panel_Central);
 		
@@ -164,14 +164,13 @@ public class VentanaRegistro extends JPanel {
 		panel_Central.add(txtFnacimiento, gbc_txtFnacimiento);
 		txtFnacimiento.setColumns(10);
 		
-		textFnacimiento_W = new JTextField();
-		GridBagConstraints gbc_textFnacimiento_W = new GridBagConstraints();
-		gbc_textFnacimiento_W.insets = new Insets(0, 0, 5, 5);
-		gbc_textFnacimiento_W.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textFnacimiento_W.gridx = 2;
-		gbc_textFnacimiento_W.gridy = 2;
-		panel_Central.add(textFnacimiento_W, gbc_textFnacimiento_W);
-		textFnacimiento_W.setColumns(10);
+		dateChooser = new JDateChooser();
+		GridBagConstraints gbc_dateChooser = new GridBagConstraints();
+		gbc_dateChooser.insets = new Insets(0, 0, 5, 5);
+		gbc_dateChooser.fill = GridBagConstraints.BOTH;
+		gbc_dateChooser.gridx = 2;
+		gbc_dateChooser.gridy = 2;
+		panel_Central.add(dateChooser, gbc_dateChooser);
 		
 		textEmail = new JTextField();
 		textEmail.setEditable(false);
@@ -262,12 +261,7 @@ public class VentanaRegistro extends JPanel {
 		txtpnBienvenidoaAAppchat.setBackground(SystemColor.menu);
 		panel_Norte.add(txtpnBienvenidoaAAppchat);
 		
-		calendar = new JCalendar();
-		add(calendar, BorderLayout.EAST);
-		Date aux = calendar.getDate();
-		
-		System.out.println("Fecha: " + aux.toString());
-		aux.toString();
+
 
 	}
 
@@ -280,7 +274,7 @@ public class VentanaRegistro extends JPanel {
 		if (textEmail_W.getText().trim().isEmpty()) {
 			 salida=false;
 		}
-		if (textFnacimiento_W.getText().trim().isEmpty()) {
+		if (dateChooser.getDateFormatString().isEmpty()) {
 			 salida=false;
 		}
 		String password = new String(passwordClave_W.getPassword());
