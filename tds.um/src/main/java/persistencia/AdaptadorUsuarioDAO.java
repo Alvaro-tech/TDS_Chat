@@ -195,11 +195,11 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 	//A la hora de cargar los contactos guardados, hay que tener en cuenta que el mapa es Nombre:Usuario, que no es lo que teniamos guarado como propiedad
 		private HashMap<String, Usuario> obtenerContactosMapDesdeId(String ContactosG) {
 			HashMap<String, Usuario> listaContactos = new HashMap<String, Usuario>();
-			StringTokenizer strTok = new StringTokenizer(ContactosG, " ");
+			StringTokenizer strTok = new StringTokenizer(ContactosG, " ");//divide un string en array de palabras separadas en espacios
 			while (strTok.hasMoreTokens()) {
 				String datos = (String) strTok.nextElement(); //Convierto los datos a string -> (0)Id:(1)NickPersonal
 	        	String[] parts = datos.split(":"); //Separo lo que es id del nombre personal
-	        	System.out.println("EL parts 0 es : " + parts[0]);
+	        	System.out.println("EL parts 0 es (id) : " + parts[0]);
 	        	Usuario usuarioaux = AdaptadorUsuarioDAO.getUnicaInstancia().get(Integer.valueOf(parts[0]));
 				listaContactos.put(parts[1], usuarioaux); //Cargo en el mapa de contactos todos los nombres personales y los usuarios a los que referencia
 			}

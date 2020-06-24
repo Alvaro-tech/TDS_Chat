@@ -43,10 +43,8 @@ public class ControladorUsuarios {
 		return false;
 	}
 	
-	public boolean registrarUsuario(String nombre,
-									String email, 
-									String fecha,
-									String movil,
+	public boolean registrarUsuario(String nombre, String email, 
+									String fecha, String movil,
 									String clave) {
 
 			if (esUsuarioRegistrado(movil)) return false;
@@ -89,7 +87,7 @@ public class ControladorUsuarios {
 	public void mostrarUsuario() {
 		System.out.println("Mostrar Usuarios:");
 		for(String u : usuarioActual.getContactos().keySet()) {
-			System.out.println("# -> Nombre: " + u + "Movil " + usuarioActual.getContactos().get(u).getMovil());
+			System.out.println("# -> Nombre: " + u + " Movil " + usuarioActual.getContactos().get(u).getMovil());
 		}
 	}
 }

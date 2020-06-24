@@ -52,8 +52,7 @@ public class VentanaLogin {
 	private Component verticalStrut_3;
 	private Component verticalStrut_2;
 
-	
-	
+
 	/**
 	 * Launch the application.
 	 */

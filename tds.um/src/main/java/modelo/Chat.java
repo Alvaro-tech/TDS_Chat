@@ -8,10 +8,10 @@ public abstract class Chat {
 	private String movil; //Numero de telefono del receptor
 	private int id;
 	//histórico de mensajes del chat:
-	 private LinkedList<Mensaje> historial;
+	private LinkedList<Mensaje> historial;
 	
 	 
-	 //Constructor ->
+	//Constructor ->
 	public Chat(String movil) {
 		this.movil = movil;
 		this.historial = new LinkedList<Mensaje>();

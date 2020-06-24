@@ -74,7 +74,7 @@ public class PanelMenuFoto extends JPanel {
 		textRelleno.setColumns(10);
 	
 		//TODO: Como hacer esto bien
-		lblFoto = new JLabel(new ImageIcon("C:\\Users\\alvar\\git\\TDS_AppChat\\tds.um\\iconos\\Lupa.png"));
+		lblFoto = new JLabel(new ImageIcon("./iconos/Lupa.png")); //ruta relativa del proyecto
 		GridBagConstraints gbc_lblFoto = new GridBagConstraints();
 		gbc_lblFoto.insets = new Insets(0, 0, 5, 5);
 		gbc_lblFoto.gridx = 2;
