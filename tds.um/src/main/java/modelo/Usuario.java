@@ -13,7 +13,7 @@ public class Usuario {
 	String movil;
 	Usuario user; //tu propio usuario
 	String clave; //contraseña
-	//TODO: Imagen fotoPerfil; //libreria imagen
+	String fotoPerfil; 
 	boolean premium;
 	//Lista de chats
 	HashSet<ChatIndividual> chatsInd = new HashSet<ChatIndividual>();
@@ -24,7 +24,7 @@ public class Usuario {
 	String saludo;
 	
 	//constructores
-	public Usuario(String nombre, String email, String fecha, String movil, String clave) { //TODO: ID??
+	public Usuario(String nombre, String email, String fecha, String movil, String clave) { //Constructor crear uno nuevo
 		this.nombre = nombre;
 		this.email = email;
 		this.fechaNacimiento = fecha;
@@ -33,9 +33,10 @@ public class Usuario {
 		this.premium = false;
 		this.user = this; //?
 		this.saludo = "Hey there, I'm using TDSchat.";
+		this.fotoPerfil = "./iconos/Defecto.PNG";
 	}
 	
-	public Usuario(String nombre, String email, String fecha, String movil, String clave, String saludop) { //TODO: ID??
+	public Usuario(String nombre, String email, String fecha, String movil, String clave, String saludop, String foto) { //Constructor para recuperar
 		this.nombre = nombre;
 		this.email = email;
 		this.fechaNacimiento = fecha;
@@ -44,6 +45,7 @@ public class Usuario {
 		this.premium = false;
 		this.user = this; //?
 		this.saludo = saludop;
+		this.fotoPerfil = foto;
 	}
 	
 	//gets y sets
@@ -113,10 +115,19 @@ public class Usuario {
 	public HashSet<ChatGrupo> getChatsGroup() {
 		return chatsGroup;
 	}
+	
+	
+	public String getFotoPerfil() {
+		return fotoPerfil;
+	}
 
+	public void setFotoPerfil(String fotoPerfil) {
+		this.fotoPerfil = fotoPerfil;
+	}
+	
+	
 
 	//########### Otros Métodos ###############
-	
 	public void agregarContacto(String NombrePersonal, Usuario contacto) {
 		contactos.put(NombrePersonal, contacto);
 	}

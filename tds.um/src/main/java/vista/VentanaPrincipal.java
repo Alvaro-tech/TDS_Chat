@@ -21,6 +21,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JTextField;
 import java.awt.Component;
 import javax.swing.Box;
+import javax.swing.ImageIcon;
+
 import java.awt.Color;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
@@ -71,7 +73,8 @@ public class VentanaPrincipal extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 		panelVentanaPrincipal.add(menuBar, BorderLayout.NORTH);
 		
-		JButton btnFoto = new JButton("Foto");
+		JButton btnFoto = new JButton("");
+		btnFoto.setIcon(new ImageIcon("./iconos/35x35.png"));
 		btnFoto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
@@ -186,9 +189,9 @@ public class VentanaPrincipal extends JFrame {
 		//JPanel panelDividido = new JPanel();
 		panelVentanaPrincipal.add(panelDividido, BorderLayout.CENTER);
 		GridBagLayout gbl_panelDividido = new GridBagLayout();
-		gbl_panelDividido.columnWidths = new int[]{211, 473, 0};
+		gbl_panelDividido.columnWidths = new int[]{251, 473, 0};
 		gbl_panelDividido.rowHeights = new int[]{488, 0, 0};
-		gbl_panelDividido.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
+		gbl_panelDividido.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		gbl_panelDividido.rowWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
 		panelDividido.setLayout(gbl_panelDividido);
 		
@@ -198,6 +201,7 @@ public class VentanaPrincipal extends JFrame {
 		gbc_panelDer.fill = GridBagConstraints.BOTH;
 		gbc_panelDer.gridx = 0;
 		gbc_panelDer.gridy = 0;
+		panelDer.setBackground(new Color(175, 238, 238));
 		panelDividido.add(panelDer, gbc_panelDer);
 		
 		//JPanel panellzq = new JPanel();
@@ -206,8 +210,8 @@ public class VentanaPrincipal extends JFrame {
 		gbc_panelzq.fill = GridBagConstraints.BOTH;
 		gbc_panelzq.gridx = 1;
 		gbc_panelzq.gridy = 0;
+		panellzq.setBackground(new Color(135, 206, 250));
 		panelDividido.add(panellzq, gbc_panelzq);
-		
 		
 	}
 

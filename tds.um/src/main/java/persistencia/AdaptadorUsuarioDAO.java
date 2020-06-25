@@ -41,7 +41,7 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 		servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
 	}
 	
-	private Usuario entidadToUsuario(Entidad eUsuario) {
+	private Usuario entidadToUsuario(Entidad eUsuario) { //3º
 		
 		String nombre = servPersistencia.recuperarPropiedadEntidad(eUsuario, "nombre");
 		String email = servPersistencia.recuperarPropiedadEntidad(eUsuario, "email");
@@ -52,10 +52,10 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 		String contactos = servPersistencia.recuperarPropiedadEntidad(eUsuario, "contactos");
 		String chatInd = servPersistencia.recuperarPropiedadEntidad(eUsuario, "chatIndividual");
 		String chatGroup = servPersistencia.recuperarPropiedadEntidad(eUsuario, "chatGrupo");
-
+		String fotoP = servPersistencia.recuperarPropiedadEntidad(eUsuario, "fotoPerfil");
 		
 		//public Usuario(String nombre, String email, String fecha, String movil, String clave)
-		Usuario Usuario = new Usuario(nombre, email, fecha, movil, clave, saludo); 
+		Usuario Usuario = new Usuario(nombre, email, fecha, movil, clave, saludo, fotoP); 
 		Usuario.setId(eUsuario.getId());
 		
 		Usuario.setContactos(obtenerContactosMapDesdeId(contactos));
@@ -89,7 +89,8 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 						new Propiedad("clave", Usuario.getClave()),
 						new Propiedad("saludo", Usuario.getSaludo()),
 						new Propiedad("contactos", obtenerIdContactosHash(Usuario.getContactos())),
-						new Propiedad("chatIndividual", obtenerIdChatIndividual(Usuario.getChatsInd()))
+						new Propiedad("chatIndividual", obtenerIdChatIndividual(Usuario.getChatsInd())),
+						new Propiedad("fotoPerfil", Usuario.getFotoPerfil())
 						//new Propiedad("chatGrupo", obtenerIdContactosSet(Usuario.getChatsGroup()))
 						))
 				);
@@ -135,15 +136,15 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 		servPersistencia.eliminarPropiedadEntidad(eUsuario, "movil");
 		servPersistencia.anadirPropiedadEntidad(eUsuario, "movil",Usuario.getMovil());
 		servPersistencia.eliminarPropiedadEntidad(eUsuario, "saludo");
-		servPersistencia.anadirPropiedadEntidad(eUsuario, "contactos",Usuario.getSaludo());
+		servPersistencia.anadirPropiedadEntidad(eUsuario, "saludo",Usuario.getSaludo());
 	}
 	
-	public Usuario get(int id) {
+	public Usuario get(int id) { //2º 
 		Entidad eUsuario = servPersistencia.recuperarEntidad(id);
 		return entidadToUsuario(eUsuario);
 	}
 	
-	public List<Usuario> getAll() {
+	public List<Usuario> getAll() { //1º -> Llamado por el catálogo
 		List<Entidad> entidades = servPersistencia.recuperarEntidades("Usuario");
 		
 		List<Usuario> Usuarios  = new LinkedList<Usuario>();
@@ -155,12 +156,14 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 
 	public void updateSaludo(Usuario usuario) {
 		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getId());
-		//System.out.println("COsas cogiendo al usuario:" + usuario.getId() + usuario.getMovil() + usuario.getSaludo());
-		//System.out.println("Cosas cogiendo al eusaurio" + eUsuario.getId());
 		servPersistencia.eliminarPropiedadEntidad(eUsuario, "saludo");
-		servPersistencia.anadirPropiedadEntidad(eUsuario, "saludo",usuario.getSaludo());
-		//System.out.println("Saludo al final:" + servPersistencia.recuperarPropiedadEntidad(eUsuario, "saludo"));
-		
+		servPersistencia.anadirPropiedadEntidad(eUsuario, "saludo",usuario.getSaludo());		
+	}
+	
+	public void updateFoto(Usuario usuario) {
+		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getId());
+		servPersistencia.eliminarPropiedadEntidad(eUsuario, "fotoPerfil");
+		servPersistencia.anadirPropiedadEntidad(eUsuario, "fotoPerfil",usuario.getFotoPerfil());		
 	}
 	
 	public void updateContactos(Usuario usuario) {

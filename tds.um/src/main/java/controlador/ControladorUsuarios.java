@@ -68,12 +68,19 @@ public class ControladorUsuarios {
 		return true;
 	}
 
-	public void updateSaludo(Usuario usuario) {
+	public void updateSaludo(Usuario usuario, String saludo) {
+		usuario.setSaludo(saludo);
 		AdaptadorUsuarioDAO UsuarioDAO = (AdaptadorUsuarioDAO) factoria.getUsuarioDAO();
 		UsuarioDAO.updateSaludo(usuario);		
 		
 	}
 	
+	public void updateFoto(Usuario usuario, String foto) {
+		usuario.setFotoPerfil(foto);
+		AdaptadorUsuarioDAO UsuarioDAO = (AdaptadorUsuarioDAO) factoria.getUsuarioDAO();
+		UsuarioDAO.updateFoto(usuario);		
+		
+	}
 	// ##################### Otra funcionalidad #######################
 	
 	public void addUsuario (String nombre, String movil) {
