@@ -2,7 +2,6 @@ package persistencia;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 import tds.driver.FactoriaServicioPersistencia;
@@ -44,11 +43,13 @@ public final class AdaptadorMensajeDAO implements IAdaptadorMensajeDAO {
 		String texto = servPersistencia.recuperarPropiedadEntidad(eMensaje, "texto");
 		String fecha = servPersistencia.recuperarPropiedadEntidad(eMensaje, "fecha"); //TODO: Creo que no se carga bien
 		
+
+		Usuario e = AdaptadorUsuarioDAO.getUnicaInstancia().get(Integer.valueOf(emisor));
+		ChatIndividual r = AdaptadorChatIndividualDAO.getUnicaInstancia().get(Integer.valueOf(receptor));
 		
-		//Mensaje mensaje = new Mensaje(usuario, texto, fecha);
-		//mensaje.setId(eMensaje.getId());
-		//return mensaje;
-		return null;
+		Mensaje mensaje = new Mensaje(e, r, texto, fecha);
+		mensaje.setId(eMensaje.getId());
+		return mensaje;
 	}
 	
 	
