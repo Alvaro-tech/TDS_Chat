@@ -1,7 +1,6 @@
 package modelo;
 
 import java.util.LinkedList;
-import java.util.List;
 
 public class ChatIndividual extends Chat{
 	
@@ -32,7 +31,6 @@ public class ChatIndividual extends Chat{
 		return contacto.getNombre();
 	}
 	
-
 	public Usuario getContacto() {
 		return contacto;
 	}
@@ -43,7 +41,7 @@ public class ChatIndividual extends Chat{
 	
 
 	public String getMovil() {
-		return contacto.getMovil();
+		return this.movil;
 	}
 
 }

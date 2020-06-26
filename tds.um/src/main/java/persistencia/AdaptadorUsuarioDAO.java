@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -14,7 +13,6 @@ import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
 import beans.Entidad;
 import beans.Propiedad;
-import modelo.Chat;
 import modelo.ChatIndividual;
 import modelo.Usuario;
 
@@ -225,6 +223,7 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 			return aux.trim(); 
 		}
 		
+		//Esto pa que te sirve?? Beibi explain to me.
 		private Set<ChatIndividual> getAllChatIndividualDesdeId(String ContactosG) {
 			Set<ChatIndividual> listaContactos = new HashSet<ChatIndividual>();
 			StringTokenizer strTok = new StringTokenizer(ContactosG, " ");

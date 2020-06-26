@@ -32,8 +32,12 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 	}
 
 	/**
-	 * Funcion para devolver
-	 **/
+	 * 
+	 * @param mensaje
+	 * Crea un objeto entidad (persistencia) a partir de un objeto de la clase ChatGrupo.
+	 * Esto nos servirá para la funcion crear
+	 * @return un objeto entidad
+	 */
 	private Entidad ChatGrupoToEntidad(ChatGrupo grupo) {
 		Entidad e = new Entidad();
 		e.setNombre("ChatGrupo");
@@ -53,39 +57,66 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 	
 	
 	@Override
+	/**
+	 * Funcion crear, crea un objeto por primera vez y lo introduce en el
+	 * servicio de persistencia
+	 */
 	public void create(ChatGrupo grupo) {
-		// TODO Auto-generated method stub
+		Entidad eChatGrupo = this.ChatGrupoToEntidad(grupo);
+		eChatGrupo = servPersistencia.registrarEntidad(eChatGrupo);
+		grupo.setId(eChatGrupo.getId());
 		
 	}
 	
-	//TODO: HACER!!!!
-	/*
+	
 	private ChatGrupo entidadToChatGrupo(Entidad eGrupo) {
-		String nombreg = servPersistencia.recuperarPropiedadEntidad(eGrupo, "nombre");
+		//String nombreg = servPersistencia.recuperarPropiedadEntidad(eGrupo, "nombre");
+		//TODO: HACER!!!! necesitamos Pool
+		return null;
 	}
-	*/
 
 	@Override
+	/**
+	 * Funcion eliminar, para eliminar una Entidad de la persistencia
+	 */
 	public boolean delete(ChatGrupo grupo) {
-		// TODO Auto-generated method stub
-		return false;
+		Entidad eChatGrupo;
+		eChatGrupo = servPersistencia.recuperarEntidad(grupo.getId());
+		return servPersistencia.borrarEntidad(eChatGrupo);
 	}
 
 	@Override
+	/**
+	 * Funcion get para obtener un ChatGrupo del servicio de persistencia 
+	 * a través del Id de este.
+	 */
 	public ChatGrupo get(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		Entidad eChatGrupo = servPersistencia.recuperarEntidad(id);
+		return entidadToChatGrupo(eChatGrupo);
 	}
 
 	@Override
+	/**
+	 * Funcion para obtener una lista de todos los grupos del catálogo
+	 */
 	public List<ChatGrupo> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Entidad> entidades = servPersistencia.recuperarEntidades("ChatGrupo");
+		
+		List<ChatGrupo> grupos  = new LinkedList<ChatGrupo>();
+		for (Entidad e : entidades) {
+			grupos.add(get(e.getId()));
+		}
+		return grupos;
 	}
 
 	@Override
-	public void updateNombre(ChatGrupo grupo) {
-		// TODO Auto-generated method stub
+	/**
+	 * Funcion que permite que se pueda actualizar el nombre de un grupo.
+	 */
+	public void updateNombre(ChatGrupo grupo, String nuevoNombre) {
+		Entidad eGrupo = servPersistencia.recuperarEntidad(grupo.getId());
+		servPersistencia.eliminarPropiedadEntidad(eGrupo, "nombre");
+		servPersistencia.anadirPropiedadEntidad(eGrupo, "nombre", nuevoNombre);
 		
 	}
 	

@@ -3,7 +3,6 @@ package persistencia;
 import java.util.List;
 
 import modelo.Mensaje;
-import modelo.Usuario;
 
 public interface IAdaptadorMensajeDAO {
 	

@@ -14,6 +14,6 @@ public interface IAdaptadorChatGrupoDAO {
 	List<ChatGrupo> getAll();
 	
 	//TODO: moar (a introducir más)
-	void updateNombre(ChatGrupo grupo);
+	void updateNombre(ChatGrupo grupo, String nuevoNombre);
 	
 }

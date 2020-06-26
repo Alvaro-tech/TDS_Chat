@@ -2,7 +2,6 @@ package modelo;
 
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.stream.*;
 
 public class ChatGrupo extends Chat{
 	
