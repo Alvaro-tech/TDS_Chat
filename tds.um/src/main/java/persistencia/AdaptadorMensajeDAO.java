@@ -67,8 +67,9 @@ public final class AdaptadorMensajeDAO implements IAdaptadorMensajeDAO {
 		return eMensaje;
 	}
 
-	private String obtenerIdReceptor(ChatIndividual receptor) {
-		return receptor.getId().toString();
+	private String obtenerIdReceptor(ChatIndividual receptor) { 
+		Integer string = (Integer) receptor.getId();
+		return string.toString();
 	}
 
 	private String obtenerIdEmisor(Usuario emisor) {
