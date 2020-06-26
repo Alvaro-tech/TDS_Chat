@@ -2,7 +2,6 @@ package modelo;
 
 //CHAT == CONTACTO
 import java.util.LinkedList;
-import java.util.List;
 
 public abstract class Chat {
 	/*
@@ -19,8 +18,19 @@ public abstract class Chat {
 		this.nombre = nombre;
 		this.historial = new LinkedList<Mensaje>();
 	}
+
+	public void setMensaje(LinkedList<Mensaje> mensaje) {
+		this.historial = mensaje;
+	}
 	
 	
+	public LinkedList<Mensaje> getHistorial() {
+		return historial;
+	}
+	
+
+	//################Funcionalidad##########
+	//TODO: busqueda de mensajes hacer que sea con streams y abstract methods
 	
 	
 	/*
@@ -38,30 +48,17 @@ public abstract class Chat {
 	}
 	
 	
-	public String getmovil() {
-		return movil;
-	}
-	
 	//No me gusta un pelo esta funcion
 	public void setmovil(String movil) {
 		this.movil = movil;
 	}
 	
 	
-	
 	//rt al anterior comentario
 	public void setId(int id) {
 		this.id = id;
 	}
-	
-	public LinkedList<Mensaje> getHistorial() {
-		return historial;
-	}
 
-	public void setMensaje(LinkedList<Mensaje> mensaje) {
-		this.historial = mensaje;
-	}
-	
 	//################Funcionalidad##########
 	//El usuario ese es el nombre personal que tu le has puesto al suso dicho
 	public LinkedList<Mensaje> buscarMensajeIncompleto(String texto, String fecha){ //Habra que hacer un parse a LocalDate para trabajar con ella
