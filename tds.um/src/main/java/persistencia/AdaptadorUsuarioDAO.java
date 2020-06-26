@@ -59,12 +59,13 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 		Usuario.setId(eUsuario.getId());
 		
 		Usuario.setContactos(obtenerContactosMapDesdeId(contactos));
-		
+		//TODO: Cuando exista
+		/*
 		for(ChatIndividual iterador : obtenerChatIndividualDesdeId(chatInd)) {
 			Usuario.agregarChatIndividual(iterador);
 		}
 		
-		
+		*/
 		return Usuario;
 	}
 	
@@ -72,13 +73,6 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 	private Entidad UsuarioToEntidad(Usuario Usuario) {
 		Entidad  eUsuario = new Entidad();
 		eUsuario.setNombre("Usuario"); 
-		
-		/* Es necesario (?), los usuarios no los crea el, sino el registro, el solo deberá añadirlo a su lista de contactos. Lo mismo con las voncesaciones o chats
-		// registrar primero los atributos que son objetos
-				AdaptadorVentaTDS adaptadorVenta = AdaptadorVentaTDS.getUnicaInstancia();
-				for (Venta v : cliente.getVentas())
-					adaptadorVenta.registrarVenta(v);
-				*/ 
 	
 		eUsuario.setPropiedades(
 				new ArrayList<Propiedad>(Arrays.asList(

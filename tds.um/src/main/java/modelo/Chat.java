@@ -13,6 +13,7 @@ public abstract class Chat {
 	
 	protected String nombre;
 	private LinkedList<Mensaje> historial;
+	private int id;
 	
 	public Chat(String nombre) 
 	{
@@ -29,4 +30,11 @@ public abstract class Chat {
 		return historial;
 	}
 
+	public int getId() {
+		return id;
+	}
+	
+	public void setId(int nId) {
+		this.id = nId;
+	}
 }

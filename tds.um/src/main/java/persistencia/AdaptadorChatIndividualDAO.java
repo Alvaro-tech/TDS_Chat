@@ -36,35 +36,7 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 		servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
 	}
 
-	@Override
-	public void create(ChatIndividual Usuario) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public boolean delete(ChatIndividual Usuario) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void updateHistorial(ChatIndividual Usuario) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public ChatIndividual get(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<ChatIndividual> getAll(int idPadre) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 	
 	
 }

@@ -76,20 +76,6 @@ public class ControladorUsuarios {
 		CatalogoUsuarios.getUnicaInstancia().removeUsuario(Usuario);
 		return true;
 	}
-	
-	/*
-	//Esta ya si que tiene su aquel y su utilidad
-	public boolean borrarUsuarioActual() {
-		if (!esUsuarioRegistrado(usuarioActual.getMovil())) return false;
-		
-		AdaptadorUsuarioDAO UsuarioDAO = (AdaptadorUsuarioDAO) factoria.getUsuarioDAO();  //Adaptador DAO para borrar el Usuario de la BD
-		UsuarioDAO.delete(usuarioActual);
-		
-		CatalogoUsuarios.getUnicaInstancia().removeUsuario(usuarioActual);
-		return true;
-	}
-
-	*/
 
 	public void updateSaludo(Usuario usuario, String saludo) {
 		usuario.setSaludo(saludo);

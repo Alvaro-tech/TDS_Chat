@@ -5,11 +5,10 @@ import java.util.List;
 import modelo.ChatIndividual;
 
 public interface IAdaptadorChatIndividualDAO {
-	//TODO: hacer bien
-	void create(ChatIndividual Usuario);
-	boolean delete(ChatIndividual Usuario);
-	void updateHistorial(ChatIndividual Usuario);
-	ChatIndividual get(int id);
-	List<ChatIndividual> getAll(int idPadre);
+	void create(ChatIndividual chat);
+	boolean delete(ChatIndividual chat);
+	void updateHistorial(ChatIndividual chat);
+	ChatIndividual get(int idChat);
+	List<ChatIndividual> getAll();
 	
 }

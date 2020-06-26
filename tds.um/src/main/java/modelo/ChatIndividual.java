@@ -21,12 +21,13 @@ public class ChatIndividual extends Chat{
 	public String getNombreContacto() {
 		return nombre;
 	}
+	
 
 	public Usuario getContacto() {
 		return contacto;
 	}
 	
-	public Integer getId() {
+	public Integer getUserId() {
 		 return this.contacto.getId();
 	}
 	
