@@ -20,6 +20,11 @@ public abstract class Chat {
 		this.nombre = nombre;
 		this.historial = new LinkedList<Mensaje>();
 	}
+	
+	public Chat(String nombre, LinkedList<Mensaje> historial) {
+		this.nombre = nombre;
+		this.historial = historial;
+	}
 
 	public void setMensaje(LinkedList<Mensaje> mensaje) {
 		this.historial = mensaje;
