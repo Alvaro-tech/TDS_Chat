@@ -26,6 +26,17 @@ public class ChatGrupo extends Chat{
 	public boolean addAdmin(Usuario u) {
 		return administradores.add(u);
 	}
+
+
+
+	public LinkedList<ChatIndividual> getMiembros() {
+		return this.miembros;
+	}
+
+
+	public HashSet<Usuario> getAdministradores() {
+		return this.administradores;
+	}
 	
 	
 }

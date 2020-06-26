@@ -9,6 +9,7 @@ import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
 import beans.Entidad;
 import beans.Propiedad;
+import modelo.ChatIndividual;
 import modelo.Mensaje;
 import modelo.Usuario;
 
@@ -35,17 +36,21 @@ public final class AdaptadorMensajeDAO implements IAdaptadorMensajeDAO {
 		servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
 	}
 	
+	
 	private Mensaje entidadToMensaje(Entidad eMensaje) {
 		
-		String usuario = servPersistencia.recuperarPropiedadEntidad(eMensaje, "usuario");
+		String emisor = servPersistencia.recuperarPropiedadEntidad(eMensaje, "emisor");
+		String receptor = servPersistencia.recuperarPropiedadEntidad(eMensaje, "receptor");
 		String texto = servPersistencia.recuperarPropiedadEntidad(eMensaje, "texto");
 		String fecha = servPersistencia.recuperarPropiedadEntidad(eMensaje, "fecha"); //TODO: Creo que no se carga bien
 		
 		
-		Mensaje mensaje = new Mensaje(usuario, texto, fecha);
-		mensaje.setId(eMensaje.getId());
-		return mensaje;
+		//Mensaje mensaje = new Mensaje(usuario, texto, fecha);
+		//mensaje.setId(eMensaje.getId());
+		//return mensaje;
+		return null;
 	}
+	
 	
 	private Entidad MensajeToEntidad(Mensaje mensaje) {
 		Entidad  eMensaje = new Entidad();
@@ -53,12 +58,21 @@ public final class AdaptadorMensajeDAO implements IAdaptadorMensajeDAO {
 	
 		eMensaje.setPropiedades(
 				new ArrayList<Propiedad>(Arrays.asList(
-						new Propiedad("usuario", mensaje.getUsuario()), 
+						new Propiedad("emisor", obtenerIdEmisor(mensaje.getEmisor())),
+						new Propiedad("receptor", obtenerIdReceptor(mensaje.getReceptor())),
 						new Propiedad("fecha", mensaje.getFecha().toString()),
 						new Propiedad("texto", mensaje.getTexto())
 						))
 				);
 		return eMensaje;
+	}
+
+	private String obtenerIdReceptor(ChatIndividual receptor) {
+		return receptor.getId().toString();
+	}
+
+	private String obtenerIdEmisor(Usuario emisor) {
+		return null;
 	}
 
 	public void create(Mensaje mensaje) {
@@ -74,9 +88,15 @@ public final class AdaptadorMensajeDAO implements IAdaptadorMensajeDAO {
 		return servPersistencia.borrarEntidad(eMensaje);
 	}
 
-	public Mensaje get(int id) {
+	public Mensaje getById(Integer id) {
 		Entidad eMensaje = servPersistencia.recuperarEntidad(id);
 		return entidadToMensaje(eMensaje);
+	}
+
+	@Override
+	public List<Mensaje> getAll() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

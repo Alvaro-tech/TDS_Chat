@@ -30,17 +30,25 @@ public class Mensaje {
 	public int getId() {
 		return id;
 	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
+	
 	public String getTexto() {
 		return texto;
 	}
 	public LocalDate getFecha() {
 		return fecha;
 	}
+
+	public ChatIndividual getReceptor() {
+		return contacto;
+	}
 	
+	public Usuario getEmisor() {
+		return this.usuarioAct;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 
 }
