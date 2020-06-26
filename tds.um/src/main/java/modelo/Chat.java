@@ -11,7 +11,7 @@ public abstract class Chat {
 	
 	*/
 	
-	protected String nombre;
+	private String nombre;
 	private LinkedList<Mensaje> historial;
 	private int id;
 	
@@ -36,5 +36,13 @@ public abstract class Chat {
 	
 	public void setId(int nId) {
 		this.id = nId;
+	}
+	
+	public String getNombre() {
+		return nombre;
+	}
+	
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 }

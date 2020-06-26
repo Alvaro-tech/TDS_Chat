@@ -60,6 +60,9 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 		
 		Usuario.setContactos(obtenerContactosMapDesdeId(contactos));
 		//TODO: Cuando exista
+		
+		
+		
 		/*
 		for(ChatIndividual iterador : obtenerChatIndividualDesdeId(chatInd)) {
 			Usuario.agregarChatIndividual(iterador);
@@ -174,6 +177,8 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 	// -------------------Funciones auxiliares-----------------------------
 	//TODO: Estas funciones existen aqui porque son necesarias, pero habria que mover su funcionamiento (código) a sus adaptadores pertinentes
 	
+	
+	//---------------------------Funciones para recuperar/guardar los contactos en persistencia--------------------------
 	//Funciones para trabajar con Mapas (HashMap)
 	//Esta función es utilizada a la hora de guardar la nueva entidad, salvar las id u los nombres personalizados de tu lista de contactos
 		private String obtenerIdContactosHash(HashMap<String, Usuario> listaUsuario) { //Lo hacemos así para recuperar los nombres que el Usuario habia puesto a la people
@@ -188,6 +193,12 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 			return aux.trim(); //Limpiar el string de carácteres invisibles
 			//Ejemplo 123:Alvaro 444:Luisa  -> ID:Nombre Personal
 		}
+		
+		
+		
+		
+		
+		
 
 	//A la hora de cargar los contactos guardados, hay que tener en cuenta que el mapa es Nombre:Usuario, que no es lo que teniamos guarado como propiedad
 		private HashMap<String, Usuario> obtenerContactosMapDesdeId(String ContactosG) {
@@ -214,7 +225,7 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 			return aux.trim(); 
 		}
 		
-		private Set<ChatIndividual> obtenerChatIndividualDesdeId(String ContactosG) {
+		private Set<ChatIndividual> getAllChatIndividualDesdeId(String ContactosG) {
 			Set<ChatIndividual> listaContactos = new HashSet<ChatIndividual>();
 			StringTokenizer strTok = new StringTokenizer(ContactosG, " ");
 			while (strTok.hasMoreTokens()) {

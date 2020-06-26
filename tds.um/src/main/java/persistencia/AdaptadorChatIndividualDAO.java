@@ -37,6 +37,71 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 	}
 
 	
+	//-------Funciones para el tratamiento de entidades--------
+	
+	
+	private ChatIndividual entidadToUsuario (Entidad eChat) {
+		
+		
+		return null;
+		
+	}
+	
+	
+	private Entidad chatToEntidad (ChatIndividual chat) {
+		Entidad eChat = new Entidad();
+		eChat.setNombre("ChatIndividual");
+		
+		eChat.setPropiedades(
+				new ArrayList<Propiedad>(Arrays.asList(
+						new Propiedad("nombre", chat.getNombreContacto())
+						
+						
+						
+						
+						))
+				
+				
+				
+				
+				);
+		
+		
+		return null;
+	}
+	
+	
+	@Override
+	public void create(ChatIndividual chat) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean delete(ChatIndividual chat) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void updateHistorial(ChatIndividual chat) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public ChatIndividual get(int idChat) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ChatIndividual> getAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 	
 	
 }
