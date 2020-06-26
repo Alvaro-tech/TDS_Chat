@@ -30,6 +30,14 @@ public class ControladorUsuarios {
 		return usuarioActual;
 	}
 	
+	public String getIdUsuarioActual() {
+		return usuarioActual.getClave();
+	}
+	
+	public String getNombreUsuarioActual() {
+		return usuarioActual.getNombre();
+	}
+	
 	public boolean esUsuarioRegistrado(String movil) {
 		return CatalogoUsuarios.getUnicaInstancia().getUsuario(movil)!=null;
 	}
@@ -58,6 +66,7 @@ public class ControladorUsuarios {
 			return true;
 	}
 	
+	//No se si esta funcion sirve para algo.
 	public boolean borrarUsuario(Usuario Usuario) {
 		if (!esUsuarioRegistrado(Usuario.getMovil())) return false;
 		
@@ -67,6 +76,20 @@ public class ControladorUsuarios {
 		CatalogoUsuarios.getUnicaInstancia().removeUsuario(Usuario);
 		return true;
 	}
+	
+	/*
+	//Esta ya si que tiene su aquel y su utilidad
+	public boolean borrarUsuarioActual() {
+		if (!esUsuarioRegistrado(usuarioActual.getMovil())) return false;
+		
+		AdaptadorUsuarioDAO UsuarioDAO = (AdaptadorUsuarioDAO) factoria.getUsuarioDAO();  //Adaptador DAO para borrar el Usuario de la BD
+		UsuarioDAO.delete(usuarioActual);
+		
+		CatalogoUsuarios.getUnicaInstancia().removeUsuario(usuarioActual);
+		return true;
+	}
+
+	*/
 
 	public void updateSaludo(Usuario usuario, String saludo) {
 		usuario.setSaludo(saludo);

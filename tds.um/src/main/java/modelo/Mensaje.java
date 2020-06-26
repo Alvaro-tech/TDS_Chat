@@ -2,11 +2,18 @@ package modelo;
 
 import java.time.LocalDate;
 
+//no... darle una vuelta
 public class Mensaje {
-	String usuario; //Emisor
-	String texto;
-	LocalDate fecha; //fecha en la que se crea el mensaje
-	int id;
+	//debería tener un emisor y receptor asociados.
+	//¿El receptor guarda los mensajes que ha enviado?
+	private Usuario emisor; //unidireccional
+	//un receptor tiene una lista de mensajes de un emisor concreto
+	private Usuario receptor; //bidireccional (POOL)
+	
+	private String usuario; //Emisor
+	private String texto;
+	private LocalDate fecha; //fecha en la que se crea el mensaje
+	private int id;
 	//Imagen emoticon;
 	
 	public Mensaje(String usuario, String texto) { //Entendiendo usuario como número de teléfono

@@ -1,14 +1,39 @@
 package modelo;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.stream.*;
 
 public class ChatGrupo extends Chat{
+	
+	/*
+	 * Un chat de grupo es un conjunto de contacto individual (chat individual)
+	 Con una lista de 
+	 */
+	
+	//Aqui el atributo nombre se entiende como el nombre del grupo
+	private LinkedList<ChatIndividual> miembros;
+	private HashSet<Usuario> administradores = new HashSet<Usuario>();
+	
+	public ChatGrupo(String nombreg, ChatIndividual ... mi) {
+		super(nombreg);
+		for (ChatIndividual m : mi) {
+			miembros.add(m);
+		}
+	}
+	
+	
+	public boolean addAdmin(Usuario u) {
+		return administradores.add(u);
+	}
+	
+	
+	
+	/*
 	HashSet<Usuario> participantes = new HashSet<Usuario>();
 	HashSet<Usuario> administradores = new HashSet<Usuario>();
 	
-	/*
+	
 	public ChatGrupo(String nombre, int id, Usuario user, Usuario ... participantes) { //se pasa como argumento al usuario que lo crea
 		//super(nombre,id);
 		administradores.add(user);
@@ -16,7 +41,7 @@ public class ChatGrupo extends Chat{
 			this.participantes.add(u);
 		}
 	}
-	*/
+	
 	
 	
 	public HashSet<Usuario> getParticipantes() {
@@ -79,6 +104,6 @@ public class ChatGrupo extends Chat{
 	
 	
 	
-	
+	*/
 	
 }

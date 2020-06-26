@@ -34,7 +34,8 @@ public class VentanaPrincipal extends JFrame {
 	JPanel panellzq = new JPanel();
 	JPanel panelDividido = new JPanel();
 	JPanel panelDer = new JPanel();
-	Usuario usuario;
+	Usuario usuario; //mal
+	ControladorUsuarios controler = ControladorUsuarios.getUnicaInstancia(); //okei good
 
 	private JPanel panelVentanaPrincipal;
 
@@ -59,9 +60,15 @@ public class VentanaPrincipal extends JFrame {
 	 */
 	public VentanaPrincipal() {
 		
+		
 		usuario = ControladorUsuarios.getUnicaInstancia().getusuarioActual(); //TODO: Preguntar esto
-
+		//La vista solo debe hablar con el controlador, esto es bastante una herejía bebe
+		
+		
+		
 		System.out.println(usuario.getNombre());
+		System.out.println(ControladorUsuarios.getUnicaInstancia().getNombreUsuarioActual()); //Esto sería lo correct
+		
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(300, 40, 850, 600);
@@ -182,6 +189,25 @@ public class VentanaPrincipal extends JFrame {
 		
 		JMenuItem mntmEliminarUsuario = new JMenuItem("Eliminar  Usuario");
 		mnOpciones2.add(mntmEliminarUsuario);
+		/*
+		//BORRA EL USUARIO ACTUAL
+		//LO HE USADO Y MI SERVIDOR DE PERSISTENCIA PARECE HABER MUERTO LO CUAL MAKES CERO SENSE.
+		mntmEliminarUsuario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				boolean eliminado = ControladorUsuarios.getUnicaInstancia().borrarUsuarioActual();
+				//TODO: crear una ventana Eliminado con dos botones en plan para asegurar que quiere eliminarse
+				if(eliminado) {
+					System.out.println("Sa borrao todo bien");
+					//TODO: Salir de la app
+					frame.dispose();
+				}else {
+					System.out.println("Ummm... no se ha borrao jaj");
+					//TODO: mensaje de error en la pantalla
+					frame.dispose();
+				}
+			}
+		});
+		*/
 		
 		JButton btnLupa = new JButton("Lupa");
 		menuBar.add(btnLupa);

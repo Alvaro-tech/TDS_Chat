@@ -142,6 +142,7 @@ public class VentanaLogin {
 		});
 		panel_1.add(btnRegistro);
 		
+		
 		relleno = new JTextField();
 		relleno.setBorder(null);
 		relleno.setBackground(SystemColor.control);
