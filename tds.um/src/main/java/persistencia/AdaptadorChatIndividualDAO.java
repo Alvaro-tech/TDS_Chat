@@ -60,7 +60,7 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 		eMensaje.setPropiedades(
 				new ArrayList<Propiedad>(Arrays.asList(
 						new Propiedad("movil", chat.getmovil()), 
-						new Propiedad("nombre", chat.getNombre()),
+						new Propiedad("nombre", chat.getNombreContacto()),
 						new Propiedad("historial", obtenerIdListadoMensajes(chat.getHistorial()))
 						))
 				);

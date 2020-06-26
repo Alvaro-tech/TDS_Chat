@@ -7,7 +7,7 @@ public class ChatIndividual extends Chat{
 	
 	//ES UN CONTACTO INDIVIDUAL con su lista de mensajes asociado.
 	private String movil;
-	private Usuario contacto;
+	private Usuario contacto; 
 	
 	public ChatIndividual(String movil, String nombre, Usuario contacto) 
 	{
