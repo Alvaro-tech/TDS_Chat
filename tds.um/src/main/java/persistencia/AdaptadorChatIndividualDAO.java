@@ -40,79 +40,61 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 	//-------Funciones para el tratamiento de entidades--------
 	
 	
-	private ChatIndividual entidadToChatInd(Entidad eChat) {
+	private ChatIndividual entidadToUsuario (Entidad eChat) {
 		
-		String nombre = servPersistencia.recuperarPropiedadEntidad(eChat,"nombre");
-		String movil = servPersistencia.recuperarPropiedadEntidad(eChat, "movil");
-		String contacto = servPersistencia.recuperarPropiedadEntidad(eChat, "contacto");
-		String historial = servPersistencia.recuperarPropiedadEntidad(eChat, "historial");
 		
-		LinkedList<Mensaje> histoAux = getAllMensajesById(historial);
-		Usuario contAux = AdaptadorUsuarioDAO.getUnicaInstancia().get(Integer.valueOf(contacto));
-		
-		//ChatIndividual(String movil, String nombre, LinkedList<Mensaje> historial, Usuario contacto) 
-		ChatIndividual chatInd = new ChatIndividual(movil, nombre, histoAux, contAux);
-		chatInd.setId(eChat.getId());
-		return chatInd;
+		return null;
 		
 	}
 	
-
-	private Entidad chatToEntidadInd (ChatIndividual chat) {
+	
+	private Entidad chatToEntidad (ChatIndividual chat) {
 		Entidad eChat = new Entidad();
 		eChat.setNombre("ChatIndividual");
 		
 		eChat.setPropiedades(
 				new ArrayList<Propiedad>(Arrays.asList(
-						new Propiedad("nombre", chat.getNombre()),
-						new Propiedad ("movil", chat.getMovil()),
-						new Propiedad ("contacto", chat.getUserId().toString()),
-						new Propiedad("historial", obtenerIdMensajes(chat.getHistorial()) )
-								
-						))
+						new Propiedad("nombre", chat.getNombreContacto())
 						
+						
+						
+						
+						))
+				
+				
+				
+				
 				);
-		return eChat;
+		
+		
+		return null;
 	}
 	
 	
-	
-
 	@Override
 	public void create(ChatIndividual chat) {
-		Entidad eChat;
-		
-		//TODO: POOL
-		
-		eChat = this.chatToEntidadInd(chat);
-		eChat = this.servPersistencia.registrarEntidad(eChat);
-		chat.setId(eChat.getId());
+		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public boolean delete(ChatIndividual chat) {
-		Entidad eChat;
-		eChat = servPersistencia.recuperarEntidad(chat.getId());
-		return servPersistencia.borrarEntidad(eChat);
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
 	public void updateHistorial(ChatIndividual chat) {
-		Entidad eChat = servPersistencia.recuperarEntidad(chat.getId());
-		
-		servPersistencia.eliminarPropiedadEntidad(eChat, "historial");
-		servPersistencia.anadirPropiedadEntidad(eChat, "historial", obtenerIdMensajes(chat.getHistorial()));
+		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public ChatIndividual get(int idChat) {
-		Entidad eChat = servPersistencia.recuperarEntidad(idChat);
-		return entidadToChatInd(eChat);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	//TODO: Necesaria esta función???????
 	@Override
 	public List<ChatIndividual> getAll() {
 		// TODO Auto-generated method stub
@@ -120,26 +102,6 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 	}
 
 	
-	//---------------Funcionalidad complemetaria-----------
 	
-	
-	private String obtenerIdMensajes(LinkedList<Mensaje> historial) {
-		String aux = "";
-		for(Mensaje men : historial) {
-			aux += men.getId() + " ";
-		}
-		return aux.trim(); 
-	}
-	
-	private LinkedList<Mensaje> getAllMensajesById(String historial) {
-		LinkedList<Mensaje> mensajes = new LinkedList<Mensaje>();
-		StringTokenizer strTok = new StringTokenizer(historial, " ");
-		while (strTok.hasMoreTokens()) {
-			String id = (String) strTok.nextElement(); 
-			Mensaje menAux = AdaptadorMensajeDAO.getUnicaInstancia().get(Integer.valueOf(id));
-			mensajes.add(menAux);
-		}
-		return mensajes;
-	}
 	
 }

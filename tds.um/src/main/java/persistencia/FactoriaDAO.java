@@ -32,13 +32,7 @@ public abstract class FactoriaDAO {
 	public abstract IAdaptadorUsuarioDAO getUsuarioDAO();
 	public abstract IAdaptadorMensajeDAO getMensajeDAO();
 	public abstract IAdaptadorChatIndividualDAO getChatIndividualDAO();
+	public abstract IAdaptadorChatGrupoDAO getChatGrupoDAO();
 
-		
-		
-	// Metodos factoria que devuelven adaptadores que implementen estos interfaces
-	/*public abstract IAdaptadorVentaDAO getVentaDAO();
-	public abstract IAdaptadorLineaVentaDAO getLineaVentaDAO();
-	public abstract IAdaptadorProductoDAO getProductoDAO();
-	public abstract IAdaptadorClienteDAO getClienteDAO();*/
 
 }
