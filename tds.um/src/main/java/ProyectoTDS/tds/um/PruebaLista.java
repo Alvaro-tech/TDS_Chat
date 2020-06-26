@@ -47,7 +47,7 @@ public class PruebaLista extends JFrame {
 		Usuario u1 = new Usuario("alex", "22", "22", "22", "22");
 		Usuario u3 = new Usuario("lucy", "22", "22", "22", "22");
 		
-		DefaultListModel listModel = new DefaultListModel();
+		DefaultListModel<Usuario> listModel = new DefaultListModel<Usuario>();
 		listModel.addElement(u1);
 		listModel.addElement(u3);
 		
