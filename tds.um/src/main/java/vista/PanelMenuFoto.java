@@ -33,7 +33,6 @@ public class PanelMenuFoto extends JPanel {
 	private JTextField textNameField;
 	private JTextField textSaludoField;
 	private JPanel panelImagen;
-	private PanelVerImagen pantallaVerImagen;
 	private JLabel lblFoto;
 	private JPanel panelBotones;
 	private JButton btnCambiarFoto;

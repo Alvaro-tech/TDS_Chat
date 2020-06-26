@@ -7,7 +7,7 @@ public class ChatIndividual extends Chat{
 	
 	String nombre;
 	
-	public ChatIndividual(String movil, String nombre) 
+	public ChatIndividual(String movil, String nombre) //Movil del Destinatario y el nombe 
 	{
 		super(movil);
 		this.nombre = nombre;

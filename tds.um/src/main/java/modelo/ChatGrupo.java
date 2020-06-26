@@ -8,15 +8,16 @@ public class ChatGrupo extends Chat{
 	HashSet<Usuario> participantes = new HashSet<Usuario>();
 	HashSet<Usuario> administradores = new HashSet<Usuario>();
 	
-	/*
-	public ChatGrupo(String nombre, int id, Usuario user, Usuario ... participantes) { //se pasa como argumento al usuario que lo crea
-		//super(nombre,id);
-		administradores.add(user);
+	
+	public ChatGrupo(String movil, String nombre, ArrayList<Usuario> pticipantes) {  //  , Nombre del grupo, Lista de participates
+		super(movil);
+		//TODO: incompleto
+		//administradores.add(user);
 		for (Usuario u : participantes) {
 			this.participantes.add(u);
 		}
 	}
-	*/
+	
 	
 	
 	public HashSet<Usuario> getParticipantes() {
