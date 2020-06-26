@@ -5,7 +5,7 @@ import java.util.List;
 import modelo.ChatIndividual;
 
 public interface IAdaptadorChatIndividualDAO {
-	
+	//TODO: hacer bien
 	void create(ChatIndividual Usuario);
 	boolean delete(ChatIndividual Usuario);
 	void updateHistorial(ChatIndividual Usuario);

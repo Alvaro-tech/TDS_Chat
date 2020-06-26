@@ -19,6 +19,8 @@ public class Usuario {
 	HashSet<ChatIndividual> chatsInd = new HashSet<ChatIndividual>();
 	HashSet<ChatGrupo> chatsGroup = new HashSet<ChatGrupo>();
 	//lista de contactos que tiene un usuario
+	//SUPER NO, ES UNA LISTA DE CHATS QUE MAL QUE MAL QUE MAL
+	//TODO:Arreglar esto
 	HashMap<String, Usuario> contactos = new HashMap<String, Usuario>(); //Clave nombre Personal , Valor Usuario 
 	Integer id;
 	String saludo;
@@ -140,6 +142,8 @@ public class Usuario {
 		chatsGroup.add(chat);
 	}
 	
+	//TODO: arreglar esto porque ha cambiado la forma de los chatsIndividuales (antes estaba FATAL alvaro)
+	/*
 	public ChatIndividual empezarChatIndividual(String nombre) { //TODO: Comprobar que la conversacion no existe ya, recorrer los chats, comparando id's(?)
 		Usuario DatosUsuario = contactos.get(nombre);
 		
@@ -151,7 +155,7 @@ public class Usuario {
 		
 	}
 	
-	public void empezarChatGrupo (String nombre) {  //TODO:
+	public void empezarChatGrupo (String nombre) {  //TODO: la funcion en sí
 		
 	}
 		
@@ -168,6 +172,7 @@ public class Usuario {
 			}
 		
 	}
+	*/
 	
 	public String[] getlistaDeContactos() {
 		LinkedList <String> aux = new LinkedList<String>();
@@ -184,6 +189,11 @@ public class Usuario {
 		return array;
 		
 }
+
+	public ChatIndividual empezarChatIndividual(String movilReceptor, String nombre, Usuario emisor) {
+		ChatIndividual chatI = new ChatIndividual(movilReceptor, nombre, emisor);
+		return chatI;
+	}
 	
 	
 	

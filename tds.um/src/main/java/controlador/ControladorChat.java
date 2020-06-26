@@ -59,7 +59,7 @@ public class ControladorChat {
 	
 	public boolean iniciarChat(Usuario emisor, String movilReceptor) { //TODO: Hacerlo Genérico (Individual | grupo )
 		
-		ChatIndividual chatNuevo = emisor.empezarChatIndividual(movilReceptor); //Ya tengo el chat guardado en el extremo del emisor
+		ChatIndividual chatNuevo = emisor.empezarChatIndividual(movilReceptor, emisor.getNombre(), emisor); //Ya tengo el chat guardado en el extremo del emisor
 		registrarChatEmisor(chatNuevo);
 		
 		

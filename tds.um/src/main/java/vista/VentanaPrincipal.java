@@ -34,7 +34,8 @@ public class VentanaPrincipal extends JFrame {
 	JPanel panellzq = new JPanel();
 	JPanel panelDividido = new JPanel();
 	JPanel panelDer = new JPanel();
-	Usuario usuario;
+	Usuario usuario; //mal
+	ControladorUsuarios controler = ControladorUsuarios.getUnicaInstancia(); //okei good
 
 	private JPanel panelVentanaPrincipal;
 
@@ -59,9 +60,15 @@ public class VentanaPrincipal extends JFrame {
 	 */
 	public VentanaPrincipal() {
 		
+		
 		usuario = ControladorUsuarios.getUnicaInstancia().getusuarioActual(); //TODO: Preguntar esto
-
+		//La vista solo debe hablar con el controlador, esto es bastante una herejía bebe
+		
+		
+		
 		System.out.println(usuario.getNombre());
+		System.out.println(ControladorUsuarios.getUnicaInstancia().getNombreUsuarioActual()); //Esto sería lo correct
+		
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(300, 40, 850, 600);

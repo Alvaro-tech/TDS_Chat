@@ -5,31 +5,34 @@ import java.util.List;
 
 public class ChatIndividual extends Chat{
 	
-	String nombre;
+	//ES UN CONTACTO INDIVIDUAL con su lista de mensajes asociado.
+	private String movil;
+	private Usuario contacto; 
 	
-	public ChatIndividual(String movil, String nombre) //Movil del Destinatario y el nombe 
-	{
-		super(movil);
-		this.nombre = nombre;
 
+	public ChatIndividual(String movil, String nombre, Usuario contacto) 
+	{
+		super(nombre);
+		this.movil = movil;
+		this.contacto = contacto;
 	}
 
 	
-	public String getNombre() {
+	public String getNombreContacto() {
 		return nombre;
 	}
 
-	//Un chat individual no va a usarla en un principio, pero debe incluir la función, por ser abstracta en la del padre
-	@Override
-	protected LinkedList<Mensaje> filtroUsuario(LinkedList<Mensaje> listaAfiltrar) {
-		return listaAfiltrar;
+	public Usuario getContacto() {
+		return contacto;
 	}
 	
+	public Integer getId() {
+		 return this.contacto.getId();
+	}
 	
-	
-	
-	
-	
-	
-	
+
+	public String getmovil() {
+		return contacto.getMovil();
+	}
+
 }

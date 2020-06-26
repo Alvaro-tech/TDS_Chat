@@ -35,97 +35,36 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 	public AdaptadorChatIndividualDAO() {
 		servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
 	}
-	
-	private ChatIndividual entidadToChatInd(Entidad eChatIndividual) {
-		
-		String nombre = servPersistencia.recuperarPropiedadEntidad(eChatIndividual, "usuario");
-		String movil = servPersistencia.recuperarPropiedadEntidad(eChatIndividual, "texto");
-		String historial = servPersistencia.recuperarPropiedadEntidad(eChatIndividual, "historial");
 
-		
-		
-		ChatIndividual chataux = new ChatIndividual(movil ,nombre);
-		chataux.setId(eChatIndividual.getId());
-		
-		for (Mensaje iterador : ObtenerListadoMensajesDesdeId(historial)) {
-			chataux.almacenarMensaje(iterador);
-		}
-		return chataux;
-	}
-	
-	private Entidad ChatIndToEntidad(ChatIndividual chat) {
-		Entidad  eMensaje = new Entidad();
-		eMensaje.setNombre("ChatIndividual"); 
-	
-		eMensaje.setPropiedades(
-				new ArrayList<Propiedad>(Arrays.asList(
-						new Propiedad("movil", chat.getmovil()), 
-						new Propiedad("nombre", chat.getNombre()),
-						new Propiedad("historial", obtenerIdListadoMensajes(chat.getHistorial()))
-						))
-				);
-		return eMensaje;
-	}
-
+	@Override
 	public void create(ChatIndividual Usuario) {
-		Entidad eUsuario;
-		eUsuario = this.ChatIndToEntidad(Usuario);
-		eUsuario = servPersistencia.registrarEntidad(eUsuario);
-		Usuario.setId(eUsuario.getId());
+		// TODO Auto-generated method stub
 		
 	}
 
+	@Override
 	public boolean delete(ChatIndividual Usuario) {
-		Entidad eUsuario;
-		eUsuario = servPersistencia.recuperarEntidad(Usuario.getId());
-		return servPersistencia.borrarEntidad(eUsuario);
+		// TODO Auto-generated method stub
+		return false;
 	}
 
+	@Override
+	public void updateHistorial(ChatIndividual Usuario) {
+		// TODO Auto-generated method stub
+		
+	}
 
+	@Override
 	public ChatIndividual get(int id) {
-		Entidad eUsuario = servPersistencia.recuperarEntidad(id);
-		return entidadToChatInd(eUsuario);
-	}
-
-	public List<ChatIndividual> getAll(int idPadre) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public void updateHistorial(ChatIndividual Usuario) {
-		Entidad eUsuario = servPersistencia.recuperarEntidad(Usuario.getId());
-
-		servPersistencia.eliminarPropiedadEntidad(eUsuario, "historial");
-		System.out.println("Despues del update:");
-		servPersistencia.anadirPropiedadEntidad(eUsuario, "historial", obtenerIdListadoMensajes(Usuario.getHistorial()));
-		
-		
-	}
-	//// FUncionalidad auxiliar
-	
-	private String obtenerIdListadoMensajes(LinkedList<Mensaje> listaMensajes) {
-		String aux = "";
-		for(Mensaje iterador : listaMensajes) {
-			aux += iterador.getId() + " ";
-		}
-		
-		return aux.trim();
+	@Override
+	public List<ChatIndividual> getAll(int idPadre) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
-	private List<Mensaje> ObtenerListadoMensajesDesdeId (String chatsG){
-		List<Mensaje> listado = new LinkedList<Mensaje>();
-		
-		StringTokenizer strTok = new StringTokenizer(chatsG, " ");
-		while (strTok.hasMoreTokens()) {
-			String id = (String) strTok.nextElement(); 
-        	Mensaje mensajeAux = AdaptadorMensajeDAO.getUnicaInstancia().get(Integer.valueOf(id));
-			listado.add(mensajeAux);
-			}
-		
-		return listado;
-	}
-
-	
-
 	
 }

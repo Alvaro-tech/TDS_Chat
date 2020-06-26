@@ -214,7 +214,7 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 
 		private String obtenerIdChatIndividual(HashSet<ChatIndividual> listaUsuario) {
 			String aux = "";
-			for(Chat iterador : listaUsuario) {
+			for(ChatIndividual iterador : listaUsuario) {
 				aux +=  iterador.getId() + " ";
 			}
 			return aux.trim(); 
