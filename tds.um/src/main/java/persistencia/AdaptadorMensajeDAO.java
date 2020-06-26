@@ -89,7 +89,7 @@ public final class AdaptadorMensajeDAO implements IAdaptadorMensajeDAO {
 		return servPersistencia.borrarEntidad(eMensaje);
 	}
 
-	public Mensaje getById(Integer id) {
+	public Mensaje get(Integer id) {
 		Entidad eMensaje = servPersistencia.recuperarEntidad(id);
 		return entidadToMensaje(eMensaje);
 	}

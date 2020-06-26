@@ -9,6 +9,6 @@ public interface IAdaptadorMensajeDAO {
 	
 	void create(Mensaje mensaje);
 	boolean delete(Mensaje mensaje);
-	Mensaje getById(Integer id);
+	Mensaje get(Integer id);
 	List<Mensaje> getAll();
 }
