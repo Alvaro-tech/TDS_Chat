@@ -146,10 +146,14 @@ public class PanelCrearContacto extends JDialog {
 					public void actionPerformed(ActionEvent arg0) {
 						try {
 							ControladorUsuarios.getUnicaInstancia().addUsuario(textNombreArea.getText(), textTelefonoArea.getText());
+							JOptionPane.showMessageDialog(ventana,
+									"Contacto añadido correctamente",
+									"Añadir conctacto",
+									JOptionPane.INFORMATION_MESSAGE);
 						} catch (Exception e) {
 							JOptionPane.showMessageDialog(ventana,
 									"No se ha podido llevar a cabo el registro. Parámetros incorrectos\n",
-									"Registro",
+									"Añadir conctacto",
 									JOptionPane.ERROR_MESSAGE);
 						}
 					}

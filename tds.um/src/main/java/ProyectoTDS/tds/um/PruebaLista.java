@@ -17,6 +17,8 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import modelo.Usuario;
+import vista.ContactoGUI;
+import vista.ContactoRenderer;
 
 import javax.swing.JList;
 
@@ -47,14 +49,17 @@ public class PruebaLista extends JFrame {
 		Usuario u1 = new Usuario("alex", "22", "22", "22", "22");
 		Usuario u3 = new Usuario("lucy", "22", "22", "22", "22");
 		
-		DefaultListModel<Usuario> listModel = new DefaultListModel<Usuario>();
-		listModel.addElement(u1);
-		listModel.addElement(u3);
+		ContactoGUI c1 = new ContactoGUI("Persona 1", u1);
+		ContactoGUI c2 = new ContactoGUI("Persona 2", u3);
 		
-		JList<Usuario> countryList = new JList<>(listModel);
+		DefaultListModel<ContactoGUI> listModel = new DefaultListModel<ContactoGUI>();
+		listModel.addElement(c1);
+		listModel.addElement(c2);
+		
+		JList<ContactoGUI> countryList = new JList<>(listModel);
 		countryList.setBackground(Color.LIGHT_GRAY);
         getContentPane().add(new JScrollPane(countryList));
-        countryList.setCellRenderer(new ContactoRendered());
+        countryList.setCellRenderer(new ContactoRenderer());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("JList Renderer Example");
         this.setSize(500, 500);

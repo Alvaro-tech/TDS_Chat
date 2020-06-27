@@ -1,4 +1,4 @@
-package ProyectoTDS.tds.um;
+package vista;
 
 import java.awt.Component;
 import java.awt.Image;
@@ -10,17 +10,17 @@ import javax.swing.ListCellRenderer;
 
 import modelo.Usuario;
 
-public class ContactoRendered  extends JLabel implements ListCellRenderer<Usuario> {
+public class ContactoRenderer  extends JLabel implements ListCellRenderer<ContactoGUI> {
 
-	public ContactoRendered() {
+	public ContactoRenderer() {
         setOpaque(true);
     } 
 	@Override
-	public Component getListCellRendererComponent(JList<? extends Usuario> list, Usuario usuario, int index,
+	public Component getListCellRendererComponent(JList<? extends ContactoGUI> list, ContactoGUI usuario, int index,
             boolean isSelected, boolean cellHasFocus) {
 		
 		String nombre = usuario.getNombre();
-		ImageIcon imageIcon = new ImageIcon(usuario.getFotoPerfil());
+		ImageIcon imageIcon = new ImageIcon(usuario.getUsuario().getFotoPerfil());
 		ImageIcon imageIcon2 = new ImageIcon(imageIcon.getImage().getScaledInstance(150, 150, Image.SCALE_DEFAULT));
 		
 		setIcon(imageIcon2);

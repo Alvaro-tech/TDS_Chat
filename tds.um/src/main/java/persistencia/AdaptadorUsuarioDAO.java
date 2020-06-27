@@ -55,7 +55,7 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 		//public Usuario(String nombre, String email, String fecha, String movil, String clave)
 		Usuario Usuario = new Usuario(nombre, email, fecha, movil, clave, saludo, fotoP); 
 		Usuario.setId(eUsuario.getId());
-		
+		System.out.println("En entidadtoUsuario: " + contactos);
 		Usuario.setContactos(obtenerContactosMapDesdeId(contactos));
 		//TODO: Cuando exista
 		
@@ -97,14 +97,25 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 		boolean existe = true; 
 		
 		//Uso de la pool
-		/*
+		
+		
+		//---------------------------------
+		
 		// Si la entidad está registrada no la registra de nuevo
 		try {
+			System.out.println("111Entre en en primer step de la pool");
 			eUsuario = servPersistencia.recuperarEntidad(Usuario.getId());
-		} catch (NullPointerException e) {
+			System.out.println("Entre en en primer step de la pool");
+		} catch (Exception e) {
 			existe = false;
 		}
-		if (existe) return;*/
+		if (existe) return;
+		
+		
+		
+		
+		//------------------------------
+		
 		
 		//Si no habrá que registrar al usuario en el servidor de persistencia
 		eUsuario = this.UsuarioToEntidad(Usuario);
@@ -135,8 +146,38 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 	}
 	
 	public Usuario get(int id) { //2º 
+		System.out.println("entre en el get con el id: " + id);
+		// Si la entidad está en el pool la devuelve directamente
+		if (PoolDAO.getUnicaInstancia().contiene(id)) {
+			System.out.println("Supuestamente lo he cogio de la pool");
+			return (Usuario) PoolDAO.getUnicaInstancia().getObjeto(id);
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		//------------------------------
+		
+		
 		Entidad eUsuario = servPersistencia.recuperarEntidad(id);
-		return entidadToUsuario(eUsuario);
+		Usuario usuarioAux = entidadToUsuario(eUsuario);
+		
+		
+		
+		// IMPORTANTE:añadir el cliente al pool antes de llamar a otros
+				// adaptadores
+		System.out.println("En teoria lo he guardado de la pool");
+				PoolDAO.getUnicaInstancia().addObjeto(id, usuarioAux);
+		return usuarioAux;
+		
+		
+		
+		
 	}
 	
 	public List<Usuario> getAll() { //1º -> Llamado por el catálogo
@@ -167,6 +208,8 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 		servPersistencia.eliminarPropiedadEntidad(eUsuario, "contactos");
 		System.out.println("Despues del update:");
 		servPersistencia.anadirPropiedadEntidad(eUsuario, "contactos",obtenerIdContactosHash(usuario.getContactos()));
+		
+		System.out.println("en update contactos " + obtenerIdContactosHash(usuario.getContactos()));
 		
 		
 		
@@ -200,6 +243,7 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 
 	//A la hora de cargar los contactos guardados, hay que tener en cuenta que el mapa es Nombre:Usuario, que no es lo que teniamos guarado como propiedad
 		private HashMap<String, Usuario> obtenerContactosMapDesdeId(String ContactosG) {
+			System.out.println("Esto en ObtenerContactosMapsDesde Id con: " + ContactosG);
 			HashMap<String, Usuario> listaContactos = new HashMap<String, Usuario>();
 			StringTokenizer strTok = new StringTokenizer(ContactosG, " ");//divide un string en array de palabras separadas en espacios
 			while (strTok.hasMoreTokens()) {
@@ -207,6 +251,7 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 	        	String[] parts = datos.split(":"); //Separo lo que es id del nombre personal
 	        	System.out.println("EL parts 0 es (id) : " + parts[0]);
 	        	Usuario usuarioaux = AdaptadorUsuarioDAO.getUnicaInstancia().get(Integer.valueOf(parts[0]));
+	        	System.out.println("en obtenerConstactos pase del get");
 				listaContactos.put(parts[1], usuarioaux); //Cargo en el mapa de contactos todos los nombres personales y los usuarios a los que referencia
 			}
 			return listaContactos;

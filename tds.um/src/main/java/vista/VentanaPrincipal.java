@@ -136,7 +136,21 @@ public class VentanaPrincipal extends JFrame {
 		JMenuItem mntmMostrarContactos = new JMenuItem("Mostrar Contactos");
 		mntmMostrarContactos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				ControladorUsuarios.getUnicaInstancia().mostrarUsuario();
+				ControladorUsuarios.getUnicaInstancia().mostrarUsuario(); //TODO: Esto es debbuging, habrá que borrarlo al final
+				
+				PanelShowCont nuevo = new PanelShowCont(usuario);
+				panelDividido.remove(panellzq);
+				panellzq = nuevo; 
+				
+				GridBagConstraints gbc_panelzq = new GridBagConstraints();
+				gbc_panelzq.insets = new Insets(0, 0, 5, 0);
+				gbc_panelzq.fill = GridBagConstraints.BOTH;
+				gbc_panelzq.gridx = 1;
+				gbc_panelzq.gridy = 0;
+				panelDividido.add(nuevo, gbc_panelzq); 
+				
+				panelDividido.revalidate(); 
+				panelDividido.repaint(); 
 				};
 				
 			}
