@@ -41,20 +41,26 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 	
 	private Usuario entidadToUsuario(Entidad eUsuario) { //3º
 		
+		//*-*-*-*-*-*-*-*-*-*--*-*-Objetos Fijos o unidireccionales
 		String nombre = servPersistencia.recuperarPropiedadEntidad(eUsuario, "nombre");
 		String email = servPersistencia.recuperarPropiedadEntidad(eUsuario, "email");
 		String fecha = servPersistencia.recuperarPropiedadEntidad(eUsuario, "fecha");
 		String movil = servPersistencia.recuperarPropiedadEntidad(eUsuario, "movil");
 		String clave = servPersistencia.recuperarPropiedadEntidad(eUsuario, "clave");
 		String saludo = servPersistencia.recuperarPropiedadEntidad(eUsuario, "saludo");
+		String fotoP = servPersistencia.recuperarPropiedadEntidad(eUsuario, "fotoPerfil");
+		
+		//-*-*-*-*-*-*-*-*- Creo un Usuario Solo con estoss datos *-**-*-*-*-*-*-*-*-
+		Usuario Usuario = new Usuario(nombre, email, fecha, movil, clave, saludo, fotoP); 
+		Usuario.setId(eUsuario.getId());
+		//-*-*-*--*-*-*-*-*-*--*Y lo guardo en Pool para que conste:
+		PoolDAO.getUnicaInstancia().addObjeto(Usuario.getId(), Usuario);
+		
+		//*-*-*-*-*--*-*-*-*-* Tratamiento de las propiedad bi-direccionales
 		String contactos = servPersistencia.recuperarPropiedadEntidad(eUsuario, "contactos");
 		String chatInd = servPersistencia.recuperarPropiedadEntidad(eUsuario, "chatIndividual");
 		String chatGroup = servPersistencia.recuperarPropiedadEntidad(eUsuario, "chatGrupo");
-		String fotoP = servPersistencia.recuperarPropiedadEntidad(eUsuario, "fotoPerfil");
-		
-		//public Usuario(String nombre, String email, String fecha, String movil, String clave)
-		Usuario Usuario = new Usuario(nombre, email, fecha, movil, clave, saludo, fotoP); 
-		Usuario.setId(eUsuario.getId());
+				
 		System.out.println("En entidadtoUsuario: " + contactos);
 		Usuario.setContactos(obtenerContactosMapDesdeId(contactos));
 		//TODO: Cuando exista
@@ -93,14 +99,12 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 	}
 	
 	public void create(Usuario Usuario) {
+		//-*-*-*-*-*--*-* Uso de la pool
+		
 		Entidad eUsuario;
+		
+		//*-*-*-*-*-*-*-*-Control de si existe el objeto ya, para evitar volver a crearlo y haya repetidos
 		boolean existe = true; 
-		
-		//Uso de la pool
-		
-		
-		//---------------------------------
-		
 		// Si la entidad está registrada no la registra de nuevo
 		try {
 			System.out.println("111Entre en en primer step de la pool");
@@ -114,14 +118,15 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 		
 		
 		
-		//------------------------------
+		//-*-*-*-*-*-*-*-*-*-*-*-*-*-*--
 		
 		
 		//Si no habrá que registrar al usuario en el servidor de persistencia
+		System.out.println("*-*-*-*--Estoy en el create");
 		eUsuario = this.UsuarioToEntidad(Usuario);
 		eUsuario = servPersistencia.registrarEntidad(eUsuario);
 		Usuario.setId(eUsuario.getId());
-		System.out.println(Usuario.getId()); //TODO: Quitar Luego
+		System.out.println("Usuario registrado con la id: " + Usuario.getId()); //TODO: Quitar Luego
 	}
 	
 	public boolean delete(Usuario Usuario) {
@@ -146,6 +151,7 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 	}
 	
 	public Usuario get(int id) { //2º 
+		//*-*-*--*-*-*- Pool para recuperar esos Objetos con solo propiedad Unidireccionales que les falta la bidriec
 		System.out.println("entre en el get con el id: " + id);
 		// Si la entidad está en el pool la devuelve directamente
 		if (PoolDAO.getUnicaInstancia().contiene(id)) {
@@ -154,25 +160,17 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 		}
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		//------------------------------
+		//-*-*-*-*-*-*-*-*-*-*--*-*-*-*-*-*--
 		
 		
 		Entidad eUsuario = servPersistencia.recuperarEntidad(id);
 		Usuario usuarioAux = entidadToUsuario(eUsuario);
-		
-		
-		
-		// IMPORTANTE:añadir el cliente al pool antes de llamar a otros
+		//*-*-*-*-*-*-*-*-*-*-*--*-*- IMPORTANTE:añadir el Usuario al pool antes de llamar a otros
 				// adaptadores
 		System.out.println("En teoria lo he guardado de la pool");
 				PoolDAO.getUnicaInstancia().addObjeto(id, usuarioAux);
+				
+				
 		return usuarioAux;
 		
 		
