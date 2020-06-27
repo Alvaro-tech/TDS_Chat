@@ -20,11 +20,14 @@ public class ContactoRenderer  extends JLabel implements ListCellRenderer<Contac
             boolean isSelected, boolean cellHasFocus) {
 		
 		String nombre = usuario.getNombre();
+		String saludo = usuario.getUsuario().getSaludo();
+		
+		String aux = nombre + " ---> " + saludo; 
 		ImageIcon imageIcon = new ImageIcon(usuario.getUsuario().getFotoPerfil());
-		ImageIcon imageIcon2 = new ImageIcon(imageIcon.getImage().getScaledInstance(150, 150, Image.SCALE_DEFAULT));
+		ImageIcon imageIcon2 = new ImageIcon(imageIcon.getImage().getScaledInstance(90, 90, Image.SCALE_DEFAULT));
 		
 		setIcon(imageIcon2);
-		setText(nombre);
+		setText(aux);
 		
 		if (isSelected) {
             setBackground(list.getSelectionBackground());

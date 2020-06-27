@@ -8,11 +8,15 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controlador.ControladorUsuarios;
+import modelo.Chat;
+import modelo.ChatIndividual;
 import modelo.Usuario;
 
 import javax.swing.JToolBar;
 import java.awt.GridBagLayout;
 import javax.swing.JButton;
+import javax.swing.JDialog;
+
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JMenu;
@@ -36,24 +40,9 @@ public class VentanaPrincipal extends JFrame {
 	JPanel panelDer = new JPanel();
 	Usuario usuario; //mal
 	ControladorUsuarios controler = ControladorUsuarios.getUnicaInstancia(); //okei good
-
+	
+	private Chat chatActual;
 	private JPanel panelVentanaPrincipal;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VentanaPrincipal frame = new VentanaPrincipal();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
@@ -205,6 +194,15 @@ public class VentanaPrincipal extends JFrame {
 		mnOpciones2.add(mntmEliminarUsuario);
 		
 		JButton btnLupa = new JButton("Lupa");
+		ChatIndividual chatAux = new ChatIndividual("22", "nombre", new Usuario("nombe", "email", "fecha", "movil", "clave"));
+		chatActual = (Chat) chatAux;
+		btnLupa.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				VentanaLupa venLupa = new VentanaLupa(chatActual); //TODO: Va a necesitar enlazarse con el chat abierto de alguna manera
+				venLupa.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+				venLupa.setVisible(true);
+			}
+		});
 		menuBar.add(btnLupa);
 		
 		//JPanel panelDividido = new JPanel();
