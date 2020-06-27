@@ -27,6 +27,11 @@ public class Mensaje {
 		this.fecha = LocalDate.parse(fecha); //cuando creas el mensaje se le pone la fecha actual.
 	}
 	
+	public Mensaje(String texto, String fecha) {
+		this.texto = texto;
+		this.fecha =  LocalDate.parse(fecha);
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -48,6 +53,14 @@ public class Mensaje {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public void setEmisor(Usuario emisor) {
+		this.usuarioAct = emisor;	
+	}
+
+	public void setReceptor(ChatIndividual receptor) {
+		this.contacto = receptor;
 	}
 
 

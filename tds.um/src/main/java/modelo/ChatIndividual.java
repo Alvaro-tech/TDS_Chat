@@ -25,8 +25,13 @@ public class ChatIndividual extends Chat{
 	}
 	
 	
-	//--------Métodos get/set--------------
+	public ChatIndividual(String nom, String mo) {
+		super(nom);
+		this.movil = mo;
+	}
 	
+	
+	//--------Métodos get/set--------------
 	public String getNombreContacto() {
 		return contacto.getNombre();
 	}
@@ -42,6 +47,10 @@ public class ChatIndividual extends Chat{
 
 	public String getMovil() {
 		return this.movil;
+	}
+
+	public void setContacto(Usuario contacto) {
+		this.contacto = contacto;
 	}
 
 }

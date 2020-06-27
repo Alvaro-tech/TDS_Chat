@@ -50,4 +50,8 @@ public abstract class Chat {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+    
+	public void setHistorial(LinkedList<Mensaje> historial) {
+		this.historial.addAll(historial);
+	}
 }

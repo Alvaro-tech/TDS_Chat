@@ -41,22 +41,45 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 	
 	
 	private ChatIndividual entidadToChatInd(Entidad eChat) {
-		
+		//FIJOS
 		String nombre = servPersistencia.recuperarPropiedadEntidad(eChat,"nombre");
 		String movil = servPersistencia.recuperarPropiedadEntidad(eChat, "movil");
+		
+		ChatIndividual chatIndividual = new ChatIndividual(nombre, movil);
+		chatIndividual.setId(eChat.getId());
+		PoolDAO.getUnicaInstancia().addObjeto(chatIndividual.getId(), chatIndividual);
+		
+		//BIDIRECCIONALES
 		String contacto = servPersistencia.recuperarPropiedadEntidad(eChat, "contacto");
 		String historial = servPersistencia.recuperarPropiedadEntidad(eChat, "historial");
 		
-		LinkedList<Mensaje> histoAux = getAllMensajesById(historial);
-		Usuario contAux = AdaptadorUsuarioDAO.getUnicaInstancia().get(Integer.valueOf(contacto));
-		
-		//ChatIndividual(String movil, String nombre, LinkedList<Mensaje> historial, Usuario contacto) 
-		ChatIndividual chatInd = new ChatIndividual(movil, nombre, histoAux, contAux);
-		chatInd.setId(eChat.getId());
-		return chatInd;
+		chatIndividual.setContacto(obtenerContactoById(contacto));
+		chatIndividual.setHistorial(obtenerHistorialDesdeId(historial));
+		return chatIndividual;
 		
 	}
 	
+//#############################################################
+	
+	//funcion duplicada en adaptadorDaoChatGrupo
+	private LinkedList<Mensaje> obtenerHistorialDesdeId(String hist) {
+		LinkedList<Mensaje> historial = new LinkedList<Mensaje>();
+
+		StringTokenizer tok = new StringTokenizer(hist, " ");
+		while (tok.hasMoreTokens()) {
+			String id = (String) tok.nextElement();
+			Mensaje aux = AdaptadorMensajeDAO.getUnicaInstancia().get(Integer.valueOf(id));
+			historial.add(aux);
+		}
+		return historial;
+	}
+
+	private Usuario obtenerContactoById(String contacto) {
+		return AdaptadorUsuarioDAO.getUnicaInstancia().get(Integer.valueOf(contacto));
+	}
+	
+
+	//#############################################################
 
 	private Entidad chatToEntidadInd (ChatIndividual chat) {
 		Entidad eChat = new Entidad();
@@ -80,13 +103,23 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 
 	@Override
 	public void create(ChatIndividual chat) {
-		Entidad eChat;
+		Entidad  eChatInidividual;
 		
-		//TODO: POOL
+		// *-*-*-*-*-*-*-*-Control de si existe el objeto ya, para evitar volver a
+		// crearlo y haya repetidos
+		boolean existe = true;
+		// Si la entidad está registrada no la registra de nuevo
+		try {
+			eChatInidividual = servPersistencia.recuperarEntidad(chat.getId());
+		} catch (Exception e) {
+			existe = false;
+		}
+		if (existe)
+			return;
 		
-		eChat = this.chatToEntidadInd(chat);
-		eChat = this.servPersistencia.registrarEntidad(eChat);
-		chat.setId(eChat.getId());
+		eChatInidividual = this.chatToEntidadInd(chat);
+		servPersistencia.registrarEntidad(eChatInidividual);
+		chat.setId(eChatInidividual.getId());
 		
 	}
 
@@ -103,13 +136,18 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 		
 		servPersistencia.eliminarPropiedadEntidad(eChat, "historial");
 		servPersistencia.anadirPropiedadEntidad(eChat, "historial", obtenerIdMensajes(chat.getHistorial()));
-		
 	}
 
 	@Override
-	public ChatIndividual get(int idChat) {
-		Entidad eChat = servPersistencia.recuperarEntidad(idChat);
-		return entidadToChatInd(eChat);
+	public ChatIndividual get(int id) {
+		if (PoolDAO.getUnicaInstancia().contiene(id)) {
+			return (ChatIndividual) PoolDAO.getUnicaInstancia().getObjeto(id);
+		}
+		
+		Entidad eChat = servPersistencia.recuperarEntidad(id);
+		ChatIndividual chatIndividual = entidadToChatInd(eChat);
+		PoolDAO.getUnicaInstancia().addObjeto(id, chatIndividual);
+		return chatIndividual;
 	}
 
 	//TODO: Necesaria esta función???????

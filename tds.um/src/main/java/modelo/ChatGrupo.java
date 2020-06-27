@@ -21,6 +21,10 @@ public class ChatGrupo extends Chat{
 		}
 	}
 	
+	public ChatGrupo(String nombreg) {
+		super(nombreg);
+		miembros = new LinkedList<ChatIndividual>();
+	}
 	
 	public boolean addAdmin(Usuario u) {
 		return administradores.add(u);
@@ -35,6 +39,14 @@ public class ChatGrupo extends Chat{
 
 	public HashSet<Usuario> getAdministradores() {
 		return this.administradores;
+	}
+
+	public void setMiembros(LinkedList<ChatIndividual> miembros) {
+		this.miembros.addAll(miembros);
+	}
+
+	public void setAdministradores(HashSet<Usuario> admins) {
+		this.administradores.addAll(admins);
 	}
 	
 	

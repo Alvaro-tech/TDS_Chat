@@ -63,16 +63,6 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 				
 		System.out.println("En entidadtoUsuario: " + contactos);
 		Usuario.setContactos(obtenerContactosMapDesdeId(contactos));
-		//TODO: Cuando exista
-		
-		
-		
-		/*
-		for(ChatIndividual iterador : obtenerChatIndividualDesdeId(chatInd)) {
-			Usuario.agregarChatIndividual(iterador);
-		}
-		
-		*/
 		return Usuario;
 	}
 	
@@ -124,7 +114,7 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 		//Si no habrá que registrar al usuario en el servidor de persistencia
 		System.out.println("*-*-*-*--Estoy en el create");
 		eUsuario = this.UsuarioToEntidad(Usuario);
-		eUsuario = servPersistencia.registrarEntidad(eUsuario);
+		servPersistencia.registrarEntidad(eUsuario);
 		Usuario.setId(eUsuario.getId());
 		System.out.println("Usuario registrado con la id: " + Usuario.getId()); //TODO: Quitar Luego
 	}
@@ -172,10 +162,6 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 				
 				
 		return usuarioAux;
-		
-		
-		
-		
 	}
 	
 	public List<Usuario> getAll() { //1º -> Llamado por el catálogo
