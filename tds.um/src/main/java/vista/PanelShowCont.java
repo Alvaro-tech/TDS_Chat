@@ -10,17 +10,28 @@ import java.awt.Color;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
+
 import java.awt.Scrollbar;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class PanelShowCont extends JPanel {
 
 	private  Usuario usuario;
+	private ContactoGUI contactoSelect = null;
+	private JFrame ventana;
+	
 	/**
 	 * Create the panel.
 	 */
-	public PanelShowCont(Usuario usuariop) {
+	public PanelShowCont(Usuario usuariop, JFrame frame) {
+		ventana = frame;
 		this.usuario = usuariop;
 		setLayout(new BorderLayout(0, 0));
 		
@@ -40,20 +51,36 @@ public class PanelShowCont extends JPanel {
 		list.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				ContactoGUI selected = list.getSelectedValue();
-				System.out.println("Selected: " + selected.getNombre());
+				contactoSelect = list.getSelectedValue();
+				System.out.println("Selected: " + contactoSelect.getNombre());
 			}
 		});
 		list.setBackground(new Color(135, 206, 235));
 		list.setCellRenderer(new ContactoRenderer());
 		
 		
-		//contentPanel.add(list);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setViewportView(list);
 		list.setLayoutOrientation(JList.VERTICAL);
 		 contentPanel.add(scrollPane);
+		 
+		 JButton btnIniciarConver = new JButton("Iniciar Conversación");
+		 btnIniciarConver.addActionListener(new ActionListener() {
+		 	public void actionPerformed(ActionEvent arg0) {
+		 		if (contactoSelect != null) {
+		 			contactoSelect = list.getSelectedValue();
+		 			
+		 			
+		 		} else {
+		 			JOptionPane.showMessageDialog(ventana,
+							"No se ha  elegido ningun contacto para iniciar una conversación",
+							"Iniciar una conversación",
+							JOptionPane.ERROR_MESSAGE);
+		 		}
+		 	}
+		 });
+		 contentPanel.add(btnIniciarConver, BorderLayout.SOUTH);
 		
 		
 		

@@ -1,7 +1,7 @@
 package ProyectoTDS.tds.um;
 
 import controlador.ControladorUsuarios;
-// \Users\alvar\Desktop\Universidad\Persistencia\H2
+// cd  \Users\alvar\Desktop\Universidad\Persistencia\H2
 // java -jar ServidorPersistencia.jar
 //ANA-->   C:\Users\pc\Downloads\PersistenciaH2\H2>java -jar ServidorPersistencia.jar
 import junit.framework.Test;

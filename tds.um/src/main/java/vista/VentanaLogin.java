@@ -111,7 +111,7 @@ public class VentanaLogin {
 				if (ControlUser) {
 				System.out.println(ControladorUsuarios.getUnicaInstancia().getusuarioActual().getMovil());
 			//	VentanaPrincipal framePrincipal = new VentanaPrincipal(ControladorUsuarios.getUnicaInstancia().getusuarioActual()); //TODO: Preguntar esto
-				VentanaPrincipal framePrincipal = new VentanaPrincipal(); //TODO: Preguntar esto
+				VentanaPrincipal framePrincipal = new VentanaPrincipal(frame); //TODO: Preguntar esto
 				framePrincipal.setVisible(true);
 				frame.dispose();
 				} else {

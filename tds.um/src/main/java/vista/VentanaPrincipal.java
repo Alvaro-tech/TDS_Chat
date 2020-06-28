@@ -31,6 +31,7 @@ import java.awt.Color;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
 import java.awt.event.ActionEvent;
 
 
@@ -38,24 +39,24 @@ public class VentanaPrincipal extends JFrame {
 	JPanel panellzq = new JPanel();
 	JPanel panelDividido = new JPanel();
 	JPanel panelDer = new JPanel();
-	Usuario usuario; //mal
+	Usuario usuario; 
 	ControladorUsuarios controler = ControladorUsuarios.getUnicaInstancia(); //okei good
 	
 	private Chat chatActual;
 	private JPanel panelVentanaPrincipal;
+	private JFrame ventana;
 
 	/**
 	 * Create the frame.
 	 */
-	public VentanaPrincipal() {
-		
+	public VentanaPrincipal(JFrame frame) {
+		ventana = frame;
 		
 		usuario = ControladorUsuarios.getUnicaInstancia().getusuarioActual(); //TODO: Preguntar esto
 		//La vista solo debe hablar con el controlador, esto es bastante una herejía bebe
 		
 		
 		
-		System.out.println(usuario.getNombre());
 		System.out.println(ControladorUsuarios.getUnicaInstancia().getNombreUsuarioActual()); //Esto sería lo correct
 		
 		
@@ -69,6 +70,8 @@ public class VentanaPrincipal extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 		panelVentanaPrincipal.add(menuBar, BorderLayout.NORTH);
 		
+		
+		// ------- Menu foto ------------
 		JButton btnFoto = new JButton("");
 		btnFoto.setIcon(new ImageIcon("./iconos/35x35.png"));
 		btnFoto.addActionListener(new ActionListener() {
@@ -92,6 +95,8 @@ public class VentanaPrincipal extends JFrame {
 		});
 		menuBar.add(btnFoto);
 		
+		
+		//-------Menu estado---------
 		JButton btnEstado = new JButton("Estado");
 		menuBar.add(btnEstado);
 		
@@ -122,12 +127,13 @@ public class VentanaPrincipal extends JFrame {
 		JMenuItem mntmModificarGrupo = new JMenuItem("Modificar Grupo");
 		mnMenu.add(mntmModificarGrupo);
 		
+		// ---------- Menu MOSTRAR CONTACTOS --------
 		JMenuItem mntmMostrarContactos = new JMenuItem("Mostrar Contactos");
 		mntmMostrarContactos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				ControladorUsuarios.getUnicaInstancia().mostrarUsuario(); //TODO: Esto es debbuging, habrá que borrarlo al final
 				
-				PanelShowCont nuevo = new PanelShowCont(usuario);
+				PanelShowCont nuevo = new PanelShowCont(usuario, frame);
 				panelDividido.remove(panellzq);
 				panellzq = nuevo; 
 				
@@ -232,6 +238,21 @@ public class VentanaPrincipal extends JFrame {
 		panellzq.setBackground(new Color(135, 206, 250));
 		panelDividido.add(panellzq, gbc_panelzq);
 		
+	}
+	
+	
+	// ------ FUNCIONALIDAD AUXILIAR --------
+	
+	//Función utilizada en la inicialización del panel, para cargar los chats del usuario.
+	private void cargarChatsRecientes() {
+		LinkedList<Chat> listAux = controler.getChatsRecientes();
+		
+	}
+	
+	//Función llamada desde el Panel ShowCont, para iniciar una nueva conversación.
+	protected void addChatsRecientes(Chat newChat) {
+		
+		controler.addChatToUser(newChat);
 	}
 
 }

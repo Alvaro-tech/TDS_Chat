@@ -1,6 +1,10 @@
 package controlador;
 
+
+import java.util.LinkedList;
+
 import modelo.CatalogoUsuarios;
+import modelo.Chat;
 import modelo.Usuario;
 import persistencia.AdaptadorUsuarioDAO;
 import persistencia.DAOException;
@@ -106,4 +110,18 @@ public class ControladorUsuarios {
 			System.out.println("# -> Nombre: " + u + " Movil " + usuarioActual.getContactos().get(u).getMovil());
 		}
 	}
+
+	//Te llegan grupos o chats individuales, la cosa es saber que es con el getClass,getSimpleNam y guardarlo en todas partes segun sea needed
+	public void addChatToUser(Chat newChat) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	//tiene que devolver una lista de chats, cuyos dinamicos sean ek correspondiente, con los mas recientes.
+	public LinkedList<Chat> getChatsRecientes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 }
