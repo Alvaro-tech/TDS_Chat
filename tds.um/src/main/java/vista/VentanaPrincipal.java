@@ -200,7 +200,7 @@ public class VentanaPrincipal extends JFrame {
 		mnOpciones2.add(mntmEliminarUsuario);
 		
 		JButton btnLupa = new JButton("Lupa");
-		ChatIndividual chatAux = new ChatIndividual("22", "nombre", new Usuario("nombe", "email", "fecha", "movil", "clave"));
+		ChatIndividual chatAux = new ChatIndividual("22", "nombre", new Usuario("nombe", "email", "fecha", "movil", "clave")); //TODO: quitar luego
 		chatActual = (Chat) chatAux;
 		btnLupa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -221,6 +221,17 @@ public class VentanaPrincipal extends JFrame {
 		panelDividido.setLayout(gbl_panelDividido);
 		
 		//JPanel panelDer = new JPanel();
+		Usuario user1 = new Usuario("nombre", "email", "fecha", "movil", "clave");
+		Chat chatAux1= new ChatIndividual("nom", "mo", user1);
+		
+		LinkedList<Chat> listAuxChat = new LinkedList<Chat>();
+		listAuxChat.add(chatAux1);
+		//Modificar luego 
+		PanelChatsRecientes nuevo = new PanelChatsRecientes(listAuxChat);
+		panelDividido.remove(panelDer);
+		panelDer = nuevo; 
+		
+		
 		GridBagConstraints gbc_panelDer = new GridBagConstraints();
 		gbc_panelDer.insets = new Insets(0, 0, 5, 5);
 		gbc_panelDer.fill = GridBagConstraints.BOTH;
@@ -228,6 +239,9 @@ public class VentanaPrincipal extends JFrame {
 		gbc_panelDer.gridy = 0;
 		panelDer.setBackground(new Color(175, 238, 238));
 		panelDividido.add(panelDer, gbc_panelDer);
+		
+		panelDividido.revalidate(); 
+		panelDividido.repaint(); 
 		
 		//JPanel panellzq = new JPanel();
 		GridBagConstraints gbc_panelzq = new GridBagConstraints();

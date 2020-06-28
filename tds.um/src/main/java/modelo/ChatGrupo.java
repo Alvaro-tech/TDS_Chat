@@ -11,12 +11,13 @@ public class ChatGrupo extends Chat{
 	 */
 	
 	//Aqui el atributo nombre se entiende como el nombre del grupo
-	private LinkedList<ChatIndividual> miembros;
+	private LinkedList<ChatIndividual> miembros = new LinkedList<ChatIndividual>();
 	private HashSet<Usuario> administradores = new HashSet<Usuario>();
 	
-	public ChatGrupo(String nombreg, ChatIndividual ... mi) {
+	public ChatGrupo(String nombreg, ChatIndividual... mi) {
 		super(nombreg);
 		for (ChatIndividual m : mi) {
+			System.out.println("ejecucion de chatGrupo");
 			miembros.addFirst(m);
 		}
 	}

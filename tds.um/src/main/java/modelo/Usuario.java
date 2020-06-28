@@ -203,6 +203,8 @@ public class Usuario {
 		todos.addAll(chatsGroup);
 		todos.addAll(chatsInd);
 		
+		System.out.println("Llego hasta justo antes del comaparator");
+		
 		todos.stream()
 			.sorted((c1, c2) -> c1.getUltimoMensaje().getFecha().compareTo(c2.getUltimoMensaje().getFecha()))
 			.forEach(c -> System.out.println(c.toString()));
