@@ -1,10 +1,13 @@
 package modelo;
 
-//CHAT == CONTACTO
+import java.time.LocalDate;
 import java.util.LinkedList;
 
 public abstract class Chat {
 
+
+	//CHAT == CONTACTO
+	
     /*
     Chat es como un contacto: solo la info básica.
     Voy a escribir una propuesta de Chat pensando en este como contacto.
@@ -14,6 +17,7 @@ public abstract class Chat {
     private String nombre;
     private LinkedList<Mensaje> historial;
     private int id;
+    private LocalDate fechaUltimoMensaje;
 
     public Chat(String nombre) 
     {
@@ -37,6 +41,14 @@ public abstract class Chat {
 
     public int getId() {
         return id;
+    }
+    
+    public LocalDate getFechaUltimoMensaje() {
+        return fechaUltimoMensaje;
+    }
+    
+    public void setFechaUltimoMensaje(LocalDate f) {
+        this.fechaUltimoMensaje = f;
     }
 
     public void setId(int nId) {
