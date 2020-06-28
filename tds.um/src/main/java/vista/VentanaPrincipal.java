@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 
 import controlador.ControladorUsuarios;
 import modelo.Chat;
+import modelo.ChatGrupo;
 import modelo.ChatIndividual;
 import modelo.Usuario;
 
@@ -42,16 +43,16 @@ public class VentanaPrincipal extends JFrame {
 	Usuario usuario; 
 	ControladorUsuarios controler = ControladorUsuarios.getUnicaInstancia(); //okei good
 	
-	private Chat chatActual;
+	private static Chat chatActual = null;
 	private JPanel panelVentanaPrincipal;
 	private JFrame ventana;
+	
 
 	/**
 	 * Create the frame.
 	 */
 	public VentanaPrincipal(JFrame frame) {
 		ventana = frame;
-		
 		usuario = ControladorUsuarios.getUnicaInstancia().getusuarioActual(); //TODO: Preguntar esto
 		//La vista solo debe hablar con el controlador, esto es bastante una herejía bebe
 		
@@ -167,22 +168,18 @@ public class VentanaPrincipal extends JFrame {
 		JMenuItem mntmCerrarSesion = new JMenuItem("Cerrar Sesión");
 		mnMenu.add(mntmCerrarSesion);
 		
-		JButton btnCuenta = new JButton("Cuenta"); //TODO: Esto hay que quitarlo ahora
+		//------------------MENU CUENTA----------------------------
+		JButton btnCuenta = new JButton("Cuenta"); 
 		btnCuenta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Pruebas nuevo = new Pruebas();
-				panelDividido.remove(panellzq);
-				panellzq = nuevo; 
 				
-				GridBagConstraints gbc_panelzq = new GridBagConstraints();
-				gbc_panelzq.insets = new Insets(0, 0, 5, 0);
-				gbc_panelzq.fill = GridBagConstraints.BOTH;
-				gbc_panelzq.gridx = 1;
-				gbc_panelzq.gridy = 0;
-				panelDividido.add(nuevo, gbc_panelzq); 
+				if (chatActual.getClass().getSimpleName().equals("ChatIndividual")) {
+					ChatIndividual cAux = (ChatIndividual) chatActual;
+					Usuario uAux = cAux.getContacto();
+					VentanaCuentaC frame = new VentanaCuentaC(uAux); //TODO: CAMBIAR
+					frame.setVisible(true);
+				}
 				
-				panelDividido.revalidate(); 
-				panelDividido.repaint(); 
 			}
 		});
 		menuBar.add(btnCuenta);
@@ -201,12 +198,14 @@ public class VentanaPrincipal extends JFrame {
 		
 		JButton btnLupa = new JButton("Lupa");
 		ChatIndividual chatAux = new ChatIndividual("22", "nombre", new Usuario("nombe", "email", "fecha", "movil", "clave")); //TODO: quitar luego
-		chatActual = (Chat) chatAux;
 		btnLupa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				VentanaLupa venLupa = new VentanaLupa(chatActual); //TODO: Va a necesitar enlazarse con el chat abierto de alguna manera
-				venLupa.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-				venLupa.setVisible(true);
+				if (chatActual!=null) {
+					VentanaLupa venLupa = new VentanaLupa(chatActual); 
+					venLupa.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					venLupa.setVisible(true);	
+				}
+				;
 			}
 		});
 		menuBar.add(btnLupa);
@@ -220,14 +219,29 @@ public class VentanaPrincipal extends JFrame {
 		gbl_panelDividido.rowWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
 		panelDividido.setLayout(gbl_panelDividido);
 		
+		
+		
 		//JPanel panelDer = new JPanel();
+		
+		//TODO: quitar luego
 		Usuario user1 = new Usuario("nombre", "email", "fecha", "movil", "clave");
+		Usuario user2 = new Usuario("Santi", "email", "fecha", "movil", "clave");
+
 		Chat chatAux1= new ChatIndividual("nom", "mo", user1);
+		Chat chatAux2= new ChatIndividual("mo", "Quilla", user2);
+		Chat chatgrupo = new ChatGrupo("Chiquillo");
 		
 		LinkedList<Chat> listAuxChat = new LinkedList<Chat>();
 		listAuxChat.add(chatAux1);
+		listAuxChat.add(chatAux2);
+		listAuxChat.add(chatgrupo);
+		for (int i = 0; i<25; i++) {
+			listAuxChat.add(chatAux1);
+		}
 		//Modificar luego 
-		PanelChatsRecientes nuevo = new PanelChatsRecientes(listAuxChat);
+		
+		
+		PanelChatsRecientes nuevo = new PanelChatsRecientes(listAuxChat, this);
 		panelDividido.remove(panelDer);
 		panelDer = nuevo; 
 		
@@ -267,6 +281,11 @@ public class VentanaPrincipal extends JFrame {
 	protected void addChatsRecientes(Chat newChat) {
 		
 		controler.addChatToUser(newChat);
+	}
+	
+	
+	public void setChatActual(Chat c) {
+		chatActual = c;
 	}
 
 }

@@ -33,6 +33,7 @@ public abstract class Chat{
     public void addMensajeHistorial(Mensaje m) {
     	//Siempre se añadirá el último mensaje al principio de la lista.
     	historial.addFirst(m);
+    	this.ultimoMensaje = m;
     }
 
     public void setMensaje(LinkedList<Mensaje> mensaje) {
