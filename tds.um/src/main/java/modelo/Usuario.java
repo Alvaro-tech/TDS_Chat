@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
 
 public class Usuario {
 	String nombre;
@@ -193,6 +192,23 @@ public class Usuario {
 	public ChatIndividual empezarChatIndividual(String movilReceptor, String nombre, Usuario emisor) {
 		ChatIndividual chatI = new ChatIndividual(movilReceptor, nombre, emisor);
 		return chatI;
+	}
+
+	/**
+	 * Funcion que devuelve una lista de Chats del usuario de manera ordenada.
+	 * @return
+	 */
+	public LinkedList<Chat> getChatRecientes() {
+		LinkedList<Chat> todos = new LinkedList<Chat>();
+		todos.addAll(chatsGroup);
+		todos.addAll(chatsInd);
+		
+		todos.stream()
+			.sorted((c1, c2) -> c1.getUltimoMensaje().getFecha().compareTo(c2.getUltimoMensaje().getFecha()))
+			.forEach(c -> System.out.println(c.toString()));
+		
+		
+		return todos;
 	}
 	
 	

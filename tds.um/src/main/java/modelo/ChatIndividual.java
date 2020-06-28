@@ -19,7 +19,7 @@ public class ChatIndividual extends Chat{
 	//Constructor de un chatInd ya con mensajes previos
 	public ChatIndividual(String movil, String nombre, LinkedList<Mensaje> historial, Usuario contacto) 
 	{
-		super(nombre, historial);
+		super(nombre, historial, historial.getFirst()); //el ultimo mensaje sera siempre el primero en la lista
 		this.movil = movil;
 		this.contacto = contacto;
 	}

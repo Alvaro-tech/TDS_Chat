@@ -2,6 +2,7 @@ package ProyectoTDS.tds.um;
 
 import java.awt.Component;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 import javax.swing.DefaultListCellRenderer;
@@ -16,12 +17,18 @@ import javax.swing.ListModel;
 import javax.swing.plaf.basic.BasicIconFactory;
 import javax.swing.plaf.metal.MetalIconFactory;
 
+import controlador.ControladorUsuarios;
+import modelo.Chat;
+import modelo.ChatGrupo;
+import modelo.ChatIndividual;
+import modelo.Mensaje;
 import modelo.Usuario;
 
 
 public class Pruebas extends JFrame{
 	
 	public Pruebas() {
+		
 		
 	}
 	

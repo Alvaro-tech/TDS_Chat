@@ -27,6 +27,12 @@ public class Mensaje {
 		this.fecha = LocalDate.parse(fecha); //cuando creas el mensaje se le pone la fecha actual.
 	}
 	
+	public Mensaje(Usuario u, String texto) {
+		this.texto = texto;
+		this.usuarioAct = u;
+		this.fecha =  LocalDate.now();
+	}
+	
 	public Mensaje(String texto, String fecha) {
 		this.texto = texto;
 		this.fecha =  LocalDate.parse(fecha);

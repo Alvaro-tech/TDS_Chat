@@ -42,6 +42,11 @@ public class ControladorUsuarios {
 		return usuarioActual.getNombre();
 	}
 	
+	//BORRAR AFTER LAS PRUEBAS
+	public void setUsuarioActual(Usuario u) {
+		this.usuarioActual = u;
+	}
+	
 	public boolean esUsuarioRegistrado(String movil) {
 		return CatalogoUsuarios.getUnicaInstancia().getUsuario(movil)!=null;
 	}
@@ -118,9 +123,14 @@ public class ControladorUsuarios {
 	}
 	
 	//tiene que devolver una lista de chats, cuyos dinamicos sean ek correspondiente, con los mas recientes.
+	/**
+	 * Funcion que devuelve una lista ordenada de los chats del usuario, de más a menos
+	 * recientes.
+	 * @return
+	 */
 	public LinkedList<Chat> getChatsRecientes() {
-		// TODO Auto-generated method stub
-		return null;
+		LinkedList<Chat> chatsRecientes = this.usuarioActual.getChatRecientes();
+		return chatsRecientes;
 	}
 
 

@@ -17,7 +17,7 @@ public class ChatGrupo extends Chat{
 	public ChatGrupo(String nombreg, ChatIndividual ... mi) {
 		super(nombreg);
 		for (ChatIndividual m : mi) {
-			miembros.add(m);
+			miembros.addFirst(m);
 		}
 	}
 	
