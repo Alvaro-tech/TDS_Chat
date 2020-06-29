@@ -13,6 +13,7 @@ import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
 import beans.Entidad;
 import beans.Propiedad;
+import modelo.ChatGrupo;
 import modelo.ChatIndividual;
 import modelo.Usuario;
 
@@ -31,7 +32,7 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 	public static AdaptadorUsuarioDAO getUnicaInstancia() { // patron singleton
 		if (unicaInstancia == null)
 			return new AdaptadorUsuarioDAO();
-		else
+		else 
 			return unicaInstancia;
 	}
 	
@@ -63,9 +64,12 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 				
 		System.out.println("En entidadtoUsuario: " + contactos);
 		Usuario.setContactos(obtenerContactosMapDesdeId(contactos));
+		Usuario.setGrupos(obtenerGruposDesdeId(chatGroup));
+		Usuario.setChatIndividuales(obtenerChatIndividualesDesdeId(chatInd));
 		return Usuario;
 	}
-	
+
+
 	//Función para crear la entidad Usuario
 	private Entidad UsuarioToEntidad(Usuario Usuario) {
 		Entidad  eUsuario = new Entidad();
@@ -81,13 +85,14 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 						new Propiedad("saludo", Usuario.getSaludo()),
 						new Propiedad("contactos", obtenerIdContactosHash(Usuario.getContactos())),
 						new Propiedad("chatIndividual", obtenerIdChatIndividual(Usuario.getChatsInd())),
-						new Propiedad("fotoPerfil", Usuario.getFotoPerfil())
-						//new Propiedad("chatGrupo", obtenerIdContactosSet(Usuario.getChatsGroup()))
+						new Propiedad("fotoPerfil", Usuario.getFotoPerfil()),
+						new Propiedad("chatGrupo", obtenerIdContactosSet(Usuario.getChatsGroup()))
 						))
 				);
 		return eUsuario;
 	}
-	
+
+
 	public void create(Usuario Usuario) {
 		//-*-*-*-*-*--*-* Uso de la pool
 		
@@ -219,11 +224,6 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 			//Ejemplo 123:Alvaro 444:Luisa  -> ID:Nombre Personal
 		}
 		
-		
-		
-		
-		
-		
 
 	//A la hora de cargar los contactos guardados, hay que tener en cuenta que el mapa es Nombre:Usuario, que no es lo que teniamos guarado como propiedad
 		private HashMap<String, Usuario> obtenerContactosMapDesdeId(String ContactosG) {
@@ -241,6 +241,35 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 			return listaContactos;
 		}
 		
+		
+		
+		private HashSet<ChatIndividual> obtenerChatIndividualesDesdeId(String chatsInd) {
+			HashSet<ChatIndividual> chats = new HashSet<ChatIndividual>();
+
+			StringTokenizer tok = new StringTokenizer(chatsInd, " ");
+			while (tok.hasMoreTokens()) {
+				String id = (String) tok.nextElement();
+				ChatIndividual aux = AdaptadorChatIndividualDAO.getUnicaInstancia().get(Integer.valueOf(id));
+				chats.add(aux);
+			}
+
+			return chats;
+		}
+
+		private HashSet<ChatGrupo> obtenerGruposDesdeId(String chatsg) {
+			HashSet<ChatGrupo> grupos = new HashSet<ChatGrupo>();
+
+			StringTokenizer tok = new StringTokenizer(chatsg, " ");
+			while (tok.hasMoreTokens()) {
+				String id = (String) tok.nextElement();
+				ChatGrupo aux = AdaptadorChatGrupoDAO.getUnicaInstancia().get(Integer.valueOf(id));
+				grupos.add(aux);
+			}
+
+			return grupos;
+		}
+		
+		
 	//Funciones para trabajar con HashSet's
 	//TODO: Como no tener tantas funciones puto iguales
 
@@ -252,8 +281,17 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 			return aux.trim(); 
 		}
 		
+		
+		private String obtenerIdContactosSet(HashSet<ChatGrupo> chatsGroup) {
+			String aux = "";
+			for(ChatGrupo iterador : chatsGroup) {
+				aux +=  iterador.getId() + " ";
+			}
+			return aux.trim(); 
+		}
+		
 		//Esto pa que te sirve?? Beibi explain to me.
-		private Set<ChatIndividual> getAllChatIndividualDesdeId(String ContactosG) {
+		public Set<ChatIndividual> getAllChatIndividualDesdeId(String ContactosG) {
 			Set<ChatIndividual> listaContactos = new HashSet<ChatIndividual>();
 			StringTokenizer strTok = new StringTokenizer(ContactosG, " ");
 			while (strTok.hasMoreTokens()) {

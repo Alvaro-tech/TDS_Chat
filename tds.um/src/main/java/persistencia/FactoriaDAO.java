@@ -17,7 +17,7 @@ public abstract class FactoriaDAO {
 			} catch (Exception e) {	
 				throw new DAOException(e.getMessage());
 			} 
-		return unicaInstancia;
+		return unicaInstancia; 
 	}
 
 

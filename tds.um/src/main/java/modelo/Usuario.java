@@ -97,18 +97,6 @@ public class Usuario {
 		return saludo;
 	}
 	
-	public String setSaludo(String saludo) {
-		return this.saludo = saludo;
-	}
-	
-	public HashMap<String, Usuario> getContactos() {
-		return contactos;
-	}
-
-	public void setContactos(HashMap<String, Usuario> contactos) {
-		this.contactos = contactos;
-	}
-	
 	public HashSet<ChatIndividual> getChatsInd() {
 		return chatsInd;
 	}
@@ -121,12 +109,30 @@ public class Usuario {
 	public String getFotoPerfil() {
 		return fotoPerfil;
 	}
+	
+	public String setSaludo(String saludo) {
+		return this.saludo = saludo;
+	}
+	
+	public HashMap<String, Usuario> getContactos() {
+		return contactos;
+	}
+
+	public void setContactos(HashMap<String, Usuario> contactos) {
+		this.contactos = contactos;
+	} 
 
 	public void setFotoPerfil(String fotoPerfil) {
 		this.fotoPerfil = fotoPerfil;
 	}
 	
+	public void setGrupos(HashSet<ChatGrupo> grupos) {
+		this.chatsGroup = grupos;
+	}
 	
+	public void setChatIndividuales(HashSet<ChatIndividual> chats) {
+		this.chatsInd = chats;
+	}
 
 	//########### Otros Métodos ###############
 	public void agregarContacto(String NombrePersonal, Usuario contacto) {
