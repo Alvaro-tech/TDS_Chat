@@ -5,6 +5,7 @@ import java.util.LinkedList;
 
 import modelo.CatalogoUsuarios;
 import modelo.Chat;
+import modelo.Descuento;
 import modelo.Usuario;
 import persistencia.AdaptadorUsuarioDAO;
 import persistencia.DAOException;
@@ -15,6 +16,8 @@ public class ControladorUsuarios {
 	private Usuario usuarioActual;
 	private static ControladorUsuarios unicaInstancia;
 	private FactoriaDAO factoria;
+	private static final double precioPremium = 10.50 ;
+	private Descuento d;
 	
 	private ControladorUsuarios() {
 		usuarioActual = null;
@@ -28,6 +31,10 @@ public class ControladorUsuarios {
 	public static ControladorUsuarios getUnicaInstancia() {
 		if (unicaInstancia == null) unicaInstancia = new ControladorUsuarios();
 		return unicaInstancia;
+	}
+	
+	public void setDescuento(Descuento des) {
+		 this.d = des;
 	}
 	
 	public Usuario getusuarioActual() {
@@ -131,6 +138,13 @@ public class ControladorUsuarios {
 	public LinkedList<Chat> getChatsRecientes() {
 		LinkedList<Chat> chatsRecientes = this.usuarioActual.getChatRecientes();
 		return chatsRecientes;
+	}
+	
+	public double getPrecioPremiumConDescuento(String tipo) {
+		//calcular con la clase descuento según lo que necesitemos.
+		Descuento des = Descuento.seleccionarDescuento(tipo);
+		this.setDescuento(des);
+		return d.calcularDescuento(precioPremium);
 	}
 
 

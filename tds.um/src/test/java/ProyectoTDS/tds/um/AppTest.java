@@ -101,10 +101,25 @@ public class AppTest
 		Fran.agregarChatGrupo(grupo);
 		
 		ControladorUsuarios.getUnicaInstancia().setUsuarioActual(Ana);
-		
+		System.out.println("USUARIO = " +Ana.getNombre());
 		LinkedList<Chat> lista = ControladorUsuarios.getUnicaInstancia().getChatsRecientes();
 		for (Chat chat : lista) {
 			System.out.println(chat.toString());
 		}
+		
+		ControladorUsuarios.getUnicaInstancia().setUsuarioActual(Alvaro);
+		System.out.println("USUARIO = " +Alvaro.getNombre());
+		LinkedList<Chat> lista1 = ControladorUsuarios.getUnicaInstancia().getChatsRecientes();
+		for (Chat chat : lista1) {
+			System.out.println(chat.toString());
+		}
+		
+		ControladorUsuarios.getUnicaInstancia().setUsuarioActual(Fran);
+		System.out.println("USUARIO = " +Fran.getNombre());
+		LinkedList<Chat> lista2 = ControladorUsuarios.getUnicaInstancia().getChatsRecientes();
+		for (Chat chat : lista2) {
+			System.out.println(chat.toString());
+		}
+		
     }
 }

@@ -1,11 +1,11 @@
 package modelo;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.stream.Collectors;
 
 public class Usuario {
 	String nombre;
@@ -201,17 +201,18 @@ public class Usuario {
 	 * @return
 	 */
 	public LinkedList<Chat> getChatRecientes() {
+		//TODO: HACER.
 		LinkedList<Chat> todos = new LinkedList<Chat>();
 		
 		todos.addAll(chatsGroup);
 		todos.addAll(chatsInd);
 		
+		
 		todos.stream()
-			.map(c -> c.getUltimoMensaje())
-			.sorted(Comparator.comparing(Mensaje::getFecha))
-			.forEach(m -> System.out.println(m.toString()));
+			.sorted((c1,c2) -> c1.compare(c1, c2));
 		
 		return todos;
+
 	}
 	
 	
