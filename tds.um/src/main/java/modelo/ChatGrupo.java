@@ -26,7 +26,7 @@ public class ChatGrupo extends Chat{
 		super(nombreg);
 		miembros = new LinkedList<ChatIndividual>();
 	}
-	
+	 
 	public boolean addAdmin(Usuario u) {
 		return administradores.add(u);
 	}
@@ -48,6 +48,20 @@ public class ChatGrupo extends Chat{
 
 	public void setAdministradores(HashSet<Usuario> admins) {
 		this.administradores.addAll(admins);
+	}
+	
+	/**
+	 * Busca los mensajes que ha enviado un miembro del grupo.
+	 * @param miems
+	 * @return mensajes asociados a un miembro del grupo
+	 */
+	public LinkedList<Mensaje> BuscarMensajePorContactos(ChatIndividual m){
+		LinkedList<Mensaje> filtrados = new LinkedList<Mensaje>();
+		 //No funca ;-;
+		getHistorial().stream() 
+						.filter(men -> men.getEmisor().getMovil().equals(m.getMovil()))
+						.forEach(men -> filtrados.add(men));
+		return filtrados;
 	}
 	
 	

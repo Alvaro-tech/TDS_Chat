@@ -22,7 +22,7 @@ public class Usuario {
 	//TODO:Arreglar esto
 	HashMap<String, Usuario> contactos = new HashMap<String, Usuario>(); //Clave nombre Personal , Valor Usuario 
 	Integer id;
-	String saludo;
+	String saludo;  
 	
 	//constructores
 	public Usuario(String nombre, String email, String fecha, String movil, String clave) { //Constructor crear uno nuevo

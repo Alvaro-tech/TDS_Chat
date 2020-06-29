@@ -1,6 +1,7 @@
 package controlador;
 
 
+import java.time.LocalDate;
 import java.util.LinkedList;
 
 import modelo.CatalogoUsuarios;
@@ -8,6 +9,7 @@ import modelo.Chat;
 import modelo.ChatGrupo;
 import modelo.ChatIndividual;
 import modelo.Descuento;
+import modelo.Mensaje;
 import modelo.Usuario;
 import persistencia.AdaptadorUsuarioDAO;
 import persistencia.DAOException;
@@ -34,7 +36,7 @@ public class ControladorUsuarios {
 		if (unicaInstancia == null) unicaInstancia = new ControladorUsuarios();
 		return unicaInstancia;
 	}
-	
+	 
 	public void setDescuento(Descuento des) {
 		 this.d = des;
 	}
@@ -72,7 +74,6 @@ public class ControladorUsuarios {
 			if (esUsuarioRegistrado(movil)) return false;
 			//Usuario(String nombre, String email, String fecha, String movil, String clave)
 			Usuario Usuario = new Usuario(nombre,email,fecha,movil, clave); //TODO: Arreglar esto para que se ponga el estado por defecto y no se quede en blanco
-			
 			AdaptadorUsuarioDAO UsuarioDAO = (AdaptadorUsuarioDAO) factoria.getUsuarioDAO(); /*Adaptador DAO para almacenar el nuevo Usuario en la BD*/
 			UsuarioDAO.create(Usuario);
 			
@@ -140,10 +141,34 @@ public class ControladorUsuarios {
 		
 	}
 	
+	public LinkedList<Mensaje> BuscarPorFiltro(Chat chat, String texto, LocalDate fecha, ChatIndividual u){
+		LinkedList<Mensaje> mensajes = new LinkedList<Mensaje>();
+		
+		if(u == null) {
+			//debe ser una busqueda de fecha o texto
+			if(fecha == null) {
+				mensajes = chat.BuscarPorTextoCoincidente(texto);
+			}else {
+				mensajes = chat.BuscarPorFecha(fecha);
+			}
+		}else { //solo le pasamos busqueda por contacto en chat de grupos
+			ChatGrupo c = (ChatGrupo) chat;
+			mensajes = c.BuscarMensajePorContactos(u);
+		}
+		
+		if(mensajes == null) {
+			System.out.println("No se han encontrado coincidencias");
+			return null;
+		}
+		return mensajes;
+	}
+	
+	
+	
 	//tiene que devolver una lista de chats, cuyos dinamicos sean ek correspondiente, con los mas recientes.
 	/**
 	 * Funcion que devuelve una lista ordenada de los chats del usuario, de más a menos
-	 * recientes.
+	 * recientes.   
 	 * @return
 	 */
 	public LinkedList<Chat> getChatsRecientes() {

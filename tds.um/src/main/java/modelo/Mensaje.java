@@ -2,9 +2,7 @@ package modelo;
 
 import java.time.LocalDate;
 
-//no... darle una vuelta
 public class Mensaje {
-	//debería tener un emisor y receptor asociados.
 	private Usuario usuarioAct; //emisor
 	private ChatIndividual contacto; //receptor
 	
@@ -22,7 +20,7 @@ public class Mensaje {
 	
 	public Mensaje(Usuario u, ChatIndividual c, String texto, String fecha) { 
 		this.usuarioAct = u;
-		this.contacto = c;
+		this.contacto = c; 
 		this.texto = texto;
 		this.fecha = LocalDate.parse(fecha); //cuando creas el mensaje se le pone la fecha actual.
 	}

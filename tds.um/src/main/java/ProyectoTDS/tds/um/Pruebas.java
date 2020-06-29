@@ -49,7 +49,7 @@ public class Pruebas {
 			//ind1.toString()
 			
 									//emisor, receptor, texto, fecha
-			LocalDate f1 = LocalDate.of(2020, 06, 25);
+			LocalDate f1 = LocalDate.of(2020, 06, 25); 
 			LocalDate f2 = LocalDate.of(2020, 06, 26);
 			LocalDate f3 = LocalDate.of(2020, 06, 27);
 			

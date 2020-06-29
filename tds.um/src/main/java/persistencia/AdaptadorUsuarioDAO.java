@@ -1,4 +1,4 @@
-package persistencia;
+ package persistencia;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,13 +60,13 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 		
 		//*-*-*-*-*--*-*-*-*-* Tratamiento de las propiedad bi-direccionales
 		String contactos = servPersistencia.recuperarPropiedadEntidad(eUsuario, "contactos");
-		String chatInd = servPersistencia.recuperarPropiedadEntidad(eUsuario, "chatIndividual");
-		String chatGroup = servPersistencia.recuperarPropiedadEntidad(eUsuario, "chatGrupo");
+		//String chatInd = servPersistencia.recuperarPropiedadEntidad(eUsuario, "chatIndividual");
+		//String chatGroup = servPersistencia.recuperarPropiedadEntidad(eUsuario, "chatGrupo");
 				
 		System.out.println("En entidadtoUsuario: " + contactos);
 		Usuario.setContactos(obtenerContactosMapDesdeId(contactos));
-		Usuario.setGrupos(obtenerGruposDesdeId(chatGroup));
-		Usuario.setChatIndividuales(obtenerChatIndividualesDesdeId(chatInd));
+		//Usuario.setGrupos(obtenerGruposDesdeId(chatGroup));
+		//Usuario.setChatIndividuales(obtenerChatIndividualesDesdeId(chatInd));
 		return Usuario;
 	}
 
@@ -85,9 +85,9 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 						new Propiedad("clave", Usuario.getClave()),
 						new Propiedad("saludo", Usuario.getSaludo()),
 						new Propiedad("contactos", obtenerIdContactosHash(Usuario.getContactos())),
-						new Propiedad("chatIndividual", obtenerIdChatIndividual(Usuario.getChatsInd())),
-						new Propiedad("fotoPerfil", Usuario.getFotoPerfil()),
-						new Propiedad("chatGrupo", obtenerIdContactosSet(Usuario.getChatsGroup()))
+						//new Propiedad("chatIndividual", obtenerIdChatIndividual(Usuario.getChatsInd())),
+						//new Propiedad("chatGrupo", obtenerIdContactosSet(Usuario.getChatsGroup())),
+						new Propiedad("fotoPerfil", Usuario.getFotoPerfil())
 						))
 				);
 		return eUsuario;

@@ -101,7 +101,6 @@ public class AppTest
 		Fran.agregarChatGrupo(grupo);
 		
 		//Borre la funcion serUsuario actual
-		
 		/*
 		ControladorUsuarios.getUnicaInstancia().setUsuarioActual(Ana);
 		System.out.println("USUARIO = " +Ana.getNombre());
@@ -124,5 +123,23 @@ public class AppTest
 			System.out.println(chat.toString());
 		}*/
 		
+		LinkedList<Mensaje> mensajesHoli = ControladorUsuarios.getUnicaInstancia().BuscarPorFiltro(ind1, "", f1, null);
+		if (mensajesHoli.size() >0) {
+			mensajesHoli.stream()
+						.forEach(m ->System.out.println(m.toString()));
+		}else System.out.println("no hay coincidencias");
+		
+		LinkedList<Mensaje> mensajesHoli1 = ControladorUsuarios.getUnicaInstancia().BuscarPorFiltro(ind3, "holi", null, null);
+		if (mensajesHoli1.size() >0) {
+			mensajesHoli1.stream() 
+						.forEach(m ->System.out.println(m.toString()));
+		} else System.out.println("no hay coincidencias");
+		
+		LinkedList<Mensaje> mensajesHoli2 = ControladorUsuarios.getUnicaInstancia().BuscarPorFiltro(grupo, "holi", null, ind3);
+		if (mensajesHoli2.size() >0) {
+			mensajesHoli2.stream()
+						.forEach(m ->System.out.println(m.toString()));
+		} else System.out.println("no hay coincidencias");
+		
     }
-}
+} 
