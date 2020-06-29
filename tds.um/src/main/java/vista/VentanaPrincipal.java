@@ -47,12 +47,17 @@ public class VentanaPrincipal extends JFrame {
 	private JPanel panelVentanaPrincipal;
 	private JFrame ventana;
 	
+	private PanelChatsRecientes pChatRec;
+	private PanelShowCont panelShowCont;
+	private VentanaPrincipal venPrinAc;
+	
 
 	/**
 	 * Create the frame.
 	 */
 	public VentanaPrincipal(JFrame frame) {
 		ventana = frame;
+		venPrinAc = this;
 		usuario = ControladorUsuarios.getUnicaInstancia().getusuarioActual(); //TODO: Preguntar esto
 		//La vista solo debe hablar con el controlador, esto es bastante una herejía bebe
 		
@@ -134,16 +139,16 @@ public class VentanaPrincipal extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				ControladorUsuarios.getUnicaInstancia().mostrarUsuario(); //TODO: Esto es debbuging, habrá que borrarlo al final
 				
-				PanelShowCont nuevo = new PanelShowCont(usuario, frame);
+				panelShowCont = new PanelShowCont(usuario, frame, venPrinAc);
 				panelDividido.remove(panellzq);
-				panellzq = nuevo; 
+				panellzq = panelShowCont; 
 				
 				GridBagConstraints gbc_panelzq = new GridBagConstraints();
 				gbc_panelzq.insets = new Insets(0, 0, 5, 0);
 				gbc_panelzq.fill = GridBagConstraints.BOTH;
 				gbc_panelzq.gridx = 1;
 				gbc_panelzq.gridy = 0;
-				panelDividido.add(nuevo, gbc_panelzq); 
+				panelDividido.add(panelShowCont, gbc_panelzq); 
 				
 				panelDividido.revalidate(); 
 				panelDividido.repaint(); 
@@ -197,7 +202,6 @@ public class VentanaPrincipal extends JFrame {
 		mnOpciones2.add(mntmEliminarUsuario);
 		
 		JButton btnLupa = new JButton("Lupa");
-		ChatIndividual chatAux = new ChatIndividual("22", "nombre", new Usuario("nombe", "email", "fecha", "movil", "clave")); //TODO: quitar luego
 		btnLupa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (chatActual!=null) {
@@ -221,30 +225,13 @@ public class VentanaPrincipal extends JFrame {
 		
 		
 		
-		//JPanel panelDer = new JPanel();
-		
-		//TODO: quitar luego
-		Usuario user1 = new Usuario("nombre", "email", "fecha", "movil", "clave");
-		Usuario user2 = new Usuario("Santi", "email", "fecha", "movil", "clave");
-
-		Chat chatAux1= new ChatIndividual("nom", "mo", user1);
-		Chat chatAux2= new ChatIndividual("mo", "Quilla", user2);
-		Chat chatgrupo = new ChatGrupo("Chiquillo");
-		
-		LinkedList<Chat> listAuxChat = new LinkedList<Chat>();
-		listAuxChat.add(chatAux1);
-		listAuxChat.add(chatAux2);
-		listAuxChat.add(chatgrupo);
-		for (int i = 0; i<25; i++) {
-			listAuxChat.add(chatAux1);
-		}
-		//Modificar luego 
+		LinkedList<Chat> listAuxChat = cargarChatsRecientes();
 		
 		
-		PanelChatsRecientes nuevo = new PanelChatsRecientes(listAuxChat, this);
+		
+		pChatRec = new PanelChatsRecientes(listAuxChat, venPrinAc);
 		panelDividido.remove(panelDer);
-		panelDer = nuevo; 
-		
+		panelDer = pChatRec; 
 		
 		GridBagConstraints gbc_panelDer = new GridBagConstraints();
 		gbc_panelDer.insets = new Insets(0, 0, 5, 5);
@@ -256,6 +243,9 @@ public class VentanaPrincipal extends JFrame {
 		
 		panelDividido.revalidate(); 
 		panelDividido.repaint(); 
+		
+		
+		
 		
 		//JPanel panellzq = new JPanel();
 		GridBagConstraints gbc_panelzq = new GridBagConstraints();
@@ -272,8 +262,8 @@ public class VentanaPrincipal extends JFrame {
 	// ------ FUNCIONALIDAD AUXILIAR --------
 	
 	//Función utilizada en la inicialización del panel, para cargar los chats del usuario.
-	private void cargarChatsRecientes() {
-		LinkedList<Chat> listAux = controler.getChatsRecientes();
+	private LinkedList<Chat> cargarChatsRecientes() {
+		return controler.getChatsRecientes();
 		
 	}
 	
@@ -281,6 +271,8 @@ public class VentanaPrincipal extends JFrame {
 	protected void addChatsRecientes(Chat newChat) {
 		
 		controler.addChatToUser(newChat);
+		pChatRec.updateChatsRecientes(newChat);
+		
 	}
 	
 	

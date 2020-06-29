@@ -5,7 +5,7 @@ import java.util.LinkedList;
 public class ChatIndividual extends Chat{
 	
 	//ES UN CONTACTO INDIVIDUAL con su lista de mensajes asociado.
-	private String movil;
+	private String movil; //Movil del contacto
 	private Usuario contacto; 
 	
 	//Constructor de un chat sin mensajes

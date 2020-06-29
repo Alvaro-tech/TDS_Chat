@@ -275,7 +275,7 @@ public class VentanaRegistro extends JPanel {
 		if (textEmail_W.getText().trim().isEmpty()) {
 			 salida=false;
 		}
-		if (dateChooser.getDateFormatString().isEmpty()) {
+		if (dateChooser.getDate().toString().isEmpty()) { //Arreglar
 			 salida=false;
 		}
 		String password = new String(passwordClave_W.getPassword());

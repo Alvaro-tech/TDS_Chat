@@ -4,6 +4,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 
+import modelo.Chat;
+import modelo.ChatIndividual;
 import modelo.Usuario;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -27,11 +29,14 @@ public class PanelShowCont extends JPanel {
 	private ContactoGUI contactoSelect = null;
 	private JFrame ventana;
 	
+	private VentanaPrincipal padre;
+	
 	/**
 	 * Create the panel.
 	 */
-	public PanelShowCont(Usuario usuariop, JFrame frame) {
+	public PanelShowCont(Usuario usuariop, JFrame frame, VentanaPrincipal vp) {
 		ventana = frame;
+		padre = vp;
 		this.usuario = usuariop;
 		setLayout(new BorderLayout(0, 0));
 		
@@ -53,6 +58,7 @@ public class PanelShowCont extends JPanel {
 			public void mouseClicked(MouseEvent arg0) {
 				contactoSelect = list.getSelectedValue();
 				System.out.println("Selected: " + contactoSelect.getNombre());
+				
 			}
 		});
 		list.setBackground(new Color(135, 206, 235));
@@ -70,7 +76,9 @@ public class PanelShowCont extends JPanel {
 		 	public void actionPerformed(ActionEvent arg0) {
 		 		if (contactoSelect != null) {
 		 			contactoSelect = list.getSelectedValue();
-		 			
+		 			Usuario uAux = contactoSelect.getUsuario();
+					Chat chatAux = new ChatIndividual(uAux.getMovil(), contactoSelect.getNombre(), uAux);
+					padre.addChatsRecientes(chatAux);
 		 			
 		 		} else {
 		 			JOptionPane.showMessageDialog(ventana,

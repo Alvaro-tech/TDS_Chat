@@ -13,6 +13,7 @@ import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
 import beans.Entidad;
 import beans.Propiedad;
+import modelo.Chat;
 import modelo.ChatGrupo;
 import modelo.ChatIndividual;
 import modelo.Usuario;
@@ -204,6 +205,24 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 		
 	}
 	
+	public void updateChats(Usuario usuario, Chat newChat) {
+		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getId());
+		
+		switch(newChat.getClass().getSimpleName())
+		{
+		   case "ChatIndividual" :
+			   servPersistencia.eliminarPropiedadEntidad(eUsuario, "chatIndividual");
+			   servPersistencia.anadirPropiedadEntidad(eUsuario,"chatIndividual", obtenerIdChatIndividual(usuario.getChatsInd()));
+			   break;
+			   
+		   case "ChatGrupo" :
+			   servPersistencia.eliminarPropiedadEntidad(eUsuario, "chatGrupo");
+			   servPersistencia.anadirPropiedadEntidad(eUsuario, "chatGrupo", obtenerIdContactosSet(usuario.getChatsGroup()));
+			   break;
+		}
+		
+	}
+	
 	// -------------------Funciones auxiliares-----------------------------
 	//TODO: Estas funciones existen aqui porque son necesarias, pero habria que mover su funcionamiento (código) a sus adaptadores pertinentes
 	
@@ -301,5 +320,7 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 			}
 			return listaContactos;
 		}
+
+		
 	
 }

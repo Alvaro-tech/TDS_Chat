@@ -100,6 +100,9 @@ public class AppTest
 		Alvaro.agregarChatGrupo(grupo);
 		Fran.agregarChatGrupo(grupo);
 		
+		//Borre la funcion serUsuario actual
+		
+		/*
 		ControladorUsuarios.getUnicaInstancia().setUsuarioActual(Ana);
 		System.out.println("USUARIO = " +Ana.getNombre());
 		LinkedList<Chat> lista = ControladorUsuarios.getUnicaInstancia().getChatsRecientes();
@@ -119,7 +122,7 @@ public class AppTest
 		LinkedList<Chat> lista2 = ControladorUsuarios.getUnicaInstancia().getChatsRecientes();
 		for (Chat chat : lista2) {
 			System.out.println(chat.toString());
-		}
+		}*/
 		
     }
 }

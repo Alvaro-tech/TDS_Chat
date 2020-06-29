@@ -5,6 +5,8 @@ import java.util.LinkedList;
 
 import modelo.CatalogoUsuarios;
 import modelo.Chat;
+import modelo.ChatGrupo;
+import modelo.ChatIndividual;
 import modelo.Descuento;
 import modelo.Usuario;
 import persistencia.AdaptadorUsuarioDAO;
@@ -49,10 +51,6 @@ public class ControladorUsuarios {
 		return usuarioActual.getNombre();
 	}
 	
-	//BORRAR AFTER LAS PRUEBAS
-	public void setUsuarioActual(Usuario u) {
-		this.usuarioActual = u;
-	}
 	
 	public boolean esUsuarioRegistrado(String movil) {
 		return CatalogoUsuarios.getUnicaInstancia().getUsuario(movil)!=null;
@@ -125,7 +123,20 @@ public class ControladorUsuarios {
 
 	//Te llegan grupos o chats individuales, la cosa es saber que es con el getClass,getSimpleNam y guardarlo en todas partes segun sea needed
 	public void addChatToUser(Chat newChat) {
-		// TODO Auto-generated method stub
+		switch(newChat.getClass().getSimpleName())
+		{
+		   case "ChatIndividual" :
+			   ChatIndividual chatAux = (ChatIndividual) newChat;
+			   this.getusuarioActual().agregarChatIndividual(chatAux);
+			   break;
+			   
+		   case "ChatGrupo" :
+			   ChatGrupo chatAux1 = (ChatGrupo)newChat;
+			   this.getusuarioActual().agregarChatGrupo(chatAux1);
+			   break;
+		}
+		
+		AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(this.usuarioActual, newChat);
 		
 	}
 	
