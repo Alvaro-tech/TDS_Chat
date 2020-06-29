@@ -69,10 +69,11 @@ public class VentanaRegistro extends JPanel {
 						registrado = ControladorUsuarios.getUnicaInstancia().registrarUsuario(
 										textName_W.getText(),
 										textEmail_W.getText(),
-										dateChooser.getDateFormatString(),
+										dateChooser.getDate().toString(),
 										textPhone_W.getText(),										
 										new String(passwordClave_W.getPassword()));
 						if (registrado) {
+							System.out.println("fechaN : " + dateChooser.getDateFormatString());
 							JOptionPane.showMessageDialog(
 										ventana,
 										"Asistente registrado correctamente.",

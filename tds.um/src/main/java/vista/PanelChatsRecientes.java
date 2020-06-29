@@ -21,10 +21,12 @@ public class PanelChatsRecientes extends JPanel {
 
 	private Chat chatSelected;
 	private LinkedList<Chat> chatRec;
+	private VentanaPrincipal padre;
 	/**
 	 * Create the panel.
 	 */
-	public PanelChatsRecientes(LinkedList<Chat> chatRec) {
+	public PanelChatsRecientes(LinkedList<Chat> chatRec, VentanaPrincipal v) {
+		this.padre = v;
 		this.chatRec = chatRec;
 		JPanel contentPanel = new JPanel();
 		add(contentPanel);
@@ -43,6 +45,7 @@ public class PanelChatsRecientes extends JPanel {
 			public void mouseClicked(MouseEvent arg0) {
 				chatSelected = list.getSelectedValue();
 				System.out.println("Selected: " + chatSelected.getNombre());
+				padre.setChatActual(chatSelected); //TODO: Herejia
 			}
 		});
 		list.setBackground(new Color(175, 238, 238));
