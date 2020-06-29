@@ -43,8 +43,8 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 		e.setNombre("ChatGrupo");
 
 		e.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(new Propiedad("nombre", grupo.getNombre()),
-				new Propiedad("ultimoMensaje", obtenerUltimoMensaje(grupo.getUltimoMensaje())),
-				new Propiedad("historial", obtenerIdMensajes(grupo.getHistorial())),
+				//new Propiedad("ultimoMensaje", obtenerUltimoMensaje(grupo.getUltimoMensaje())),
+			//	new Propiedad("historial", obtenerIdMensajes(grupo.getHistorial())),
 				new Propiedad("miembros", obtenerMiembros(grupo.getMiembros())),
 				new Propiedad("administradores", obtenerAdministradores(grupo.getAdministradores())))));
 		return e;
@@ -74,7 +74,7 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 			return;
 
 		eChatGrupo = this.ChatGrupoToEntidad(grupo);
-		servPersistencia.registrarEntidad(eChatGrupo);
+		eChatGrupo = servPersistencia.registrarEntidad(eChatGrupo);
 		grupo.setId(eChatGrupo.getId());
 
 	}
@@ -91,13 +91,13 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 		PoolDAO.getUnicaInstancia().addObjeto(grupo.getId(), grupo);
 
 		// *-*-*-*-*-*-*-*-*-*--*-*-Tratamos las propiedades bi-direccionales
-		String ultimoMensaje = servPersistencia.recuperarPropiedadEntidad(eGrupo, "ultimoMensaje");
-		String historial = servPersistencia.recuperarPropiedadEntidad(eGrupo, "historial ");
+		//String ultimoMensaje = servPersistencia.recuperarPropiedadEntidad(eGrupo, "ultimoMensaje");
+	//	String historial = servPersistencia.recuperarPropiedadEntidad(eGrupo, "historial ");
 		String miembros = servPersistencia.recuperarPropiedadEntidad(eGrupo, "miembros");
 		String administradores = servPersistencia.recuperarPropiedadEntidad(eGrupo, "administradores");
 
-		grupo.setUltimoMensaje(obtenerUltimoMensaje(ultimoMensaje));
-		grupo.setHistorial(obtenerHistorialDesdeId(historial));
+	//	grupo.setUltimoMensaje(obtenerUltimoMensaje(ultimoMensaje));
+	//	grupo.setHistorial(obtenerHistorialDesdeId(historial));
 		grupo.setMiembros(obtenerMiembrosDesdeId(miembros));
 		grupo.setAdministradores(obtenerAdministradoresDesdeId(administradores));
 		return grupo;

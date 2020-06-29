@@ -24,7 +24,7 @@ public class PanelChatsRecientes extends JPanel {
 	private VentanaPrincipal padre;
 	
 	private DefaultListModel<Chat> listModel = new DefaultListModel<Chat>();
-	private JList<Chat> list;
+	private final JList<Chat> list;
 	private JPanel contentPanel = new JPanel();
 	/**
 	 * Create the panel.
@@ -65,9 +65,8 @@ public class PanelChatsRecientes extends JPanel {
 	
 	public void updateChatsRecientes(Chat chat) {
 		listModel.addElement(chat);
-		list = new JList<>(listModel); //Necesario???
-		contentPanel.revalidate();
-		contentPanel.repaint();
+		list.setModel(listModel);
+		System.out.println("termine el updateChatsRecientes de panelChatsRecientes");
 	}
 
 }

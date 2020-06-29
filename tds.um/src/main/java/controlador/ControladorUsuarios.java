@@ -11,6 +11,8 @@ import modelo.ChatIndividual;
 import modelo.Descuento;
 import modelo.Mensaje;
 import modelo.Usuario;
+import persistencia.AdaptadorChatGrupoDAO;
+import persistencia.AdaptadorChatIndividualDAO;
 import persistencia.AdaptadorUsuarioDAO;
 import persistencia.DAOException;
 import persistencia.FactoriaDAO;
@@ -62,6 +64,7 @@ public class ControladorUsuarios {
 		Usuario Usuario = CatalogoUsuarios.getUnicaInstancia().getUsuario(movil);
 		if (Usuario != null && Usuario.getClave().equals(password)) {
 				this.usuarioActual = Usuario;
+				System.out.println("En controlador mi usuario actual es: " + usuarioActual.getMovil() + " id " + usuarioActual.getId()) ;
 				return true;
 		}
 		return false;
@@ -102,6 +105,7 @@ public class ControladorUsuarios {
 	public void updateFoto(Usuario usuario, String foto) {
 		usuario.setFotoPerfil(foto);
 		AdaptadorUsuarioDAO UsuarioDAO = (AdaptadorUsuarioDAO) factoria.getUsuarioDAO();
+		System.out.println("Controlador - Update foto, voy a entrar a actualizar foto");
 		UsuarioDAO.updateFoto(usuario);		
 		
 	}
@@ -128,15 +132,18 @@ public class ControladorUsuarios {
 		{
 		   case "ChatIndividual" :
 			   ChatIndividual chatAux = (ChatIndividual) newChat;
+			   AdaptadorChatIndividualDAO.getUnicaInstancia().create(chatAux);
 			   this.getusuarioActual().agregarChatIndividual(chatAux);
+			   System.out.println("Controler-addChatUser idChatAux  " + chatAux.getId());
 			   break;
 			   
 		   case "ChatGrupo" :
 			   ChatGrupo chatAux1 = (ChatGrupo)newChat;
+			   AdaptadorChatGrupoDAO.getUnicaInstancia().create(chatAux1);
 			   this.getusuarioActual().agregarChatGrupo(chatAux1);
 			   break;
 		}
-		
+		System.out.println("Controlador-AddchattoUser  llaamo a updateChats");
 		AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(this.usuarioActual, newChat);
 		
 	}
