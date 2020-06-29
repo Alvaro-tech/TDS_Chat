@@ -33,6 +33,11 @@ public class Mensaje {
 		this.fecha =  LocalDate.now();
 	}
 	
+	@Override
+	public String toString() {
+		return "Mensaje= " + this.texto;
+	}
+
 	public Mensaje(String texto, String fecha) {
 		this.texto = texto;
 		this.fecha =  LocalDate.parse(fecha);

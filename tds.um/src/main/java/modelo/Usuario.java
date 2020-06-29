@@ -1,9 +1,11 @@
 package modelo;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 public class Usuario {
 	String nombre;
@@ -200,15 +202,14 @@ public class Usuario {
 	 */
 	public LinkedList<Chat> getChatRecientes() {
 		LinkedList<Chat> todos = new LinkedList<Chat>();
+		
 		todos.addAll(chatsGroup);
 		todos.addAll(chatsInd);
 		
-		System.out.println("Llego hasta justo antes del comaparator");
-		
 		todos.stream()
-			.sorted((c1, c2) -> c1.getUltimoMensaje().getFecha().compareTo(c2.getUltimoMensaje().getFecha()))
-			.forEach(c -> System.out.println(c.toString()));
-		
+			.map(c -> c.getUltimoMensaje())
+			.sorted(Comparator.comparing(Mensaje::getFecha))
+			.forEach(m -> System.out.println(m.toString()));
 		
 		return todos;
 	}

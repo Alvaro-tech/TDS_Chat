@@ -75,7 +75,7 @@ public abstract class Chat{
 
 	@Override
 	public String toString() {
-		return "Chat [nombre=" + nombre + ", Fecha ultimoMensaje=" + ultimoMensaje.getFecha().toString() + "]";
+		return "CHAT = " + this.nombre ;
 	}
 	
 	
