@@ -21,7 +21,7 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 	private ServicioPersistencia servPersistencia;
 	private static AdaptadorChatGrupoDAO unicaInstancia = null;
 
-	public static IAdaptadorChatGrupoDAO getUnicaInstancia() {
+	public static IAdaptadorChatGrupoDAO getUnicaInstancia() { 
 		if (unicaInstancia == null)
 			return new AdaptadorChatGrupoDAO();
 		else
@@ -43,12 +43,15 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 		e.setNombre("ChatGrupo");
 
 		e.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(new Propiedad("nombre", grupo.getNombre()),
+				new Propiedad("ultimoMensaje", obtenerUltimoMensaje(grupo.getUltimoMensaje())),
 				new Propiedad("historial", obtenerIdMensajes(grupo.getHistorial())),
 				new Propiedad("miembros", obtenerMiembros(grupo.getMiembros())),
 				new Propiedad("administradores", obtenerAdministradores(grupo.getAdministradores())))));
 		return e;
 
 	}
+
+
 
 	@Override
 	/**
@@ -88,10 +91,12 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 		PoolDAO.getUnicaInstancia().addObjeto(grupo.getId(), grupo);
 
 		// *-*-*-*-*-*-*-*-*-*--*-*-Tratamos las propiedades bi-direccionales
+		String ultimoMensaje = servPersistencia.recuperarPropiedadEntidad(eGrupo, "ultimoMensaje");
 		String historial = servPersistencia.recuperarPropiedadEntidad(eGrupo, "historial ");
 		String miembros = servPersistencia.recuperarPropiedadEntidad(eGrupo, "miembros");
 		String administradores = servPersistencia.recuperarPropiedadEntidad(eGrupo, "administradores");
 
+		grupo.setUltimoMensaje(obtenerUltimoMensaje(ultimoMensaje));
 		grupo.setHistorial(obtenerHistorialDesdeId(historial));
 		grupo.setMiembros(obtenerMiembrosDesdeId(miembros));
 		grupo.setAdministradores(obtenerAdministradoresDesdeId(administradores));
@@ -99,6 +104,10 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 	}
 
 //#####################################################################
+
+	private Mensaje obtenerUltimoMensaje(String id) {
+		return AdaptadorMensajeDAO.getUnicaInstancia().get(Integer.valueOf(id));
+	}
 
 	private HashSet<Usuario> obtenerAdministradoresDesdeId(String admins) {
 		HashSet<Usuario> administradores = new HashSet<Usuario>();
@@ -140,6 +149,8 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 
 		return historial;
 	}
+	
+	
 
 //#####################################################################
 
@@ -207,6 +218,11 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 		return aux.trim();
 	}
 
+	private String obtenerUltimoMensaje(Mensaje ultimoMensaje) {
+		Integer id =(Integer) ultimoMensaje.getId();
+		return id.toString();
+	}
+	
 	/**
 	 * Funcion para, de los miembros del grupo obtener sus ids como strings. Los
 	 * miembros son chatsIndividuales (Contactos individuales)

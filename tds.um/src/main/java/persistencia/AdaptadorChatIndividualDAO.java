@@ -17,7 +17,7 @@ import modelo.Usuario;
 /**
  * 
  * Clase que implementa el Adaptador DAO concreto de Usuario para el tipo H2.
- * 
+ *  
  */
 
 public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividualDAO {
@@ -52,13 +52,17 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 		//BIDIRECCIONALES
 		String contacto = servPersistencia.recuperarPropiedadEntidad(eChat, "contacto");
 		String historial = servPersistencia.recuperarPropiedadEntidad(eChat, "historial");
+		String ultimoMensaje = servPersistencia.recuperarPropiedadEntidad(eChat, "ultimoMensaje");
 		
 		chatIndividual.setContacto(obtenerContactoById(contacto));
 		chatIndividual.setHistorial(obtenerHistorialDesdeId(historial));
+		chatIndividual.setUltimoMensaje(oobtenerUltimoMensajeDesdeId(ultimoMensaje));
 		return chatIndividual;
 		
 	}
 	
+
+
 //#############################################################
 	
 	//funcion duplicada en adaptadorDaoChatGrupo
@@ -78,6 +82,10 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 		return AdaptadorUsuarioDAO.getUnicaInstancia().get(Integer.valueOf(contacto));
 	}
 	
+	private Mensaje oobtenerUltimoMensajeDesdeId(String id) {
+		return AdaptadorMensajeDAO.getUnicaInstancia().get(Integer.valueOf(id));
+	}
+	
 
 	//#############################################################
 
@@ -90,6 +98,7 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 						new Propiedad("nombre", chat.getNombre()),
 						new Propiedad ("movil", chat.getMovil()),
 						new Propiedad ("contacto", chat.getUserId().toString()),
+						new Propiedad("ultimoMensaje", obtenerIdUltimoMensaje(chat.getUltimoMensaje())),
 						new Propiedad("historial", obtenerIdMensajes(chat.getHistorial()) )
 								
 						))
@@ -169,6 +178,13 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 		return aux.trim(); 
 	}
 	
+	private String obtenerIdUltimoMensaje(Mensaje ultimoMensaje) {
+		Integer id =(Integer) ultimoMensaje.getId();
+		return id.toString();
+	}
+	
+	
+	/*
 	private LinkedList<Mensaje> getAllMensajesById(String historial) {
 		LinkedList<Mensaje> mensajes = new LinkedList<Mensaje>();
 		StringTokenizer strTok = new StringTokenizer(historial, " ");
@@ -179,5 +195,6 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 		}
 		return mensajes;
 	}
+	*/
 	
 }
