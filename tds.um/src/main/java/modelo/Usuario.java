@@ -4,6 +4,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.StringTokenizer;
+
+import persistencia.AdaptadorChatIndividualDAO;
 
 /**
  * Clase que representa a un Usuario del sistema en el modelo de este.
@@ -23,13 +26,9 @@ public class Usuario {
 	// Lista de chats
 	HashSet<ChatIndividual> chatsInd = new HashSet<ChatIndividual>();
 	HashSet<ChatGrupo> chatsGroup = new HashSet<ChatGrupo>();
-	// lista de contactos que tiene un usuario
-	// SUPER NO, ES UNA LISTA DE CHATS QUE MAL QUE MAL QUE MAL
-	// TODO:Arreglar esto,
-	// ESTO NO PUEDE SER, DEBERÍAS HACERLO A TRAVES DE CHAT INDIVIDUAL.
-	HashMap<String, Usuario> contactos = new HashMap<String, Usuario>(); // Clave nombre Personal , Valor Usuario
 	Integer id;
 	String saludo;
+	String conversacionesAbiertas;
 
 	/**
 	 * Constructor de la clase Usuario.
@@ -50,6 +49,7 @@ public class Usuario {
 		this.user = this; // ?
 		this.saludo = "Hey there, I'm using TDSchat.";
 		this.fotoPerfil = "./iconos/Defecto.PNG";
+		this.conversacionesAbiertas = "";
 	}
 
 	/**
@@ -62,7 +62,7 @@ public class Usuario {
 	 * @param saludop
 	 * @param foto
 	 */
-	public Usuario(String nombre, String email, String fecha, String movil, String clave, String saludop, String foto) { // Constructor
+	public Usuario(String nombre, String email, String fecha, String movil, String clave, String saludop, String foto, String conversaciones) { // Constructor
 																															// para
 																															// recuperar
 		this.nombre = nombre;
@@ -74,6 +74,7 @@ public class Usuario {
 		this.user = this; // ?
 		this.saludo = saludop;
 		this.fotoPerfil = foto;
+		this.conversacionesAbiertas = conversaciones;
 	}
 
 	// ##################### METODOS GET Y SET #######################
@@ -166,13 +167,19 @@ public class Usuario {
 		return fotoPerfil;
 	}
 
-	// DEBERIAMOS QUITAR ESTO
-	/**
-	 * Metodo get de Usuario.
-	 * @return contactos (HashSet de Usuario)
-	 */
-	public HashMap<String, Usuario> getContactos() {
-		return contactos;
+	
+	public void addConversacion(int idChat) {
+		this.conversacionesAbiertas = conversacionesAbiertas + idChat + " ";
+	}
+	
+	
+
+	public String getConversacionesAbiertas() {
+		return conversacionesAbiertas;
+	}
+
+	public void setConversacionesAbiertas(String conversacionesAbiertas) {
+		this.conversacionesAbiertas = conversacionesAbiertas;
 	}
 
 	/**
@@ -212,13 +219,6 @@ public class Usuario {
 		return this.saludo = saludo;
 	}
 
-	/**
-	 * Metodo set de Usuario.
-	 * @param contactos
-	 */
-	public void setContactos(HashMap<String, Usuario> contactos) {
-		this.contactos = contactos;
-	}
 
 	/**
 	 * Metodo set de Usuario.
@@ -247,15 +247,6 @@ public class Usuario {
 	// ##################### FUNCIONALIDAD #######################
 
 	/**
-	 * Funcion para agregar un contacto
-	 * @param NombrePersonal
-	 * @param contacto
-	 */
-	public void agregarContacto(String NombrePersonal, Usuario contacto) {
-		contactos.put(NombrePersonal, contacto);
-	}
-
-	/**
 	 * Funcion para agregar un chat individual a la lista de chats
 	 * @param chat
 	 */
@@ -271,64 +262,6 @@ public class Usuario {
 		chatsGroup.add(chat);
 	}
 
-	// TODO: arreglar esto porque ha cambiado la forma de los chatsIndividuales
-	// (antes estaba FATAL alvaro)
-	/*
-	 * public ChatIndividual empezarChatIndividual(String nombre) { //TODO:
-	 * Comprobar que la conversacion no existe ya, recorrer los chats, comparando
-	 * id's(?) Usuario DatosUsuario = contactos.get(nombre);
-	 * 
-	 * //if (!chatsInd.contains(chat)) { ChatIndividual nuevoChat = new
-	 * ChatIndividual(DatosUsuario.getMovil(),nombre); chatsInd.add(nuevoChat); //}
-	 * return nuevoChat;
-	 * 
-	 * }
-	 * 
-	 * public void empezarChatGrupo (String nombre) { //TODO: la funcion en sí
-	 * 
-	 * }
-	 * 
-	 * 
-	 * public void eliminarChatIndividual(ChatIndividual chat) { //TODO: Esto habrá
-	 * que cambiarlo a borrarlo por nombre? if (chatsInd.contains(chat)) {
-	 * chatsInd.remove(chat); } }
-	 * 
-	 * public void eliminarChatGrupo(ChatGrupo chat) { //TODO: Esto habrá que
-	 * cambiarlo a borrarlo por nombre? if (chatsGroup.contains(chat)) {
-	 * chatsGroup.remove(chat); }
-	 * 
-	 * }
-	 */
-
-	/**
-	 * Funcion para obtener la lista de contactos asociados al Usuario
-	 * @return
-	 */
-	public String[] getlistaDeContactos() {
-		LinkedList<String> aux = new LinkedList<String>();
-		for (String u : this.contactos.keySet()) {
-			aux.add(u);
-		}
-		// Converting LinkedList to Object Array
-		Object[] objArray = aux.toArray();
-
-		// Convert Object[] to String[]
-		String[] array = Arrays.copyOf(objArray, objArray.length, String[].class);
-		return array;
-
-	}
-	
-	/**
-	 * Funcion que comienza un chat Individual con un contacto.
-	 * @param movilReceptor
-	 * @param nombre
-	 * @param emisor
-	 * @return
-	 */
-	public ChatIndividual empezarChatIndividual(String movilReceptor, String nombre, Usuario emisor) {
-		ChatIndividual chatI = new ChatIndividual(movilReceptor, nombre, emisor);
-		return chatI;
-	}
 
 	/**
 	 * Funcion que devuelve una lista de Chats del usuario de manera ordenada.
@@ -337,11 +270,20 @@ public class Usuario {
 	public LinkedList<Chat> getChatRecientes() {
 		LinkedList<Chat> todos = new LinkedList<Chat>();
 		todos.addAll(this.getTodosLosChats());
+		LinkedList<Chat> recientes = new LinkedList<Chat>();
 
-		todos.stream()
+        	for (Chat chat : todos) {
+        		String idChat = chat.getId() +" "; //De esta manera el constains no da por true el 1 en un 12, asegura buscar numeros independientes
+				if(conversacionesAbiertas.contains(idChat)) {
+					recientes.add(chat);
+				}
+			}
+		
+
+		recientes.stream()
 			.sorted((c1, c2) -> c1.compare(c1, c2));
 
-		return todos;
+		return recientes;
 
 	}
 

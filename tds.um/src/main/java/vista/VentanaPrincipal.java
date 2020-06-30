@@ -63,7 +63,7 @@ public class VentanaPrincipal extends JFrame {
 		
 		
 		
-		System.out.println(ControladorUsuarios.getUnicaInstancia().getNombreUsuarioActual()); //Esto sería lo correct
+		System.out.println("convers: " + ControladorUsuarios.getUnicaInstancia().getusuarioActual().getConversacionesAbiertas()); //Esto sería lo correct
 		
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -137,7 +137,6 @@ public class VentanaPrincipal extends JFrame {
 		JMenuItem mntmMostrarContactos = new JMenuItem("Mostrar Contactos");
 		mntmMostrarContactos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				ControladorUsuarios.getUnicaInstancia().mostrarUsuario(); //TODO: Esto es debbuging, habrá que borrarlo al final
 				
 				panelShowCont = new PanelShowCont(usuario, frame, venPrinAc);
 				panelDividido.remove(panellzq);
@@ -270,8 +269,9 @@ public class VentanaPrincipal extends JFrame {
 	//Función llamada desde el Panel ShowCont, para iniciar una nueva conversación.
 	protected void addChatsRecientes(Chat newChat) {
 		System.out.println("del panel mostrarUsuario llegue aqui ( ventanaPrincipal- addChatsRecientes)");
-		controler.addChatToUser(newChat);
+		//controler.addChatToUser(newChat); TODO: En teoria ya no hace falta porque lo añaden los menus de contacto/grupo
 		pChatRec.updateChatsRecientes(newChat);
+		controler.addChatRecienteToUser(newChat);
 		
 	}
 	

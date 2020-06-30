@@ -176,19 +176,6 @@ public class ControladorUsuarios {
 	// ##################### FUNCIONALIDAD DEL MODELO #######################
 	
 	
-	/**
-	 * Funcion para añadir un contacto al usuario
-	 * @param nombre
-	 * @param movil
-	 */
-	public void addUsuario(String nombre, String movil) {
-		Usuario contacto = CatalogoUsuarios.getUnicaInstancia().getUsuario(movil);
-		System.out.println("COntacto a agregar, buscado en el mapa: " + contacto.getMovil());
-		usuarioActual.agregarContacto(nombre, contacto);
-		AdaptadorUsuarioDAO UsuarioDAO = (AdaptadorUsuarioDAO) factoria.getUsuarioDAO();
-		UsuarioDAO.updateContactos(ControladorUsuarios.getUnicaInstancia().usuarioActual);	
-	}
-	
 	/*
 	//COMO SERÍA DE LA MANERA CORRECTA; LOS CHATS INDIVIDUALES YA SON TUS CONTACTOS
 	/**
@@ -204,15 +191,6 @@ public class ControladorUsuarios {
 		//UsuarioDAO.updateContactos(ControladorUsuarios.getUnicaInstancia().usuarioActual);	
 	}
 	*/
-	
-	
-	//No voy a documentarla porque creo que es desechable que es de tus pruebecillas, alvaro.
-	public void mostrarUsuario() {
-		System.out.println("Mostrar Usuarios:");
-		for(String u : usuarioActual.getContactos().keySet()) {
-			System.out.println("# -> Nombre: " + u + " Movil " + usuarioActual.getContactos().get(u).getMovil());
-		}
-	}
 
 	
 	/**
@@ -239,6 +217,17 @@ public class ControladorUsuarios {
 		System.out.println("Controlador-AddchattoUser  llaamo a updateChats");
 		AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(this.usuarioActual, newChat);
 		
+	}
+	
+	//TODO: parametros
+	/**
+	 * Funcion llamada desde el panel crear contacto, para añadir nuevos chats individuales
+	 * @param 
+	 */
+	public void addChatToUser(String nombre, String telefono) {
+		Usuario contacto = CatalogoUsuarios.getUnicaInstancia().getUsuario(telefono);
+		Chat chatAux = new ChatIndividual(nombre, telefono, contacto);
+		addChatToUser(chatAux);
 	}
 	
 	
@@ -295,7 +284,19 @@ public class ControladorUsuarios {
 			this.setDescuento(des);
 			return d.calcularDescuento(precioPremium);
 		}else return precioPremium;
+	}
+
+	/**
+	 * Añadir a los chat recientes del usuario la nueva conversación que se ha inicidado
+	 * @param tipo, tipo de descuento que se aplica, si se aplica uno.
+	 * @return  precio a pagar de la cuenta premium.
+	 */
+	public void addChatRecienteToUser(Chat Chat) {
+		usuarioActual.addConversacion(Chat.getId());
+		AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(usuarioActual);
+		
 	} 
+	
   
  
 }

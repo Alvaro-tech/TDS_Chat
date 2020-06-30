@@ -8,22 +8,23 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
+import modelo.ChatIndividual;
 import modelo.Usuario;
 
-public class ContactoRenderer  extends JLabel implements ListCellRenderer<ContactoGUI> {
+public class ContactoRenderer  extends JLabel implements ListCellRenderer<ChatIndividual> {
 
 	public ContactoRenderer() {
         setOpaque(true);
     } 
 	@Override
-	public Component getListCellRendererComponent(JList<? extends ContactoGUI> list, ContactoGUI usuario, int index,
+	public Component getListCellRendererComponent(JList<? extends ChatIndividual> list, ChatIndividual contacto, int index,
             boolean isSelected, boolean cellHasFocus) {
 		
-		String nombre = usuario.getNombre();
-		String saludo = usuario.getUsuario().getSaludo();
+		String nombre = contacto.getNombre();
+		String saludo = contacto.getContacto().getSaludo();
 		
 		String aux = nombre + " ---> " + saludo; 
-		ImageIcon imageIcon = new ImageIcon(usuario.getUsuario().getFotoPerfil());
+		ImageIcon imageIcon = new ImageIcon(contacto.getContacto().getFotoPerfil());
 		ImageIcon imageIcon2 = new ImageIcon(imageIcon.getImage().getScaledInstance(90, 90, Image.SCALE_DEFAULT));
 		
 		setIcon(imageIcon2);

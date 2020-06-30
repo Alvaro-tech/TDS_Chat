@@ -11,6 +11,7 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import java.awt.event.ActionListener;
+import java.util.HashSet;
 import java.awt.event.ActionEvent;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -24,6 +25,8 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 
 import controlador.ControladorUsuarios;
+import modelo.Chat;
+import modelo.ChatIndividual;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.AbstractListModel;
 import java.awt.SystemColor;
@@ -109,9 +112,9 @@ public class PanelCrearGrupo extends JDialog {
 					listCont.setBackground(SystemColor.controlHighlight);
 					listCont.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Contactos", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 120, 215)));
 					listCont.setModel(modeloCont);
-					String[] aux =(ControladorUsuarios.getUnicaInstancia().getusuarioActual().getlistaDeContactos());
-					for(String i : aux) {
-						modeloCont.addElement(i);
+					HashSet<ChatIndividual> aux =(ControladorUsuarios.getUnicaInstancia().getusuarioActual().getChatsInd());
+					for(ChatIndividual i : aux) {
+						modeloCont.addElement(i.getNombre());
 					}
 					}
 				}
@@ -257,6 +260,11 @@ public class PanelCrearGrupo extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("OK");
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						
+					}
+				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);

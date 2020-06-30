@@ -26,7 +26,7 @@ import java.awt.event.ActionEvent;
 public class PanelShowCont extends JPanel {
 
 	private  Usuario usuario;
-	private ContactoGUI contactoSelect = null;
+	private ChatIndividual contactoSelect = null;
 	private JFrame ventana;
 	
 	private VentanaPrincipal padre;
@@ -45,14 +45,14 @@ public class PanelShowCont extends JPanel {
 		contentPanel.setLayout(new BorderLayout(0, 0));
 		
 		
-		DefaultListModel<ContactoGUI> listModel = new DefaultListModel<ContactoGUI>();
-		for(String u : usuario.getContactos().keySet()) {
-			ContactoGUI contAux = new ContactoGUI(u, usuario.getContactos().get(u));
-			listModel.addElement(contAux);
+		DefaultListModel<ChatIndividual> listModel = new DefaultListModel<ChatIndividual>();
+		for(Chat u : usuario.getChatsInd()) {
+			ChatIndividual ux = (ChatIndividual) u;
+			listModel.addElement(ux);
 		}
 		
 		
-		JList<ContactoGUI> list = new JList<>(listModel);
+		JList<ChatIndividual> list = new JList<>(listModel);
 		list.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -76,9 +76,7 @@ public class PanelShowCont extends JPanel {
 		 	public void actionPerformed(ActionEvent arg0) {
 		 		if (contactoSelect != null) {
 		 			contactoSelect = list.getSelectedValue();
-		 			Usuario uAux = contactoSelect.getUsuario();
-					Chat chatAux = new ChatIndividual(uAux.getMovil(), contactoSelect.getNombre(), uAux);
-					padre.addChatsRecientes(chatAux);
+					padre.addChatsRecientes(contactoSelect);
 		 			
 		 		} else {
 		 			JOptionPane.showMessageDialog(ventana,

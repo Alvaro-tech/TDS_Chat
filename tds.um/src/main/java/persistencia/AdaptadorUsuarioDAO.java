@@ -51,20 +51,17 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 		String clave = servPersistencia.recuperarPropiedadEntidad(eUsuario, "clave");
 		String saludo = servPersistencia.recuperarPropiedadEntidad(eUsuario, "saludo");
 		String fotoP = servPersistencia.recuperarPropiedadEntidad(eUsuario, "fotoPerfil");
-		
+		String conversaciones = servPersistencia.recuperarPropiedadEntidad(eUsuario, "conversacionesAbiertas");
 		//-*-*-*-*-*-*-*-*- Creo un Usuario Solo con estoss datos *-**-*-*-*-*-*-*-*-
-		Usuario Usuario = new Usuario(nombre, email, fecha, movil, clave, saludo, fotoP); 
+		Usuario Usuario = new Usuario(nombre, email, fecha, movil, clave, saludo, fotoP, conversaciones); 
 		Usuario.setId(eUsuario.getId());
 		//-*-*-*--*-*-*-*-*-*--*Y lo guardo en Pool para que conste:
 		PoolDAO.getUnicaInstancia().addObjeto(Usuario.getId(), Usuario);
 		
 		//*-*-*-*-*--*-*-*-*-* Tratamiento de las propiedad bi-direccionales
-		String contactos = servPersistencia.recuperarPropiedadEntidad(eUsuario, "contactos");
 		String chatInd = servPersistencia.recuperarPropiedadEntidad(eUsuario, "chatIndividual");
 		//String chatGroup = servPersistencia.recuperarPropiedadEntidad(eUsuario, "chatGrupo");
 				
-		System.out.println("En entidadtoUsuario: " + contactos);
-		Usuario.setContactos(obtenerContactosMapDesdeId(contactos));
 		//Usuario.setGrupos(obtenerGruposDesdeId(chatGroup));
 		Usuario.setChatIndividuales(obtenerChatIndividualesDesdeId(chatInd));
 		return Usuario;
@@ -84,7 +81,7 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 						new Propiedad("email", Usuario.getEmail()),
 						new Propiedad("clave", Usuario.getClave()),
 						new Propiedad("saludo", Usuario.getSaludo()),
-						new Propiedad("contactos", obtenerIdContactosHash(Usuario.getContactos())),
+						new Propiedad("conversacionesAbiertas", Usuario.getConversacionesAbiertas()),
 						new Propiedad("chatIndividual", obtenerIdChatIndividual(Usuario.getChatsInd())),
 						//new Propiedad("chatGrupo", obtenerIdContactosSet(Usuario.getChatsGroup())),
 						new Propiedad("fotoPerfil", Usuario.getFotoPerfil())
@@ -190,18 +187,17 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 		servPersistencia.anadirPropiedadEntidad(eUsuario, "fotoPerfil",usuario.getFotoPerfil());		
 	}
 	
-	public void updateContactos(Usuario usuario) {
+	public void updateConversaciones(Usuario usuario) {
 		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getId());
-
-		servPersistencia.eliminarPropiedadEntidad(eUsuario, "contactos");
-		System.out.println("Despues del update:");
-		servPersistencia.anadirPropiedadEntidad(eUsuario, "contactos",obtenerIdContactosHash(usuario.getContactos()));
+		System.out.println("en Adaptador usuario, updateo updateConversaciones");
+		servPersistencia.eliminarPropiedadEntidad(eUsuario, "conversacionesAbiertas");
+		servPersistencia.anadirPropiedadEntidad(eUsuario, "conversacionesAbiertas",usuario.getConversacionesAbiertas());
 		
-		System.out.println("en update contactos " + obtenerIdContactosHash(usuario.getContactos()));
+		System.out.println("updateConversaciones en adaptador :" + usuario.getConversacionesAbiertas());
 		
 	}
+
 	
-	//No...?
 	public void updateChats(Usuario usuario, Chat newChat) {
 		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getId());
 		
@@ -222,40 +218,7 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 	
 	// -------------------Funciones auxiliares-----------------------------
 	//TODO: Estas funciones existen aqui porque son necesarias, pero habria que mover su funcionamiento (código) a sus adaptadores pertinentes
-	
-	
-	//---------------------------Funciones para recuperar/guardar los contactos en persistencia--------------------------
-	//Funciones para trabajar con Mapas (HashMap)
-	//Esta función es utilizada a la hora de guardar la nueva entidad, salvar las id u los nombres personalizados de tu lista de contactos
-		private String obtenerIdContactosHash(HashMap<String, Usuario> listaUsuario) { //Lo hacemos así para recuperar los nombres que el Usuario habia puesto a la people
-			String aux = "";
-			for (String clave : listaUsuario.keySet()) { //Clave = nombre personal
-				int valor = listaUsuario.get(clave).getId(); //valor
-				//Clave el es id del contacto
-				System.out.println("En iteración: "+ valor+ ":" + clave ); //TODO: Quitar
-				aux += valor+ ":" + clave + " ";
-			}
-			System.out.println("ObtenerIdContactos " + aux);
-			return aux.trim(); //Limpiar el string de carácteres invisibles
-			//Ejemplo 123:Alvaro 444:Luisa  -> ID:Nombre Personal
-		}
-		
 
-	//A la hora de cargar los contactos guardados, hay que tener en cuenta que el mapa es Nombre:Usuario, que no es lo que teniamos guarado como propiedad
-		private HashMap<String, Usuario> obtenerContactosMapDesdeId(String ContactosG) {
-			System.out.println("Esto en ObtenerContactosMapsDesde Id con: " + ContactosG);
-			HashMap<String, Usuario> listaContactos = new HashMap<String, Usuario>();
-			StringTokenizer strTok = new StringTokenizer(ContactosG, " ");//divide un string en array de palabras separadas en espacios
-			while (strTok.hasMoreTokens()) {
-				String datos = (String) strTok.nextElement(); //Convierto los datos a string -> (0)Id:(1)NickPersonal
-	        	String[] parts = datos.split(":"); //Separo lo que es id del nombre personal
-	        	System.out.println("EL parts 0 es (id) : " + parts[0]);
-	        	Usuario usuarioaux = AdaptadorUsuarioDAO.getUnicaInstancia().get(Integer.valueOf(parts[0]));
-	        	System.out.println("en obtenerConstactos pase del get");
-				listaContactos.put(parts[1], usuarioaux); //Cargo en el mapa de contactos todos los nombres personales y los usuarios a los que referencia
-			}
-			return listaContactos;
-		}
 		
 		
 		
@@ -318,6 +281,7 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 			return listaContactos;
 		}
 
+		
 		
 	
 }

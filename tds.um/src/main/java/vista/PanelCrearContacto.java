@@ -145,7 +145,7 @@ public class PanelCrearContacto extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						try {
-							ControladorUsuarios.getUnicaInstancia().addUsuario(textNombreArea.getText(), textTelefonoArea.getText());
+							ControladorUsuarios.getUnicaInstancia().addChatToUser(textNombreArea.getText(), textTelefonoArea.getText());
 							JOptionPane.showMessageDialog(ventana,
 									"Contacto añadido correctamente",
 									"Añadir conctacto",
