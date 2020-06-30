@@ -39,15 +39,15 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 	 * @return un objeto entidad
 	 */
 	private Entidad ChatGrupoToEntidad(ChatGrupo grupo) {
-		Entidad e = new Entidad();
-		e.setNombre("ChatGrupo");
+		 Entidad e = new Entidad();
+	        e.setNombre("ChatGrupo"); 
 
-		e.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(new Propiedad("nombre", grupo.getNombre()),
-				//new Propiedad("ultimoMensaje", obtenerUltimoMensaje(grupo.getUltimoMensaje())),
-			//	new Propiedad("historial", obtenerIdMensajes(grupo.getHistorial())),
-				new Propiedad("miembros", obtenerMiembros(grupo.getMiembros())),
-				new Propiedad("administradores", obtenerAdministradores(grupo.getAdministradores())))));
-		return e;
+	        e.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(new Propiedad("nombre", grupo.getNombre()),
+	                new Propiedad("ultimoMensaje", "0"),
+	                new Propiedad("historial","0"),
+	                new Propiedad("miembros", obtenerMiembros(grupo.getMiembros())),
+	                new Propiedad("administradores", obtenerAdministradores(grupo.getAdministradores())))));
+	        return e;
 
 	}
 
@@ -91,15 +91,21 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 		PoolDAO.getUnicaInstancia().addObjeto(grupo.getId(), grupo);
 
 		// *-*-*-*-*-*-*-*-*-*--*-*-Tratamos las propiedades bi-direccionales
-		//String ultimoMensaje = servPersistencia.recuperarPropiedadEntidad(eGrupo, "ultimoMensaje");
-	//	String historial = servPersistencia.recuperarPropiedadEntidad(eGrupo, "historial ");
+		String ultimoMensaje = servPersistencia.recuperarPropiedadEntidad(eGrupo, "ultimoMensaje");
+		String historial = servPersistencia.recuperarPropiedadEntidad(eGrupo, "historial ");
 		String miembros = servPersistencia.recuperarPropiedadEntidad(eGrupo, "miembros");
 		String administradores = servPersistencia.recuperarPropiedadEntidad(eGrupo, "administradores");
 
-	//	grupo.setUltimoMensaje(obtenerUltimoMensaje(ultimoMensaje));
-	//	grupo.setHistorial(obtenerHistorialDesdeId(historial));
+		
 		grupo.setMiembros(obtenerMiembrosDesdeId(miembros));
 		grupo.setAdministradores(obtenerAdministradoresDesdeId(administradores));
+		
+		try { //Evitar null pointerExceptions
+			grupo.setUltimoMensaje(obtenerUltimoMensaje(ultimoMensaje));
+			grupo.setHistorial(obtenerHistorialDesdeId(historial));
+		} catch (Exception e) {
+			
+		}
 		return grupo;
 	}
 
@@ -150,8 +156,17 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 		return historial;
 	}
 	
-	
 
+
+	public void updateHistorial(ChatGrupo chat) {  //Cada vez que actualizas el historial es porque habra un nuevo ultimo mensaje
+		Entidad eChat = servPersistencia.recuperarEntidad(chat.getId());
+		servPersistencia.eliminarPropiedadEntidad(eChat, "historial");
+		servPersistencia.anadirPropiedadEntidad(eChat, "historial", obtenerIdMensajes(chat.getHistorial()));
+		
+		servPersistencia.eliminarPropiedadEntidad(eChat, "ultimoMensaje");
+		servPersistencia.anadirPropiedadEntidad(eChat, "ultimoMensaje", obtenerUltimoMensaje(chat.getUltimoMensaje()));
+	}
+	
 //#####################################################################
 
 	@Override

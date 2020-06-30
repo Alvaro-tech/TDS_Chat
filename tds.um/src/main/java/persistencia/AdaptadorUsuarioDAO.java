@@ -60,9 +60,9 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 		
 		//*-*-*-*-*--*-*-*-*-* Tratamiento de las propiedad bi-direccionales
 		String chatInd = servPersistencia.recuperarPropiedadEntidad(eUsuario, "chatIndividual");
-		//String chatGroup = servPersistencia.recuperarPropiedadEntidad(eUsuario, "chatGrupo");
+		String chatGroup = servPersistencia.recuperarPropiedadEntidad(eUsuario, "chatGrupo");
 				
-		//Usuario.setGrupos(obtenerGruposDesdeId(chatGroup));
+		Usuario.setGrupos(obtenerGruposDesdeId(chatGroup));
 		Usuario.setChatIndividuales(obtenerChatIndividualesDesdeId(chatInd));
 		return Usuario;
 	}
@@ -83,7 +83,7 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 						new Propiedad("saludo", Usuario.getSaludo()),
 						new Propiedad("conversacionesAbiertas", Usuario.getConversacionesAbiertas()),
 						new Propiedad("chatIndividual", obtenerIdChatIndividual(Usuario.getChatsInd())),
-						//new Propiedad("chatGrupo", obtenerIdContactosSet(Usuario.getChatsGroup())),
+						new Propiedad("chatGrupo", obtenerIdContactosSet(Usuario.getChatsGroup())),
 						new Propiedad("fotoPerfil", Usuario.getFotoPerfil())
 						))
 				);
@@ -269,17 +269,7 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 			return aux.trim(); 
 		}
 		
-		//Esto pa que te sirve?? Beibi explain to me.
-		public Set<ChatIndividual> getAllChatIndividualDesdeId(String ContactosG) {
-			Set<ChatIndividual> listaContactos = new HashSet<ChatIndividual>();
-			StringTokenizer strTok = new StringTokenizer(ContactosG, " ");
-			while (strTok.hasMoreTokens()) {
-				String id = (String) strTok.nextElement(); 
-	        	ChatIndividual chatAux = AdaptadorChatIndividualDAO.getUnicaInstancia().get(Integer.valueOf(id));
-				listaContactos.add(chatAux); 
-			}
-			return listaContactos;
-		}
+
 
 		
 		

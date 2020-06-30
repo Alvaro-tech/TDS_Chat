@@ -52,13 +52,21 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 		//BIDIRECCIONALES
 		String contacto = servPersistencia.recuperarPropiedadEntidad(eChat, "contacto");
 		String historial = servPersistencia.recuperarPropiedadEntidad(eChat, "historial");
-		//String ultimoMensaje = servPersistencia.recuperarPropiedadEntidad(eChat, "ultimoMensaje");
+		String ultimoMensaje = servPersistencia.recuperarPropiedadEntidad(eChat, "ultimoMensaje");
 		
 	    System.out.println("AdaptadorChatInd - entidadToChat recupera los bidireccionales");
 		
 		chatIndividual.setContacto(obtenerContactoById(contacto));
-		//chatIndividual.setHistorial(obtenerHistorialDesdeId(historial));
-		//chatIndividual.setUltimoMensaje(oobtenerUltimoMensajeDesdeId(ultimoMensaje));
+		
+		try { //Para evitar los null pointerException que genera que aún no haya mensajes en el chat
+			chatIndividual.setHistorial(obtenerHistorialDesdeId(historial));
+			chatIndividual.setUltimoMensaje(obtenerUltimoMensajeDesdeId(ultimoMensaje));
+		} catch (Exception e) {
+			
+		}
+		
+		
+		
 		return chatIndividual;
 		
 	}
@@ -84,7 +92,7 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 		return AdaptadorUsuarioDAO.getUnicaInstancia().get(Integer.valueOf(contacto));
 	}
 	
-	private Mensaje oobtenerUltimoMensajeDesdeId(String id) {
+	private Mensaje obtenerUltimoMensajeDesdeId(String id) {
 		return AdaptadorMensajeDAO.getUnicaInstancia().get(Integer.valueOf(id));
 	}
 	
@@ -99,9 +107,9 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 				new ArrayList<Propiedad>(Arrays.asList(
 						new Propiedad("nombre", chat.getNombre()),
 						new Propiedad ("movil", chat.getMovil()),
-						new Propiedad ("contacto", chat.getUserId().toString())
-						//new Propiedad("ultimoMensaje", obtenerIdUltimoMensaje(chat.getUltimoMensaje())),
-						//new Propiedad("historial", obtenerIdMensajes(chat.getHistorial()) )
+						new Propiedad ("contacto", chat.getUserId().toString()),
+						new Propiedad("ultimoMensaje", "0"),
+						new Propiedad("historial", "0" )
 								
 						))
 						
@@ -127,8 +135,9 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 		}
 		if (existe)
 			return;
-		
+		System.out.println("Antes de chat to entidad");
 		eChatInidividual = this.chatToEntidadInd(chat);
+		System.out.println("postChatTOEntidad");
 		eChatInidividual = servPersistencia.registrarEntidad(eChatInidividual);
 		chat.setId(eChatInidividual.getId());
 		
@@ -144,11 +153,13 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 	}
 
 	@Override
-	public void updateHistorial(ChatIndividual chat) {
+	public void updateHistorial(ChatIndividual chat) {  //Cada vez que actualizas el historial es porque habra un nuevo ultimo mensaje
 		Entidad eChat = servPersistencia.recuperarEntidad(chat.getId());
-		
 		servPersistencia.eliminarPropiedadEntidad(eChat, "historial");
 		servPersistencia.anadirPropiedadEntidad(eChat, "historial", obtenerIdMensajes(chat.getHistorial()));
+		
+		servPersistencia.eliminarPropiedadEntidad(eChat, "ultimoMensaje");
+		servPersistencia.anadirPropiedadEntidad(eChat, "ultimoMensaje", obtenerIdUltimoMensaje(chat.getUltimoMensaje()));
 	}
 
 	@Override
@@ -188,7 +199,7 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 	}
 	
 	
-	/*
+	
 	private LinkedList<Mensaje> getAllMensajesById(String historial) {
 		LinkedList<Mensaje> mensajes = new LinkedList<Mensaje>();
 		StringTokenizer strTok = new StringTokenizer(historial, " ");
@@ -199,6 +210,6 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 		}
 		return mensajes;
 	}
-	*/
+	
 	
 }

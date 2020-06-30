@@ -92,7 +92,8 @@ public final class AdaptadorMensajeDAO implements IAdaptadorMensajeDAO {
 		eMensaje.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(
 				new Propiedad("emisor", obtenerIdEmisor(mensaje.getEmisor())),
 				new Propiedad("receptor", obtenerIdReceptor(mensaje.getReceptor())),
-				new Propiedad("fecha", mensaje.getFecha().toString()), new Propiedad("texto", mensaje.getTexto()))));
+				new Propiedad("fecha", mensaje.getFecha().toString()), 
+				new Propiedad("texto", mensaje.getTexto()))));
 		return eMensaje;
 	}
 
@@ -117,7 +118,7 @@ public final class AdaptadorMensajeDAO implements IAdaptadorMensajeDAO {
 			return;
 		
 		eMensaje = this.MensajeToEntidad(mensaje);
-		servPersistencia.registrarEntidad(eMensaje);
+		eMensaje = servPersistencia.registrarEntidad(eMensaje);
 		mensaje.setId(eMensaje.getId());
 		
 	}

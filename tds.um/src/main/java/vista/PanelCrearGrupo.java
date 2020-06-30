@@ -47,8 +47,8 @@ public class PanelCrearGrupo extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textGroupName;
 	private JTextField textTitulo;
-	private DefaultListModel modeloCont = new DefaultListModel<Object>();
-	private DefaultListModel modeloMim = new DefaultListModel<Object>();
+	private DefaultListModel<Object> modeloCont = new DefaultListModel<Object>();
+	private DefaultListModel<Object> modeloMim = new DefaultListModel<Object>();
 
 
 

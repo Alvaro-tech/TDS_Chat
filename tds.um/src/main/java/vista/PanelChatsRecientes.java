@@ -32,6 +32,7 @@ public class PanelChatsRecientes extends JPanel {
 	public PanelChatsRecientes(LinkedList<Chat> chatRec, VentanaPrincipal v) {
 		this.padre = v;
 		this.chatRec = chatRec;
+		setLayout(new BorderLayout(0, 0));
 		add(contentPanel);
 		contentPanel.setLayout(new BorderLayout(0, 0));
 		
@@ -60,6 +61,7 @@ public class PanelChatsRecientes extends JPanel {
 		scrollPane.setViewportView(list);
 		list.setLayoutOrientation(JList.VERTICAL);
 		 contentPanel.add(scrollPane);
+		 
 
 	}
 	
