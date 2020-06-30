@@ -12,7 +12,7 @@ public class ChatIndividual extends Chat{
 	public ChatIndividual(String movil, String nombre, Usuario contacto) 
 	{
 		super(nombre);
-		this.movil = movil;
+		this.movil = movil; 
 		this.contacto = contacto;
 	}
 

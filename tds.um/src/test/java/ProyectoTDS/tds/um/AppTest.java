@@ -121,7 +121,7 @@ public class AppTest
 		LinkedList<Chat> lista2 = ControladorUsuarios.getUnicaInstancia().getChatsRecientes();
 		for (Chat chat : lista2) {
 			System.out.println(chat.toString());
-		}*/
+		}*/ 
 		
 		LinkedList<Mensaje> mensajesHoli = ControladorUsuarios.getUnicaInstancia().BuscarPorFiltro(ind1, "", f1, null);
 		if (mensajesHoli.size() >0) {

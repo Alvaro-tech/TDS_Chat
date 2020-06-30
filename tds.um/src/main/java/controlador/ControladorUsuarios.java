@@ -143,7 +143,7 @@ public class ControladorUsuarios {
 	
 	public LinkedList<Mensaje> BuscarPorFiltro(Chat chat, String texto, LocalDate fecha, ChatIndividual u){
 		LinkedList<Mensaje> mensajes = new LinkedList<Mensaje>();
-		
+		//¿Comprobar aqui que el chat pasado pertenece al usuario? supongo que sí...
 		if(u == null) {
 			//debe ser una busqueda de fecha o texto
 			if(fecha == null) {
@@ -156,7 +156,7 @@ public class ControladorUsuarios {
 			mensajes = c.BuscarMensajePorContactos(u);
 		}
 		
-		if(mensajes == null) {
+		if(mensajes == null) { 
 			System.out.println("No se han encontrado coincidencias");
 			return null;
 		}

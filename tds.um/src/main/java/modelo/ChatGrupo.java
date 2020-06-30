@@ -59,10 +59,10 @@ public class ChatGrupo extends Chat{
 		LinkedList<Mensaje> filtrados = new LinkedList<Mensaje>();
 		 //No funca ;-;
 		getHistorial().stream() 
-						.filter(men -> men.getEmisor().getMovil().equals(m.getMovil()))
+						.filter(men -> men.getEmisor().equals(m.getContacto()))
 						.forEach(men -> filtrados.add(men));
 		return filtrados;
 	}
-	
+	 
 	
 }

@@ -23,7 +23,7 @@ public class Mensaje {
 		this.contacto = c; 
 		this.texto = texto;
 		this.fecha = LocalDate.parse(fecha); //cuando creas el mensaje se le pone la fecha actual.
-	}
+	} 
 	
 	public Mensaje(Usuario u, String texto) {
 		this.texto = texto;
