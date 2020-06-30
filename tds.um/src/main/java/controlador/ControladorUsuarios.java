@@ -135,17 +135,24 @@ public class ControladorUsuarios {
 			return true;
 	}
 	
-	//No se si esta funcion sirve para algo.
+	
+	
+	
+	
+	/*
 	public boolean borrarUsuario(Usuario Usuario) {
 		if (!esUsuarioRegistrado(Usuario.getMovil())) return false;
 		
-		AdaptadorUsuarioDAO UsuarioDAO = (AdaptadorUsuarioDAO) factoria.getUsuarioDAO();  /*Adaptador DAO para borrar el Usuario de la BD*/
+		AdaptadorUsuarioDAO UsuarioDAO = (AdaptadorUsuarioDAO) factoria.getUsuarioDAO();  /*Adaptador DAO para borrar el Usuario de la BD
 		UsuarioDAO.delete(Usuario);
 		
 		CatalogoUsuarios.getUnicaInstancia().removeUsuario(Usuario);
 		return true;
-	}
+	}*/
 
+	
+	
+	
 	/**
 	 * Funcion que llama al servicio de persistencia para actualizar el saludo del perfil
 	 * @param usuario
@@ -170,27 +177,6 @@ public class ControladorUsuarios {
 		UsuarioDAO.updateFoto(usuario);		
 		
 	}
-	
-	
-	
-	// ##################### FUNCIONALIDAD DEL MODELO #######################
-	
-	
-	/*
-	//COMO SERÍA DE LA MANERA CORRECTA; LOS CHATS INDIVIDUALES YA SON TUS CONTACTOS
-	/**
-	 * Funcion para añadir un contacto al usuario
-	 * @param nombre
-	 * @param movil
-	 *
-	public void addContactoAlUsuarioActual (String nombre, String movil) {
-		Usuario contacto = CatalogoUsuarios.getUnicaInstancia().getUsuario(movil);
-		ChatIndividual cont = new ChatIndividual(nombre, movil, contacto);
-		AdaptadorUsuarioDAO UsuarioDAO = (AdaptadorUsuarioDAO) factoria.getUsuarioDAO();
-		UsuarioDAO.updateChats(contacto, cont);
-		//UsuarioDAO.updateContactos(ControladorUsuarios.getUnicaInstancia().usuarioActual);	
-	}
-	*/
 
 	
 	/**

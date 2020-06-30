@@ -17,7 +17,6 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import modelo.Usuario;
-import vista.ContactoGUI;
 import vista.ContactoRenderer;
 
 import javax.swing.JList;
