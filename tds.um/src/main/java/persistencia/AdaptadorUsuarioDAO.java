@@ -60,13 +60,13 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 		
 		//*-*-*-*-*--*-*-*-*-* Tratamiento de las propiedad bi-direccionales
 		String contactos = servPersistencia.recuperarPropiedadEntidad(eUsuario, "contactos");
-		//String chatInd = servPersistencia.recuperarPropiedadEntidad(eUsuario, "chatIndividual");
+		String chatInd = servPersistencia.recuperarPropiedadEntidad(eUsuario, "chatIndividual");
 		//String chatGroup = servPersistencia.recuperarPropiedadEntidad(eUsuario, "chatGrupo");
 				
 		System.out.println("En entidadtoUsuario: " + contactos);
 		Usuario.setContactos(obtenerContactosMapDesdeId(contactos));
 		//Usuario.setGrupos(obtenerGruposDesdeId(chatGroup));
-		//Usuario.setChatIndividuales(obtenerChatIndividualesDesdeId(chatInd));
+		Usuario.setChatIndividuales(obtenerChatIndividualesDesdeId(chatInd));
 		return Usuario;
 	}
 
@@ -85,7 +85,7 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 						new Propiedad("clave", Usuario.getClave()),
 						new Propiedad("saludo", Usuario.getSaludo()),
 						new Propiedad("contactos", obtenerIdContactosHash(Usuario.getContactos())),
-						//new Propiedad("chatIndividual", obtenerIdChatIndividual(Usuario.getChatsInd())),
+						new Propiedad("chatIndividual", obtenerIdChatIndividual(Usuario.getChatsInd())),
 						//new Propiedad("chatGrupo", obtenerIdContactosSet(Usuario.getChatsGroup())),
 						new Propiedad("fotoPerfil", Usuario.getFotoPerfil())
 						))
@@ -97,7 +97,7 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 	public void create(Usuario Usuario) {
 		//-*-*-*-*-*--*-* Uso de la pool
 		
-		Entidad eUsuario;
+		Entidad eUsuario = new Entidad();
 		
 		//*-*-*-*-*-*-*-*-Control de si existe el objeto ya, para evitar volver a crearlo y haya repetidos
 		boolean existe = true; 
@@ -120,7 +120,8 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 		//Si no habrá que registrar al usuario en el servidor de persistencia
 		System.out.println("*-*-*-*--Estoy en el create");
 		eUsuario = this.UsuarioToEntidad(Usuario);
-		servPersistencia.registrarEntidad(eUsuario);
+		eUsuario = servPersistencia.registrarEntidad(eUsuario); //MUY IMPORTANTE QUE ESTO SEA ASI, AUNQUE SEA REDUNDANTE
+		System.out.println("id autogenerada " + eUsuario.getId() );
 		Usuario.setId(eUsuario.getId());
 		System.out.println("Usuario registrado con la id: " + Usuario.getId()); //TODO: Quitar Luego
 	}
@@ -188,6 +189,7 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 	
 	public void updateFoto(Usuario usuario) {
 		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getId());
+		System.out.println("en Adaptador usuario, recupere el id en update foto");
 		servPersistencia.eliminarPropiedadEntidad(eUsuario, "fotoPerfil");
 		servPersistencia.anadirPropiedadEntidad(eUsuario, "fotoPerfil",usuario.getFotoPerfil());		
 	}

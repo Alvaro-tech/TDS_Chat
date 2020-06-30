@@ -52,11 +52,13 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 		//BIDIRECCIONALES
 		String contacto = servPersistencia.recuperarPropiedadEntidad(eChat, "contacto");
 		String historial = servPersistencia.recuperarPropiedadEntidad(eChat, "historial");
-		String ultimoMensaje = servPersistencia.recuperarPropiedadEntidad(eChat, "ultimoMensaje");
+		//String ultimoMensaje = servPersistencia.recuperarPropiedadEntidad(eChat, "ultimoMensaje");
+		
+	    System.out.println("AdaptadorChatInd - entidadToChat recupera los bidireccionales");
 		
 		chatIndividual.setContacto(obtenerContactoById(contacto));
-		chatIndividual.setHistorial(obtenerHistorialDesdeId(historial));
-		chatIndividual.setUltimoMensaje(oobtenerUltimoMensajeDesdeId(ultimoMensaje));
+		//chatIndividual.setHistorial(obtenerHistorialDesdeId(historial));
+		//chatIndividual.setUltimoMensaje(oobtenerUltimoMensajeDesdeId(ultimoMensaje));
 		return chatIndividual;
 		
 	}
@@ -97,9 +99,9 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 				new ArrayList<Propiedad>(Arrays.asList(
 						new Propiedad("nombre", chat.getNombre()),
 						new Propiedad ("movil", chat.getMovil()),
-						new Propiedad ("contacto", chat.getUserId().toString()),
-						new Propiedad("ultimoMensaje", obtenerIdUltimoMensaje(chat.getUltimoMensaje())),
-						new Propiedad("historial", obtenerIdMensajes(chat.getHistorial()) )
+						new Propiedad ("contacto", chat.getUserId().toString())
+						//new Propiedad("ultimoMensaje", obtenerIdUltimoMensaje(chat.getUltimoMensaje())),
+						//new Propiedad("historial", obtenerIdMensajes(chat.getHistorial()) )
 								
 						))
 						
@@ -127,8 +129,10 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 			return;
 		
 		eChatInidividual = this.chatToEntidadInd(chat);
-		servPersistencia.registrarEntidad(eChatInidividual);
+		eChatInidividual = servPersistencia.registrarEntidad(eChatInidividual);
 		chat.setId(eChatInidividual.getId());
+		
+		System.out.println("(create - Adaptador cliente) El chat se creo correctamente con una id : " + chat.getId());
 		
 	}
 
@@ -179,8 +183,8 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 	}
 	
 	private String obtenerIdUltimoMensaje(Mensaje ultimoMensaje) {
-		Integer id =(Integer) ultimoMensaje.getId();
-		return id.toString();
+		String m = Integer.toString(ultimoMensaje.getId());
+		return m;
 	}
 	
 	
