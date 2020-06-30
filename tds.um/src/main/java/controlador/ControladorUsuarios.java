@@ -263,10 +263,10 @@ public class ControladorUsuarios {
 	 * @param tipo, tipo de descuento que se aplica, si se aplica uno.
 	 * @return  precio a pagar de la cuenta premium.
 	 */
-	public double getPrecioPremiumConDescuento(String tipo) {
+	public double getPrecioPremiumConDescuento(String tipo, Usuario u) {
 		//calcular con la clase descuento según lo que necesitemos.
 		if(tipo != "") {
-			Descuento des = Descuento.seleccionarDescuento(tipo);
+			Descuento des = Descuento.seleccionarDescuento(tipo, u);
 			this.setDescuento(des);
 			return d.calcularDescuento(precioPremium);
 		}else return precioPremium;

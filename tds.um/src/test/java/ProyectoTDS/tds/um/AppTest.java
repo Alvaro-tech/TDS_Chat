@@ -56,13 +56,18 @@ public class AppTest
     	ControladorUsuarios.getUnicaInstancia().registrarUsuario("maria", "email", "fecha", "movil", "clave");
     	Usuario u = CatalogoUsuarios.getUnicaInstancia().getUsuario("movil");
     	Object a = PoolDAO.getUnicaInstancia().getObjeto(u.getId());
-        assertTrue( true );
+        assertTrue( true ); 
     	*/
     	
     	Usuario Ana = new Usuario("Ana", "ana@gamial.com", "18/11/1999", "111", "111");
 		Usuario Alvaro = new Usuario("alvaro", "ana@gamial.com", "18/11/1999", "222", "111");
 		Usuario Fran = new Usuario("francisco", "ana@gamial.com", "18/11/1999", "444", "111");
+		Integer edad = (Integer) Ana.getEdad();
+		System.out.println("Edad de Ana= " + edad.toString());
 		
+		
+		
+		/*
 		ChatIndividual ind1 = new ChatIndividual("111", "Anita", Ana);
 		ChatIndividual ind2 = new ChatIndividual("444", "fran", Fran);
 		ChatIndividual ind3 = new ChatIndividual("444", "Alvarito", Alvaro);
@@ -121,7 +126,7 @@ public class AppTest
 		LinkedList<Chat> lista2 = ControladorUsuarios.getUnicaInstancia().getChatsRecientes();
 		for (Chat chat : lista2) {
 			System.out.println(chat.toString());
-		}*/ 
+		}
 		
 		LinkedList<Mensaje> mensajesHoli = ControladorUsuarios.getUnicaInstancia().BuscarPorFiltro(ind1, "", f1, null);
 		if (mensajesHoli.size() >0) {
@@ -140,6 +145,8 @@ public class AppTest
 			mensajesHoli2.stream()
 						.forEach(m ->System.out.println(m.toString()));
 		} else System.out.println("no hay coincidencias");
+		
+		*/
 		
     }
 } 

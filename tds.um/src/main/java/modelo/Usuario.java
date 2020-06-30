@@ -1,10 +1,14 @@
 package modelo;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
+import java.util.stream.Collectors;
 
 import persistencia.AdaptadorChatIndividualDAO;
 
@@ -166,21 +170,29 @@ public class Usuario {
 	public String getFotoPerfil() {
 		return fotoPerfil;
 	}
-
 	
-	public void addConversacion(int idChat) {
-		this.conversacionesAbiertas = conversacionesAbiertas + idChat + " ";
+	/**
+	 * Funcion que calcula la edad del usuario.
+	 * @return int años de edad.
+	 */
+	public int getEdad() {
+		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		LocalDate fechaNac = LocalDate.parse(this.getFecha(), fmt);
+		LocalDate ahora = LocalDate.now();
+
+		Period periodo = Period.between(fechaNac, ahora);
+		return periodo.getYears();
 	}
 	
 	
-
+	/**
+	 * Funcion para devolver las conversaciones abiertas del usuario en su sesion
+	 * @return String conversacionesAbiertas
+	 */
 	public String getConversacionesAbiertas() {
 		return conversacionesAbiertas;
 	}
-
-	public void setConversacionesAbiertas(String conversacionesAbiertas) {
-		this.conversacionesAbiertas = conversacionesAbiertas;
-	}
+	
 
 	/**
 	 * Metodo get de Usuario.
@@ -243,6 +255,22 @@ public class Usuario {
 		this.chatsInd = chats;
 	}
 
+	/**
+	 * Método get de Usuario
+	 * @param conversacionesAbiertas
+	 */
+	public void setConversacionesAbiertas(String conversacionesAbiertas) {
+		this.conversacionesAbiertas = conversacionesAbiertas;
+	}
+
+	/**
+	 * Funcion para añadir chats a las conversaciones abiertas
+	 * @param String idChat
+	 */
+	public void addConversacion(int idChat) {
+		this.conversacionesAbiertas = conversacionesAbiertas + idChat + " ";
+	}
+	
 	// ##################### FUNCIONALIDAD #######################
 
 	/**
@@ -262,7 +290,7 @@ public class Usuario {
 	}
 
 
-	/**
+	/** 
 	 * Funcion que devuelve una lista de Chats del usuario de manera ordenada.
 	 * @return lista de chats del usuarios ordenada. LinkedList<Chat>
 	 */
@@ -284,6 +312,33 @@ public class Usuario {
 
 		return recientes;
 
+	}
+
+	/**
+	 * Funcion que retorna el numero de mensajes totales enviados por el usuario
+	 * en este mes.
+	 * @return int numero de mensajes.
+	 */
+	public int getNumeroDeMensajesDelMes() {
+		LinkedList<Chat> todos = new LinkedList<Chat>();
+		todos.addAll(this.getTodosLosChats());
+		
+		LinkedList<Mensaje> mens = new LinkedList<Mensaje>();
+		
+		//Para el futuro: convertir esto en stream para que me quede preciosa la funcion.
+		for (Chat c : todos) {
+			for (Mensaje m : c.getHistorial()) {
+				if(m.getEmisor().equals(this)) {
+					mens.add(m);
+				}
+			}
+		}
+		
+		//En mens tengo todos los mensajes que han sido enviados por el usuario.
+		return (int) mens.stream()
+				.filter(m -> m.getFecha().getMonth().equals(LocalDate.now().getMonth())) //Equals sobre enumerado
+				.count();
+			
 	}
 
 }
