@@ -35,7 +35,7 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 			return new AdaptadorUsuarioDAO();
 		else 
 			return unicaInstancia;
-	}
+	} 
 	
 	public AdaptadorUsuarioDAO() {
 		servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
@@ -156,14 +156,10 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 			return (Usuario) PoolDAO.getUnicaInstancia().getObjeto(id);
 		}
 		
-		
-		//-*-*-*-*-*-*-*-*-*-*--*-*-*-*-*-*--
-		
-		
 		Entidad eUsuario = servPersistencia.recuperarEntidad(id);
 		Usuario usuarioAux = entidadToUsuario(eUsuario);
 		//*-*-*-*-*-*-*-*-*-*-*--*-*- IMPORTANTE:añadir el Usuario al pool antes de llamar a otros
-				// adaptadores
+		// adaptadores
 		System.out.println("En teoria lo he guardado de la pool");
 				PoolDAO.getUnicaInstancia().addObjeto(id, usuarioAux);
 				
@@ -203,10 +199,9 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 		
 		System.out.println("en update contactos " + obtenerIdContactosHash(usuario.getContactos()));
 		
-		
-		
 	}
 	
+	//No...?
 	public void updateChats(Usuario usuario, Chat newChat) {
 		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getId());
 		

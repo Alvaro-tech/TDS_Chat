@@ -1,9 +1,7 @@
 package controlador;
 
-
 import java.time.LocalDate;
 import java.util.LinkedList;
-
 import modelo.CatalogoUsuarios;
 import modelo.Chat;
 import modelo.ChatGrupo;
@@ -17,6 +15,11 @@ import persistencia.AdaptadorUsuarioDAO;
 import persistencia.DAOException;
 import persistencia.FactoriaDAO;
 
+/**
+ * Clase Controlador del sistema. Separa la vista de la lógica del dominio y la persistencia.
+ * @author Álvaro y Ana.
+ *
+ */
 public class ControladorUsuarios {
 	
 	private Usuario usuarioActual;
@@ -25,6 +28,10 @@ public class ControladorUsuarios {
 	private static final double precioPremium = 10.50 ;
 	private Descuento d;
 	
+	/**
+	 * Funcion que crea el Controlador del sistema. Solo habrá uno, siguiendo el
+	 * patrón Singleton.
+	 */
 	private ControladorUsuarios() {
 		usuarioActual = null;
 		try {
@@ -34,32 +41,68 @@ public class ControladorUsuarios {
 		}	
 	}
 	
+	/**
+	 * Funcion que devuelve la única instancia que existe del Controlador. Patrón Singleton.
+	 * @return ControladorUsuarios
+	 */
 	public static ControladorUsuarios getUnicaInstancia() {
 		if (unicaInstancia == null) unicaInstancia = new ControladorUsuarios();
 		return unicaInstancia;
 	}
-	 
+
+	// ##################### GETS Y SETS #######################
+	
+	/**
+	 * Funcion que introduce cual va a ser el descuento que se va a utilizar
+	 * para el calculo del precio premium.
+	 * @param Descuento des
+	 */
 	public void setDescuento(Descuento des) {
 		 this.d = des;
 	}
 	
+	/**
+	 * Devuelve el usuario con la sesion iniciada actualmente en el sistema.
+	 * @return Usuario u.
+	 */
 	public Usuario getusuarioActual() {
 		return usuarioActual;
 	}
 	
+	/**
+	 * Método get del ID del usuario actual.
+	 * @return el ID del usuario actual.
+	 */
 	public String getIdUsuarioActual() {
 		return usuarioActual.getClave();
 	}
 	
+	/**
+	 * Método get del nombre del usuario Actual.
+	 * @return  nombre del usuario Actual
+	 */
 	public String getNombreUsuarioActual() {
 		return usuarioActual.getNombre();
 	}
 	
-	
+	/**
+	 * Funcion que comprueba si el usuario ya está registrado en el sistema.
+	 * @param movil
+	 * @return booleano, true si es cierto, false en otro caso.
+	 */
 	public boolean esUsuarioRegistrado(String movil) {
 		return CatalogoUsuarios.getUnicaInstancia().getUsuario(movil)!=null;
 	}
 	
+
+	// ##################### FUNCIONALIDAD DE LA PERSISTENCIA #######################
+	
+	/**
+	 * Funcion para el Login del usuario en el sistema.
+	 * @param movil
+	 * @param password
+	 * @return true si ha sido posible, false en otro caso.
+	 */
 	public boolean loginUsuario(String movil,String password) {
 		Usuario Usuario = CatalogoUsuarios.getUnicaInstancia().getUsuario(movil);
 		if (Usuario != null && Usuario.getClave().equals(password)) {
@@ -70,6 +113,14 @@ public class ControladorUsuarios {
 		return false;
 	}
 	
+	/**
+	 * Funcion para registrar el usuario en el sistema. Lo introduce en el servicio de persistencia.
+	 * @param nombre
+	 * @param email
+	 * @param fecha
+	 * @param movil
+	 * @param Booleano, true si lo ha introducido con éxito, falso en otro caso.
+	 */
 	public boolean registrarUsuario(String nombre, String email, 
 									String fecha, String movil,
 									String clave) {
@@ -95,6 +146,11 @@ public class ControladorUsuarios {
 		return true;
 	}
 
+	/**
+	 * Funcion que llama al servicio de persistencia para actualizar el saludo del perfil
+	 * @param usuario
+	 * @param saludo
+	 */
 	public void updateSaludo(Usuario usuario, String saludo) {
 		usuario.setSaludo(saludo);
 		AdaptadorUsuarioDAO UsuarioDAO = (AdaptadorUsuarioDAO) factoria.getUsuarioDAO();
@@ -102,6 +158,11 @@ public class ControladorUsuarios {
 		
 	}
 	
+	/**
+	 * Funcion que llama al servicio de persistencia para actualizar la foto de perfil
+	 * @param usuario
+	 * @param foto
+	 */
 	public void updateFoto(Usuario usuario, String foto) {
 		usuario.setFotoPerfil(foto);
 		AdaptadorUsuarioDAO UsuarioDAO = (AdaptadorUsuarioDAO) factoria.getUsuarioDAO();
@@ -109,9 +170,18 @@ public class ControladorUsuarios {
 		UsuarioDAO.updateFoto(usuario);		
 		
 	}
-	// ##################### Otra funcionalidad #######################
 	
-	public void addUsuario (String nombre, String movil) {
+	
+	
+	// ##################### FUNCIONALIDAD DEL MODELO #######################
+	
+	
+	/**
+	 * Funcion para añadir un contacto al usuario
+	 * @param nombre
+	 * @param movil
+	 */
+	public void addUsuario(String nombre, String movil) {
 		Usuario contacto = CatalogoUsuarios.getUnicaInstancia().getUsuario(movil);
 		System.out.println("COntacto a agregar, buscado en el mapa: " + contacto.getMovil());
 		usuarioActual.agregarContacto(nombre, contacto);
@@ -119,6 +189,24 @@ public class ControladorUsuarios {
 		UsuarioDAO.updateContactos(ControladorUsuarios.getUnicaInstancia().usuarioActual);	
 	}
 	
+	/*
+	//COMO SERÍA DE LA MANERA CORRECTA; LOS CHATS INDIVIDUALES YA SON TUS CONTACTOS
+	/**
+	 * Funcion para añadir un contacto al usuario
+	 * @param nombre
+	 * @param movil
+	 *
+	public void addContactoAlUsuarioActual (String nombre, String movil) {
+		Usuario contacto = CatalogoUsuarios.getUnicaInstancia().getUsuario(movil);
+		ChatIndividual cont = new ChatIndividual(nombre, movil, contacto);
+		AdaptadorUsuarioDAO UsuarioDAO = (AdaptadorUsuarioDAO) factoria.getUsuarioDAO();
+		UsuarioDAO.updateChats(contacto, cont);
+		//UsuarioDAO.updateContactos(ControladorUsuarios.getUnicaInstancia().usuarioActual);	
+	}
+	*/
+	
+	
+	//No voy a documentarla porque creo que es desechable que es de tus pruebecillas, alvaro.
 	public void mostrarUsuario() {
 		System.out.println("Mostrar Usuarios:");
 		for(String u : usuarioActual.getContactos().keySet()) {
@@ -126,8 +214,13 @@ public class ControladorUsuarios {
 		}
 	}
 
-	//Te llegan grupos o chats individuales, la cosa es saber que es con el getClass,getSimpleNam y guardarlo en todas partes segun sea needed
+	
+	/**
+	 * Funcion que añade al usuario actual de la sesión a un chat  concreto.
+	 * @param newChat, chat al que se va a añadir.
+	 */
 	public void addChatToUser(Chat newChat) {
+		//Te llegan grupos o chats individuales, la cosa es saber que es con el getClass,getSimpleNam y guardarlo en todas partes segun sea needed
 		switch(newChat.getClass().getSimpleName())
 		{
 		   case "ChatIndividual" :
@@ -148,6 +241,17 @@ public class ControladorUsuarios {
 		
 	}
 	
+	
+	/**
+	 * Funcion que realiza una busqueda de mensajes a través de un chat dado que pertenezcaa al usuario
+	 * actual de la sesión. Se podrá hacer una busqueda combinada de texto y fecha, y en el caso de ser
+	 * un chat de grupo, también buscar mensajes en los que el emisor es el contacto dado.
+	 * @param chat, sobre el que se realizará la búsqueda
+	 * @param texto, filtro de busqueda por texto coincidente
+	 * @param fecha, filtro de busqueda de la fecha
+	 * @param u, contacto dado como filtro
+	 * @return Lista de mensajes que corresponden a los parámetros de filtro de la búsqueda.
+	 */
 	public LinkedList<Mensaje> BuscarPorFiltro(Chat chat, String texto, LocalDate fecha, ChatIndividual u){
 		LinkedList<Mensaje> mensajes = new LinkedList<Mensaje>();
 		//¿Comprobar aqui que el chat pasado pertenece al usuario? supongo que sí...
@@ -171,19 +275,27 @@ public class ControladorUsuarios {
 	/**
 	 * Funcion que devuelve una lista ordenada de los chats del usuario, de más a menos
 	 * recientes.   
-	 * @return
+	 * @return Lista de chats ordenada de mas a menos reciente.
 	 */
 	public LinkedList<Chat> getChatsRecientes() {
 		LinkedList<Chat> chatsRecientes = this.usuarioActual.getChatRecientes();
 		return chatsRecientes;
 	}
 	
+	
+	/**
+	 * Funcion que calcula el precio para pagar una cuenta premium.
+	 * @param tipo, tipo de descuento que se aplica, si se aplica uno.
+	 * @return  precio a pagar de la cuenta premium.
+	 */
 	public double getPrecioPremiumConDescuento(String tipo) {
 		//calcular con la clase descuento según lo que necesitemos.
-		Descuento des = Descuento.seleccionarDescuento(tipo);
-		this.setDescuento(des);
-		return d.calcularDescuento(precioPremium);
-	}
- 
+		if(tipo != "") {
+			Descuento des = Descuento.seleccionarDescuento(tipo);
+			this.setDescuento(des);
+			return d.calcularDescuento(precioPremium);
+		}else return precioPremium;
+	} 
+  
  
 }

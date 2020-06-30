@@ -86,7 +86,7 @@ public class AppTest
 
 		ChatGrupo grupo = new ChatGrupo("chupipandi", ind1, ind2);
 		
-		Mensaje m4 = new Mensaje(Alvaro, "que tal peñita");
+		Mensaje m4 = new Mensaje(Alvaro, "que tal peñita"); 
 		grupo.addMensajeHistorial(m4);
 		
 		Ana.agregarChatIndividual(ind2);

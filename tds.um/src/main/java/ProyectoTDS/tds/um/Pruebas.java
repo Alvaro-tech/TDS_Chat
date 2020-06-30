@@ -51,7 +51,7 @@ public class Pruebas {
 									//emisor, receptor, texto, fecha
 			LocalDate f1 = LocalDate.of(2020, 06, 25); 
 			LocalDate f2 = LocalDate.of(2020, 06, 26);
-			LocalDate f3 = LocalDate.of(2020, 06, 27);
+			LocalDate f3 = LocalDate.of(2020, 06, 27); 
 			
 			Mensaje m1 = new Mensaje(Alvaro, ind1, "holi que tal", f1.toString() );
 			Mensaje m2 = new Mensaje(Ana, ind3, "pos mu bien", f2.toString());
@@ -67,8 +67,8 @@ public class Pruebas {
 
 			ChatGrupo grupo = new ChatGrupo("chupipandi", ind1, ind2);
 			
-			Mensaje m4 = new Mensaje(Alvaro, "que tal peñita");
-			grupo.addMensajeHistorial(m4);
+			//Mensaje m4 = new Mensaje(Alvaro, "que tal peñita");
+			//grupo.addMensajeHistorial(m4);
 			
 			Ana.agregarChatIndividual(ind2);
 			Ana.agregarChatIndividual(ind3);

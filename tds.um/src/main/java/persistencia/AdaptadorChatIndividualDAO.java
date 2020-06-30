@@ -31,7 +31,7 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 		else
 			return unicaInstancia;
 	}
-	
+	 
 	public AdaptadorChatIndividualDAO() {
 		servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
 	}

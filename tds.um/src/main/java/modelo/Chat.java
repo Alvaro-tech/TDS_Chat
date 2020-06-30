@@ -4,76 +4,121 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.LinkedList;
 
+/**
+ * Clase abstracta de Chat, de donde parten ChatIndividual y ChatGrupo
+ * @author Álvaro y Ana.
+ *
+ */
 public abstract class Chat implements Comparator<Chat> {
-
-	// CHAT == CONTACTO
-
-	/*
-	 * Chat es como un contacto: solo la info básica. Voy a escribir una propuesta
-	 * de Chat pensando en este como contacto.
-	 * 
-	 */
 
 	private String nombre;
 	private LinkedList<Mensaje> historial;
 	private int id;
 	private Mensaje ultimoMensaje;
 
+	/**
+	 * Constructor de la clase Chat.
+	 * @param nombre 
+	 */
 	public Chat(String nombre) {
 		this.nombre = nombre;
 		this.historial = new LinkedList<Mensaje>();
 	}
-
+	
+	/**
+	 * Constructor de la clase Chat.
+	 * @param nombre
+	 * @param historial
+	 * @param Mensaje ultimoMensaje = m
+	 */
 	public Chat(String nombre, LinkedList<Mensaje> historial, Mensaje m) {
 		this.nombre = nombre;
 		this.historial = historial;
 		this.ultimoMensaje = m;
 	}
 
+
+	// ##################### GETS Y SETS #######################
+	
+	/**
+	 * Método get de Chat.
+	 * @return historial de mensajes.
+	 */
+	public LinkedList<Mensaje> getHistorial() {
+		return historial;
+	}
+	
+	/**
+	 * Método get de Chat.
+	 * @return ID del chat.
+	 */
+	public int getId() {
+		return id;
+	}
+	
+	/**
+	 * Método get de Chat.
+	 * @return Mensaje Ultimo mensaje enviado en el chat.
+	 */
+	public Mensaje getUltimoMensaje() {
+		return this.ultimoMensaje;
+	}
+	
+	/**
+	 * Método get de Chat.
+	 * @return nombre del chat.
+	 */
+	public String getNombre() {
+		return nombre;
+	}
+
+	/**
+	 * Método set de Chat.
+	 * @param Mensaje m = UltimoMensaje enviado.
+	 */
+	public void setUltimoMensaje(Mensaje m) {
+		this.ultimoMensaje = m;
+	}
+	
+	/**
+	 * Método set de Chat.
+	 * @param Id del chat.
+	 */
+	public void setId(int nId) {
+		this.id = nId;
+	}
+
+	/**
+	 * Método set de Chat.
+	 * @param nombre del chat.
+	 */
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	
+	/**
+	 * Metodo set de Chat.
+	 * @param historial de mensajes.
+	 */
+	public void setHistorial(LinkedList<Mensaje> historial) {
+		this.historial.addAll(historial);
+		this.setUltimoMensaje(historial.getFirst());
+	}
+	
+	/**
+	 * Método set de Chat.
+	 * @param Mensaje m a añadir.
+	 */
 	public void addMensajeHistorial(Mensaje m) {
 		// Siempre se añadirá el último mensaje al principio de la lista.
 		historial.addFirst(m);
 		this.setUltimoMensaje(m);
 	}
-
-	public void setMensaje(LinkedList<Mensaje> mensaje) {
-		this.historial = mensaje;
-	}
-
-	public LinkedList<Mensaje> getHistorial() {
-		return historial;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public Mensaje getUltimoMensaje() {
-		return this.ultimoMensaje;
-	}
-
-	public void setUltimoMensaje(Mensaje m) {
-		this.ultimoMensaje = m;
-	}
-
-	public void setId(int nId) {
-		this.id = nId;
-	}
-
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	public void setHistorial(LinkedList<Mensaje> historial) {
-		this.historial.addAll(historial);
-		this.setUltimoMensaje(historial.getFirst());
-	}
-
 	
+	
+	// ##################### FUNCIONALIDAD #######################
+	
+
 	/**
 	 * Funcion para combinar las busquedas por filtros.
 	 * @param texto
@@ -91,7 +136,6 @@ public abstract class Chat implements Comparator<Chat> {
 
 		if (texto != null) {
 			mensajes = this.BuscarPorTexto(texto, mensajes);
-
 		}
 		
 		if(fecha != null) {
@@ -110,7 +154,9 @@ public abstract class Chat implements Comparator<Chat> {
 	public LinkedList<Mensaje> BuscarPorTexto(String texto) {
 		LinkedList<Mensaje> mensajesFiltrados = new LinkedList<Mensaje>();
 
-		this.historial.stream().filter(m -> m.getTexto().contains(texto)).forEach(m -> mensajesFiltrados.add(m));
+		this.historial.stream()
+				.filter(m -> m.getTexto().contains(texto))
+				.forEach(m -> mensajesFiltrados.add(m));
 
 		return mensajesFiltrados;
 	}
@@ -137,7 +183,9 @@ public abstract class Chat implements Comparator<Chat> {
 	public LinkedList<Mensaje> BuscarPorFecha(LocalDate f) {
 		LinkedList<Mensaje> mensajesFiltrados = new LinkedList<Mensaje>();
 
-		this.historial.stream().filter(m -> m.getFecha().isEqual(f)).forEach(m -> mensajesFiltrados.add(m));
+		this.historial.stream()
+					.filter(m -> m.getFecha().isEqual(f))
+					.forEach(m -> mensajesFiltrados.add(m));
 
 		return mensajesFiltrados;
 	}
@@ -152,12 +200,19 @@ public abstract class Chat implements Comparator<Chat> {
 	public LinkedList<Mensaje> BuscarPorFecha(LocalDate f, LinkedList<Mensaje> mensajes) {
 		LinkedList<Mensaje> mensajesFiltrados = this.BuscarPorFecha(f);
 
-		mensajes.stream().filter(m -> !mensajesFiltrados.contains(m)).forEach(m -> mensajesFiltrados.add(m));
+		mensajes.stream()
+				.filter(m -> !mensajesFiltrados.contains(m))
+				.forEach(m -> mensajesFiltrados.add(m));
 
 		return mensajesFiltrados;
 	}
 
-	// Funcion para comparar dos chats y ver cual es el mas reciente
+	
+
+	/**
+	 * Funcion para comparar dos chats y ver cual es el mas reciente.
+	 * 	@Override
+	 */
 	@Override
 	public int compare(Chat o1, Chat o2) {
 		int a = o2.getUltimoMensaje().getFecha().compareTo(o1.getUltimoMensaje().getFecha());
@@ -165,6 +220,11 @@ public abstract class Chat implements Comparator<Chat> {
 		return a;
 	}
 
+
+	/**
+	 * Funcion para pasar un chat a un string.
+	 * @Override
+	 */
 	@Override
 	public String toString() {
 		return "CHAT = " + this.nombre;
