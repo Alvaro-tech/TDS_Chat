@@ -6,8 +6,8 @@ package modelo;
  *
  */
 public class DescuentoJovenes implements Descuento{
-
-	private double DescuentoJoven = 5.0; 
+	//El descuento Joven consiste en el 30%
+	private static final double PORCENTAJE = 0.3;
 	
 	/**
 	 * calcula el descuento joven que tiene un usuario premium.
@@ -15,7 +15,7 @@ public class DescuentoJovenes implements Descuento{
 	 */
 	public double calcularDescuento(double pago) {
 		// calcular el descuento para los jovenes
-		return pago - DescuentoJoven;
+		return pago - (pago*PORCENTAJE);
 	}
 
 }
