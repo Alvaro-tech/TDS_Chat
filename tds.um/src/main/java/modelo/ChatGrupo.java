@@ -7,7 +7,7 @@ public class ChatGrupo extends Chat{
 	
 	/*
 	 * Un chat de grupo es un conjunto de contacto individual (chat individual)
-	 Con una lista de 
+	 Con una lista de miembros y administradores
 	 */
 	
 	//Aqui el atributo nombre se entiende como el nombre del grupo
@@ -57,12 +57,22 @@ public class ChatGrupo extends Chat{
 	 */
 	public LinkedList<Mensaje> BuscarMensajePorContactos(ChatIndividual m){
 		LinkedList<Mensaje> filtrados = new LinkedList<Mensaje>();
-		 //No funca ;-;
 		getHistorial().stream() 
 						.filter(men -> men.getEmisor().equals(m.getContacto()))
 						.forEach(men -> filtrados.add(men));
 		return filtrados;
 	}
 	 
+	/**
+	 * Busca los mensajes que ha enviado un miembro del grupo. Se lo añade a los mensajes de
+	 * los que ya se había hecho una búsqueda por filtro.
+	 * @param miems
+	 * @return mensajes asociados a un miembro del grupo
+	 */
+	public LinkedList<Mensaje> BuscarMensajePorContactos(ChatIndividual m, LinkedList<Mensaje> mensajes){
+		LinkedList<Mensaje> filtrados = this.BuscarMensajePorContactos(m);
+		filtrados.addAll(mensajes);
+		return filtrados;
+	}
 	
 }

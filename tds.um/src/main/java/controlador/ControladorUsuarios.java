@@ -151,16 +151,11 @@ public class ControladorUsuarios {
 	public LinkedList<Mensaje> BuscarPorFiltro(Chat chat, String texto, LocalDate fecha, ChatIndividual u){
 		LinkedList<Mensaje> mensajes = new LinkedList<Mensaje>();
 		//¿Comprobar aqui que el chat pasado pertenece al usuario? supongo que sí...
-		if(u == null) {
-			//debe ser una busqueda de fecha o texto
-			if(fecha == null) {
-				mensajes = chat.BuscarPorTextoCoincidente(texto);
-			}else {
-				mensajes = chat.BuscarPorFecha(fecha);
+		if(this.usuarioActual.getTodosLosChats().contains(chat)) {
+			//compruebo que si mete el chat individual, es un grupo, o que no lo mete
+			if((u == null) || (chat instanceof ChatGrupo && u!= null)) {
+				mensajes = chat.BuscarPorFiltros(texto, fecha, u);
 			}
-		}else { //solo le pasamos busqueda por contacto en chat de grupos
-			ChatGrupo c = (ChatGrupo) chat;
-			mensajes = c.BuscarMensajePorContactos(u);
 		}
 		
 		if(mensajes == null) { 
@@ -189,6 +184,6 @@ public class ControladorUsuarios {
 		this.setDescuento(des);
 		return d.calcularDescuento(precioPremium);
 	}
-
-
+ 
+ 
 }

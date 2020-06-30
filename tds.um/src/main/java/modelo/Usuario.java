@@ -27,7 +27,7 @@ public class Usuario {
 	//constructores
 	public Usuario(String nombre, String email, String fecha, String movil, String clave) { //Constructor crear uno nuevo
 		this.nombre = nombre;
-		this.email = email;
+		this.email = email; 
 		this.fechaNacimiento = fecha;
 		this.movil = movil;
 		this.clave = clave;
@@ -64,6 +64,13 @@ public class Usuario {
 	
 	public Usuario getUser() {
 		return user;
+	}
+	
+	public HashSet<Chat> getTodosLosChats(){
+		HashSet<Chat> chats = new HashSet<Chat>();
+		chats.addAll(chatsGroup);
+		chats.addAll(chatsInd);
+		return chats;
 	}
 	
 	public boolean isPremium() {
