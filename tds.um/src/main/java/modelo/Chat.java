@@ -227,7 +227,7 @@ public abstract class Chat implements Comparator<Chat> {
 	 */
 	@Override
 	public String toString() {
-		return "CHAT = " + this.nombre;
+		return this.nombre;
 	}
 
 }

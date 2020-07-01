@@ -43,10 +43,13 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 	        e.setNombre("ChatGrupo"); 
 
 	        e.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(new Propiedad("nombre", grupo.getNombre()),
-	                new Propiedad("ultimoMensaje", "0"),
-	                new Propiedad("historial","0"),
-	                new Propiedad("miembros", obtenerMiembros(grupo.getMiembros())),
-	                new Propiedad("administradores", obtenerAdministradores(grupo.getAdministradores())))));
+	                new Propiedad("ultimoMensaje", ""),
+	                new Propiedad("historial",""),
+	                new Propiedad("miembros", obtenerMiembros(grupo.getMiembros()))
+	              //  new Propiedad("administradores", obtenerAdministradores(grupo.getAdministradores())))
+	        		))
+	        		
+	        	);
 	        return e;
 
 	}
@@ -76,6 +79,8 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 		eChatGrupo = this.ChatGrupoToEntidad(grupo);
 		eChatGrupo = servPersistencia.registrarEntidad(eChatGrupo);
 		grupo.setId(eChatGrupo.getId());
+		
+		System.out.println("Termino el create del grupo con id: " + grupo.getId());
 
 	}
 
@@ -96,10 +101,11 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 		String miembros = servPersistencia.recuperarPropiedadEntidad(eGrupo, "miembros");
 		String administradores = servPersistencia.recuperarPropiedadEntidad(eGrupo, "administradores");
 
-		
+		System.out.println("Comienzo a intentar recuperar miembors y eso de grupos");
 		grupo.setMiembros(obtenerMiembrosDesdeId(miembros));
-		grupo.setAdministradores(obtenerAdministradoresDesdeId(administradores));
+		//grupo.setAdministradores(obtenerAdministradoresDesdeId(administradores));
 		
+		System.out.println("Comienzo a intentar recuperar mensjes de grupos");
 		try { //Evitar null pointerExceptions
 			grupo.setUltimoMensaje(obtenerUltimoMensaje(ultimoMensaje));
 			grupo.setHistorial(obtenerHistorialDesdeId(historial));
@@ -247,6 +253,7 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 		for (ChatIndividual iterador : miembros) {
 			aux += iterador.getId() + " ";
 		}
+		System.out.println("obtenerMiebmros " + aux);
 		return aux.trim();
 	}
 

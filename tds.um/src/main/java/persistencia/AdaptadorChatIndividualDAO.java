@@ -108,8 +108,8 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 						new Propiedad("nombre", chat.getNombre()),
 						new Propiedad ("movil", chat.getMovil()),
 						new Propiedad ("contacto", chat.getUserId().toString()),
-						new Propiedad("ultimoMensaje", "0"),
-						new Propiedad("historial", "0" )
+						new Propiedad("ultimoMensaje", ""),
+						new Propiedad("historial", "" )
 								
 						))
 						

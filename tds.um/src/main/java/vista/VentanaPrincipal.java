@@ -124,7 +124,7 @@ public class VentanaPrincipal extends JFrame {
 		JMenuItem mntmCrearGrupo = new JMenuItem("Crear Nuevo Grupo");
 		mntmCrearGrupo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				PanelCrearGrupo nuevo = new PanelCrearGrupo();
+				PanelCrearGrupo nuevo = new PanelCrearGrupo(venPrinAc);
 				nuevo.setVisible(true);
 			}
 		});

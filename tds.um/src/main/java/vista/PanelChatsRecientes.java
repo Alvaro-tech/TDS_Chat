@@ -67,7 +67,6 @@ public class PanelChatsRecientes extends JPanel {
 	
 	public void updateChatsRecientes(Chat chat) {
 		listModel.addElement(chat);
-		list.setModel(listModel);
 		System.out.println("termine el updateChatsRecientes de panelChatsRecientes");
 	}
 

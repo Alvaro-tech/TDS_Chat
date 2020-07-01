@@ -11,7 +11,9 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import java.awt.event.ActionListener;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.awt.event.ActionEvent;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -26,6 +28,7 @@ import com.jgoodies.forms.layout.RowSpec;
 
 import controlador.ControladorUsuarios;
 import modelo.Chat;
+import modelo.ChatGrupo;
 import modelo.ChatIndividual;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.AbstractListModel;
@@ -49,28 +52,20 @@ public class PanelCrearGrupo extends JDialog {
 	private JTextField textTitulo;
 	private DefaultListModel<Object> modeloCont = new DefaultListModel<Object>();
 	private DefaultListModel<Object> modeloMim = new DefaultListModel<Object>();
+	
+	private LinkedList<ChatIndividual> miembrosPotenciales = new LinkedList<ChatIndividual>();
+	
+	private VentanaPrincipal padre;
 
-
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			PanelCrearGrupo dialog = new PanelCrearGrupo();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	/**
 	 * Create the dialog.
 	 */
-	public PanelCrearGrupo() {
+	public PanelCrearGrupo(VentanaPrincipal v) {
 		final JList<Object> listCont = new JList<Object>();
 		final JList <Object> listMim = new JList<Object>();
+		this.padre = v;
+		
 		
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
@@ -114,7 +109,7 @@ public class PanelCrearGrupo extends JDialog {
 					listCont.setModel(modeloCont);
 					HashSet<ChatIndividual> aux =(ControladorUsuarios.getUnicaInstancia().getusuarioActual().getChatsInd());
 					for(ChatIndividual i : aux) {
-						modeloCont.addElement(i.getNombre());
+						modeloCont.addElement(i); //i.getNombre()
 					}
 					}
 				}
@@ -182,8 +177,9 @@ public class PanelCrearGrupo extends JDialog {
 			btnAdd.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {	
 					try {
-						String contacto = (String) listCont.getSelectedValue();
+						ChatIndividual contacto = (ChatIndividual) listCont.getSelectedValue();
 						modeloMim.addElement(contacto);
+						miembrosPotenciales.addLast(contacto);
 					} catch (Exception e) {
 					}
 				}
@@ -210,6 +206,7 @@ public class PanelCrearGrupo extends JDialog {
 						try {
 							int aux = listMim.getSelectedIndex();
 							modeloMim.remove(aux);
+							miembrosPotenciales.remove(aux);
 						} catch (Exception e) {
 						}
 					}
@@ -262,7 +259,22 @@ public class PanelCrearGrupo extends JDialog {
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
+						//Te creas a ti mismo como un miembro más y te añades como admin
+						Chat yoChat = new ChatIndividual(ControladorUsuarios.getUnicaInstancia().getNombreUsuarioActual(),
+								ControladorUsuarios.getUnicaInstancia().getusuarioActual().getMovil(), ControladorUsuarios.getUnicaInstancia().getusuarioActual()); 
+						miembrosPotenciales.addFirst((ChatIndividual)yoChat);
 						
+						//Te registrar en persitencia como un chatIndividual en el grupo
+						ControladorUsuarios.getUnicaInstancia().addChatToUser(yoChat);
+						
+						
+						//Te añades este nuevo grupo a tu lista de grupos
+						ChatIndividual[] auxG = miembrosPotenciales.toArray(new ChatIndividual[miembrosPotenciales.size()]);
+						Chat newChatG = new ChatGrupo(textGroupName.getText(), auxG);
+						ControladorUsuarios.getUnicaInstancia().addChatToUser(newChatG);
+						
+						//Actulizas el panel de chats recientes
+						padre.addChatsRecientes(newChatG);
 					}
 				});
 				okButton.setActionCommand("OK");

@@ -36,12 +36,11 @@ public class Pruebas {
 	
 		
 		public static void main(String[] args) {
+			Usuario Ana = new Usuario("Ana", "ana@gamial.com", "18/11/1999", "111", "111");
+			Chat a = new ChatIndividual("lupta", "movil", Ana);
 			
-			String a = "12 3 2 3 ";
-			String b = "12 ";
+			System.out.println(a.toString());
 			
-			System.out.println(a.contains(b));
-
 
 			
 		}
