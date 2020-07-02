@@ -5,7 +5,7 @@ public class DescuentoSantaTecla implements Descuento {
 	
 	/**
 	 * calcula el descuento joven que tiene un usuario premium.
-	 * @return pago final una vez aplicado el descuento.
+	 * @return pago final (de un mes) una vez aplicado el descuento.
 	 */
 	@Override
 	public double calcularDescuento(double pago) {

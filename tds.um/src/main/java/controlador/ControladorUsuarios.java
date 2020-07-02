@@ -25,7 +25,7 @@ public class ControladorUsuarios {
 	private Usuario usuarioActual;
 	private static ControladorUsuarios unicaInstancia;
 	private FactoriaDAO factoria;
-	private static final double precioPremium = 10.50 ;
+	private static final double precioPremium = 10.50 ; //al año.
 	private Descuento d;
 	
 	/**
@@ -127,7 +127,7 @@ public class ControladorUsuarios {
 
 			if (esUsuarioRegistrado(movil)) return false;
 			//Usuario(String nombre, String email, String fecha, String movil, String clave)
-			Usuario Usuario = new Usuario(nombre,email,fecha,movil, clave); //TODO: Arreglar esto para que se ponga el estado por defecto y no se quede en blanco
+			Usuario Usuario = new Usuario(nombre,email,fecha,movil, clave); 
 			AdaptadorUsuarioDAO UsuarioDAO = (AdaptadorUsuarioDAO) factoria.getUsuarioDAO(); /*Adaptador DAO para almacenar el nuevo Usuario en la BD*/
 			UsuarioDAO.create(Usuario);
 			
@@ -240,8 +240,7 @@ public class ControladorUsuarios {
 		if(mensajes == null) { 
 			System.out.println("No se han encontrado coincidencias");
 			return null;
-		}
-		return mensajes;
+		}else return mensajes;
 	}
 	
 	
@@ -259,7 +258,7 @@ public class ControladorUsuarios {
 	
 	
 	/**
-	 * Funcion que calcula el precio para pagar una cuenta premium.
+	 * Funcion que calcula el precio para pagar una cuenta premium en un mes.
 	 * @param tipo, tipo de descuento que se aplica, si se aplica uno.
 	 * @return  precio a pagar de la cuenta premium.
 	 */
@@ -268,8 +267,8 @@ public class ControladorUsuarios {
 		if(tipo != "") {
 			Descuento des = Descuento.seleccionarDescuento(tipo, u);
 			this.setDescuento(des);
-			return d.calcularDescuento(precioPremium);
-		}else return precioPremium;
+			return d.calcularDescuento(precioPremium/12);
+		}else return precioPremium/12;
 	}
 
 	/**
@@ -283,6 +282,21 @@ public class ControladorUsuarios {
 		
 	} 
 	
-  
- 
+	
+	//TODO
+	public void cargarMensajes() {
+		
+	}
+	
+	//TODO
+	public void exportarMensajes() {
+		
+	}
+	
+	//TODO
+	public void crearEstadisticas() {
+		
+	}
+	
 }
+  

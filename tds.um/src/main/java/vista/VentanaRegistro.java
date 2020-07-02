@@ -21,7 +21,6 @@ import java.awt.event.ActionListener;
 import java.util.Date;
 import java.awt.event.ActionEvent;
 import com.toedter.calendar.JCalendar;
-
 import controlador.ControladorUsuarios;
 import com.toedter.calendar.JDateChooser;
 

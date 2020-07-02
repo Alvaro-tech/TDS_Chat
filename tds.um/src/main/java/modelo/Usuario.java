@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 
@@ -27,12 +28,13 @@ public class Usuario {
 	String clave; // contraseña
 	String fotoPerfil;
 	boolean premium;
-	// Lista de chats
-	HashSet<ChatIndividual> chatsInd = new HashSet<ChatIndividual>();
-	HashSet<ChatGrupo> chatsGroup = new HashSet<ChatGrupo>();
 	Integer id;
 	String saludo;
 	String conversacionesAbiertas;
+	// Lista de chats
+	HashSet<ChatIndividual> chatsInd = new HashSet<ChatIndividual>();
+	HashSet<ChatGrupo> chatsGroup = new HashSet<ChatGrupo>();
+	
 
 	/**
 	 * Constructor de la clase Usuario.
@@ -323,6 +325,7 @@ public class Usuario {
 		LinkedList<Chat> todos = new LinkedList<Chat>();
 		todos.addAll(this.getTodosLosChats());
 		
+		/*
 		LinkedList<Mensaje> mens = new LinkedList<Mensaje>();
 		
 		//Para el futuro: convertir esto en stream para que me quede preciosa la funcion.
@@ -332,13 +335,25 @@ public class Usuario {
 					mens.add(m);
 				}
 			}
-		}
+		}*/
 		
-		//En mens tengo todos los mensajes que han sido enviados por el usuario.
-		return (int) mens.stream()
-				.filter(m -> m.getFecha().getMonth().equals(LocalDate.now().getMonth())) //Equals sobre enumerado
-				.count();
-			
+		//saco de todos una lista de listas de mensajes
+		List<List<Mensaje>> mensas = 
+				todos.stream()
+					.map(c-> c.getHistorial())
+					.collect(Collectors.toList());
+		
+		//de mensas hago un flatmap para convertir la lista de listas en una lista simple
+		List<Mensaje> mensajes= //lista con todos los mensajes
+				mensas.stream()
+				.flatMap(List::stream)
+				.collect(Collectors.toList());
+		
+		//hago la busqueda de los mensajes y los cuento.
+		return (int) mensajes.stream()
+					.filter(m -> m.getEmisor().equals(this))
+					.filter(m -> m.getFecha().getMonth().equals(LocalDate.now().getMonth())) //Equals sobre enumerado
+					.count();
 	}
 
 }
