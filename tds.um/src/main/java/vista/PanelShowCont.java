@@ -76,6 +76,7 @@ public class PanelShowCont extends JPanel {
 		 	public void actionPerformed(ActionEvent arg0) {
 		 		if (contactoSelect != null) {
 		 			contactoSelect = list.getSelectedValue();
+		 			//padre es para volver a la ventana pral
 					padre.addChatsRecientes(contactoSelect);
 		 			
 		 		} else {

@@ -183,6 +183,7 @@ public class ControladorUsuarios {
 	 * Funcion que añade al usuario actual de la sesión a un chat  concreto.
 	 * @param newChat, chat al que se va a añadir.
 	 */
+	//TODO: REUTILIZAR ESTA FUNCION CON TODOS LOS MIEMBROS.
 	public void addChatToUser(Chat newChat) {
 		//Te llegan grupos o chats individuales, la cosa es saber que es con el getClass,getSimpleNam y guardarlo en todas partes segun sea needed
 		switch(newChat.getClass().getSimpleName())
@@ -200,23 +201,27 @@ public class ControladorUsuarios {
 			   this.getusuarioActual().agregarChatGrupo(chatAux1);
 			   break;
 		}
+		
 		System.out.println("Controlador-AddchattoUser  llaamo a updateChats");
 		AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(this.usuarioActual, newChat);
 		
 	}
 	
-	//TODO: parametros
+	//TODO: parametros en javadoc
 	/**
 	 * Funcion llamada desde el panel crear contacto, para añadir nuevos chats individuales
 	 * @param 
 	 */
 	public void addChatToUser(String nombre, String telefono) {
+		//busca el contacto con el que quiere iniciar la conversacion
 		Usuario contacto = CatalogoUsuarios.getUnicaInstancia().getUsuario(telefono);
+		//TODO: pasar funcion add y crear. al usuario no lo haga el controlador.
 		Chat chatAux = new ChatIndividual(nombre, telefono, contacto);
 		addChatToUser(chatAux);
 	}
 	
 	
+	//TODO: BUSCA POR RANGO DE FECHAS INUTIL.
 	/**
 	 * Funcion que realiza una busqueda de mensajes a través de un chat dado que pertenezcaa al usuario
 	 * actual de la sesión. Se podrá hacer una busqueda combinada de texto y fecha, y en el caso de ser
@@ -273,14 +278,20 @@ public class ControladorUsuarios {
 
 	/**
 	 * Añadir a los chat recientes del usuario la nueva conversación que se ha inicidado
+	 * se utiliza cuando se envía un mensaje
 	 * @param tipo, tipo de descuento que se aplica, si se aplica uno.
 	 * @return  precio a pagar de la cuenta premium.
 	 */
 	public void addChatRecienteToUser(Chat Chat) {
+		//añade la conversacion en su lista
 		usuarioActual.addConversacion(Chat.getId());
+		//actualiza las conversaciones
 		AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(usuarioActual);
-		
-	} 
+		//TODO: buscar el usuario del chat (el contacto) y hacer lo inverso;
+		//para que aparezca el chat a los dos. Ver si no te tienes gusradado.
+		//hacer un if else comprobando con instanceof para que valga para grupo.
+	}
+	
 	
 	
 	//TODO

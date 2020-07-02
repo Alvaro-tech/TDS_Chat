@@ -14,6 +14,9 @@ public class ChatGrupo extends Chat{
 	//Aqui el atributo nombre se entiende como el nombre del grupo
 	private LinkedList<ChatIndividual> miembros = new LinkedList<ChatIndividual>();
 	private HashSet<Usuario> administradores = new HashSet<Usuario>();
+	//TODO: añadir un int IDPadre para localizar los grupos duplicados
+	//grupo duplicado: todo igual menos los miembros.
+	//tener en cuenta cuando cree los grupos hijos.
 	
 	/**
 	 * Constructor de ChatGurpo

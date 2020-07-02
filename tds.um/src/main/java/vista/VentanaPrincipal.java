@@ -269,7 +269,10 @@ public class VentanaPrincipal extends JFrame {
 	//Función llamada desde el Panel ShowCont, para iniciar una nueva conversación.
 	protected void addChatsRecientes(Chat newChat) {
 		System.out.println("del panel mostrarUsuario llegue aqui ( ventanaPrincipal- addChatsRecientes)");
+		//vete al panel de la izq de los chats y añadelo
 		pChatRec.updateChatsRecientes(newChat);
+		//llama al controlador.
+		//TODO: no llamar a esta funcion todavía, simplemente abrir la ventana de chat con esa persona.
 		controler.addChatRecienteToUser(newChat);
 		
 	}

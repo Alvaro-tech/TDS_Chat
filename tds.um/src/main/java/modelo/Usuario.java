@@ -34,6 +34,9 @@ public class Usuario {
 	// Lista de chats
 	HashSet<ChatIndividual> chatsInd = new HashSet<ChatIndividual>();
 	HashSet<ChatGrupo> chatsGroup = new HashSet<ChatGrupo>();
+	//lista de chats abiertos de ppl que no tienes agregada
+	//TODO: ir funcion por funcion teniendo esto en cuenta.
+	HashSet<ChatIndividual> chatsDesconocido = new HashSet<ChatIndividual>();
 	
 
 	/**
@@ -204,6 +207,7 @@ public class Usuario {
 		HashSet<Chat> chats = new HashSet<Chat>();
 		chats.addAll(chatsGroup);
 		chats.addAll(chatsInd);
+		chats.addAll(chatsDesconocido);
 		return chats;
 	}
 
@@ -246,6 +250,11 @@ public class Usuario {
 	 * @param grupos
 	 */
 	public void setGrupos(HashSet<ChatGrupo> grupos) {
+		//TODO: recorrer el grupo y cambiar el nombre como convenga.
+		//extraer los moviles de los chatsindividuales (tus contactos)
+		//recorrer los chats indiv. del grupo y mirar los moviles coincidentes
+		//duplicar el grupo. 
+		//mirar tratamiento de miembros y blablabla y lo del atributo padre.
 		this.chatsGroup = grupos;
 	}
 
@@ -296,11 +305,13 @@ public class Usuario {
 	 * Funcion que devuelve una lista de Chats del usuario de manera ordenada.
 	 * @return lista de chats del usuarios ordenada. LinkedList<Chat>
 	 */
+	//TODO: chatDesconocidos.
 	public LinkedList<Chat> getChatRecientes() {
 		LinkedList<Chat> todos = new LinkedList<Chat>();
 		todos.addAll(this.getTodosLosChats());
 		LinkedList<Chat> recientes = new LinkedList<Chat>();
 
+		//TODO: STREAMEARLO
         	for (Chat chat : todos) {
         		String idChat = chat.getId() +" "; //De esta manera el constains no da por true el 1 en un 12, asegura buscar numeros independientes
 				if(conversacionesAbiertas.contains(idChat)) {

@@ -50,9 +50,9 @@ public class PanelCrearGrupo extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textGroupName;
 	private JTextField textTitulo;
-	private DefaultListModel<Object> modeloCont = new DefaultListModel<Object>();
-	private DefaultListModel<Object> modeloMim = new DefaultListModel<Object>();
-	
+	private DefaultListModel<Object> modeloCont = new DefaultListModel<Object>(); //contactos disponibles
+	private DefaultListModel<Object> modeloMim = new DefaultListModel<Object>(); //los añades al grupo
+	//llevar cuenta de los que pasan de un lado a otro.
 	private LinkedList<ChatIndividual> miembrosPotenciales = new LinkedList<ChatIndividual>();
 	
 	private VentanaPrincipal padre;
@@ -173,7 +173,7 @@ public class PanelCrearGrupo extends JDialog {
 				Central.add(textGroupName, gbc_textGroupName);
 				textGroupName.setColumns(10);
 			}
-			JButton btnAdd = new JButton("-->");
+			JButton btnAdd = new JButton("-->"); //boton para pasar de contactos a grupos
 			btnAdd.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {	
 					try {
@@ -200,13 +200,13 @@ public class PanelCrearGrupo extends JDialog {
 			gbc_btnAdd.gridy = 3;
 			Central.add(btnAdd, gbc_btnAdd);
 			{
-				JButton btnDelete = new JButton("<--");
+				JButton btnDelete = new JButton("<--"); //boton para pasar de miembros a contactos (no lo quieres en el grupo)
 				btnDelete.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						try {
 							int aux = listMim.getSelectedIndex();
 							modeloMim.remove(aux);
-							miembrosPotenciales.remove(aux);
+							miembrosPotenciales.remove(aux); //guardo el chat, aunque se muestre solo el nombre
 						} catch (Exception e) {
 						}
 					}
@@ -256,10 +256,12 @@ public class PanelCrearGrupo extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("OK");
+				JButton okButton = new JButton("OK"); //quiero crear el grupo
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						//Te creas a ti mismo como un miembro más y te añades como admin
+						//TODO: la vista no debería crear el chat.
+						//TODO: DARLE UNA VUELTA A ESTO DE LOS GRUPOS QUE...
 						Chat yoChat = new ChatIndividual(ControladorUsuarios.getUnicaInstancia().getNombreUsuarioActual(),
 								ControladorUsuarios.getUnicaInstancia().getusuarioActual().getMovil(), ControladorUsuarios.getUnicaInstancia().getusuarioActual()); 
 						miembrosPotenciales.addFirst((ChatIndividual)yoChat);
@@ -270,9 +272,11 @@ public class PanelCrearGrupo extends JDialog {
 						
 						//Te añades este nuevo grupo a tu lista de grupos
 						ChatIndividual[] auxG = miembrosPotenciales.toArray(new ChatIndividual[miembrosPotenciales.size()]);
+						//TODO: pecado. NO debe crearlo la vista.
 						Chat newChatG = new ChatGrupo(textGroupName.getText(), auxG);
+						//TODO: cambiarla en el controlador.
 						ControladorUsuarios.getUnicaInstancia().addChatToUser(newChatG);
-						
+						//TODO: CREAR EL GRUPO PARA LOS DEMAS MIEMBROS
 						//Actulizas el panel de chats recientes
 						padre.addChatsRecientes(newChatG);
 					}

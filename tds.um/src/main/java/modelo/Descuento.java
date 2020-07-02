@@ -29,7 +29,7 @@ public interface Descuento {
 	 * @param tipo (de descuento, puede ser "DescuentoFijo" o "DescuentoJoven")
 	 * @return Descuento d concreto. Null si el tipo es incorrecto.
 	 */
-	static Descuento seleccionarDescuento(String tipo, Usuario u) {
+	public static Descuento seleccionarDescuento(String tipo, Usuario u) {
 		switch (tipo) {
 		case "DescuentoJovenes":
 			if (u.getEdad() <= 25) {

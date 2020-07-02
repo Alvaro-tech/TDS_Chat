@@ -40,8 +40,8 @@ public class VentanaLupa extends JDialog {
 	 * Create the dialog.
 	 */
 	public VentanaLupa(Chat chat) {
-		chatCargado = chat;
-		
+		chatCargado = chat;												//chat del que se va a buscar
+		//TODO: meter un Usuario para hacer pruebas. Será el usuario del que se hace la busqueda.
 		setBounds(100, 100, 550, 300);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{79, 323, 0};
@@ -78,7 +78,7 @@ public class VentanaLupa extends JDialog {
 			getContentPane().add(chckbxTexto, gbc_chckbxTexto);
 		}
 		{
-			JTextPane textTextoBuscar = new JTextPane();
+			JTextPane textTextoBuscar = new JTextPane();						//testo que se quiere buscar
 			textTextoBuscar.setEnabled(false);
 			GridBagConstraints gbc_textTextoBuscar = new GridBagConstraints();
 			gbc_textTextoBuscar.insets = new Insets(0, 0, 5, 0);
@@ -114,8 +114,8 @@ public class VentanaLupa extends JDialog {
 				textFinicial.setColumns(10);
 			}
 			{
-				JDateChooser dateChooser = new JDateChooser();
-				panelFechas.add(dateChooser);
+				JDateChooser fInicio = new JDateChooser();							//fecha a buscar inicial
+				panelFechas.add(fInicio);
 			}
 			{
 				textFfinal = new JTextField();
@@ -125,8 +125,8 @@ public class VentanaLupa extends JDialog {
 				textFfinal.setColumns(10);
 			}
 			{
-				JDateChooser dateChooser = new JDateChooser();
-				panelFechas.add(dateChooser);
+				JDateChooser fFinal = new JDateChooser();							//fecha a buscar final
+				panelFechas.add(fFinal);
 			}
 		}
 		contentPanel.setLayout(new FlowLayout());
@@ -150,6 +150,7 @@ public class VentanaLupa extends JDialog {
 				JButton okButton = new JButton("Buscar");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						//TODO: hacer para las busquedas
 					}
 				});
 				okButton.setActionCommand("OK");
