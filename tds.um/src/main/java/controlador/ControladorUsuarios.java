@@ -293,6 +293,7 @@ public class ControladorUsuarios {
 	}
 	
 	
+	//TODO: ENVIAR MENSAJE A GRUPO.
 	
 	//TODO
 	public void cargarMensajes() {

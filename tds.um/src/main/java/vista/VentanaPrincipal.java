@@ -22,6 +22,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JMenuBar;
 import javax.swing.JTextField;
 import java.awt.Component;
@@ -177,13 +178,21 @@ public class VentanaPrincipal extends JFrame {
 		btnCuenta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				if (chatActual.getClass().getSimpleName().equals("ChatIndividual")) {
-					ChatIndividual cAux = (ChatIndividual) chatActual;
-					Usuario uAux = cAux.getContacto();
-					VentanaCuentaC frame = new VentanaCuentaC(uAux); //TODO: CAMBIAR
-					frame.setVisible(true);
+				try {
+					if (chatActual.getClass().getSimpleName().equals("ChatIndividual")) {
+						ChatIndividual cAux = (ChatIndividual) chatActual;
+						Usuario uAux = cAux.getContacto();
+						VentanaCuentaC frame = new VentanaCuentaC(uAux); //TODO: CAMBIAR
+						frame.setVisible(true);
+					}
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(ventana,
+                            "Debes seleccionar un contacto para poder ver su información.\n Vuelve a "
+                            + "intentarlo pero pulsando un contacto.\n",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
 				}
-				
+					
 			}
 		});
 		menuBar.add(btnCuenta);

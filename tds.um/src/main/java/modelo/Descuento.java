@@ -31,21 +31,21 @@ public interface Descuento {
 	 */
 	public static Descuento seleccionarDescuento(String tipo, Usuario u) {
 		switch (tipo) {
-		case "DescuentoJovenes":
+		case "Descuento para Jovenes":
 			if (u.getEdad() <= 25) {
 				DescuentoJovenes f = new DescuentoJovenes();
 				return f;
 			} else
 				return null;
 
-		case "DescuentoViciados":
+		case "Descuento para Viciados":
 			if (u.getNumeroDeMensajesDelMes() >= MENSAJESVICIO) {
 				DescuentoViciados j = new DescuentoViciados();
 				return j;
 			} else
 				return null;
 
-		case "DescuentoSantaTecla":
+		case "Descuento de Santa Tecla":
 			LocalDate fechaActual = LocalDate.now();
 			//Comprueba que se hace el descuento en esos días del mes, en santa tecla
 			//Santa Tecla es del 15 al 24 de Septiembre

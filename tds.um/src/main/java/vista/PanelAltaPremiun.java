@@ -41,6 +41,7 @@ public class PanelAltaPremiun extends JDialog {
 		}
 	}
 
+	
 	/**
 	 * Create the dialog.
 	 */
@@ -80,7 +81,7 @@ public class PanelAltaPremiun extends JDialog {
 			gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 			panel.setLayout(gbl_panel);
 			{
-				JRadioButton rdbtnMensajes = new JRadioButton("Más Mensajero");
+				JRadioButton rdbtnMensajes = new JRadioButton("Descuento para Jovenes");
 				buttonGroup.add(rdbtnMensajes);
 				GridBagConstraints gbc_rdbtnMensajes = new GridBagConstraints();
 				gbc_rdbtnMensajes.anchor = GridBagConstraints.NORTHWEST;
@@ -90,7 +91,7 @@ public class PanelAltaPremiun extends JDialog {
 				panel.add(rdbtnMensajes, gbc_rdbtnMensajes);
 			}
 			{
-				JRadioButton rdbtnEspecialVerano = new JRadioButton("Especial Verano");
+				JRadioButton rdbtnEspecialVerano = new JRadioButton("Descuento para Viciados");
 				buttonGroup.add(rdbtnEspecialVerano);
 				GridBagConstraints gbc_rdbtnEspecialVerano = new GridBagConstraints();
 				gbc_rdbtnEspecialVerano.anchor = GridBagConstraints.NORTHWEST;
@@ -100,7 +101,7 @@ public class PanelAltaPremiun extends JDialog {
 				panel.add(rdbtnEspecialVerano, gbc_rdbtnEspecialVerano);
 			}
 			{
-				JRadioButton rdbtnEstandar = new JRadioButton("Estándar");
+				JRadioButton rdbtnEstandar = new JRadioButton("Descuento de Santa Tecla");
 				buttonGroup.add(rdbtnEstandar);
 				GridBagConstraints gbc_rdbtnEstandar = new GridBagConstraints();
 				gbc_rdbtnEstandar.insets = new Insets(0, 0, 5, 5);
@@ -148,6 +149,9 @@ public class PanelAltaPremiun extends JDialog {
 			{
 				JButton okButton = new JButton("OK");
 				okButton.setActionCommand("OK");
+				//TODO: HACER EL ACTION PERFORMED cambiar los nombres del radio button
+				buttonGroup.getSelection().getActionCommand(); //string tipo descuento
+			
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
