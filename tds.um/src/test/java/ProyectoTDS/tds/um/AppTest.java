@@ -2,6 +2,8 @@ package ProyectoTDS.tds.um;
 
 import java.time.LocalDate;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import controlador.ControladorUsuarios;
 // cd  \Users\alvar\Desktop\Universidad\Persistencia\H2
@@ -147,6 +149,35 @@ public class AppTest
 		} else System.out.println("no hay coincidencias");
 		
 		*/
+		
+		LinkedList<String> string1 = new LinkedList<String>();
+		string1.add("holi");
+		string1.add("aNA");
+		string1.add("ALMUDENA");
+		string1.add("ELENA");
+		string1.add("PRUEBAS");
+		
+		LinkedList<String> string2 = new LinkedList<String>();
+		string1.add("hello");
+		string1.add("ALL");
+		string1.add("HUMANS");
+		string1.add("ARE");
+		string1.add("BASTARDS");
+		
+		LinkedList<LinkedList<String>> mensas = new LinkedList<LinkedList<String>>();
+		mensas.add(string2);
+		mensas.add(string1);
+		
+		//de mensas hago un flatmap para convertir la lista de listas en una lista simple
+		List<String> mensajes= //lista con todos los mensajes
+				mensas.stream()
+				.flatMap(List::stream)
+				.collect(Collectors.toList());
+		
+		mensajes.stream()
+				//.forEach(s -> System.out.println(s))
+				.filter(s -> s.contains("a") || s.contains("A") )
+				.forEach(s -> System.out.println(s));
 		
     }
 } 

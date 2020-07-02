@@ -335,7 +335,8 @@ public class Usuario {
 					mens.add(m);
 				}
 			}
-		}*/
+		}
+		*/
 		
 		//saco de todos una lista de listas de mensajes
 		List<List<Mensaje>> mensas = 
