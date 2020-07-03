@@ -76,7 +76,7 @@ public class Usuario {
 																															// recuperar
 		this.nombre = nombre;
 		this.email = email;
-		this.fechaNacimiento = fecha;
+		this.fechaNacimiento = fecha; //FORMATO dd/MM/yyyy   ejemplo: 18/11/1999
 		this.movil = movil;
 		this.clave = clave;
 		this.premium = false;
@@ -181,11 +181,9 @@ public class Usuario {
 	 * @return int años de edad.
 	 */
 	public int getEdad() {
-		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		LocalDate fechaNac = LocalDate.parse(this.getFecha(), fmt);
 		LocalDate ahora = LocalDate.now();
-
-		Period periodo = Period.between(fechaNac, ahora);
+        LocalDate fNaci = LocalDate.parse(this.fechaNacimiento, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+		Period periodo = Period.between(fNaci, ahora);
 		return periodo.getYears();
 	}
 	

@@ -16,6 +16,7 @@ import modelo.Usuario;
 import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
 
+//TODO: revisar por si he metido mal lo del idPadre
 public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 
 	private ServicioPersistencia servPersistencia;
@@ -40,14 +41,15 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 	 */
 	private Entidad ChatGrupoToEntidad(ChatGrupo grupo) {
 		 Entidad e = new Entidad();
-	        e.setNombre("ChatGrupo"); 
+	        e.setNombre("ChatGrupo");
 
 	        e.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(new Propiedad("nombre", grupo.getNombre()),
-	                new Propiedad("ultimoMensaje", ""),
+	                new Propiedad("idPadre", grupo.getIdPadre()),
+	        		new Propiedad("ultimoMensaje", ""),
 	                new Propiedad("historial",""),
-	                new Propiedad("miembros", obtenerMiembros(grupo.getMiembros()))
-	              //  new Propiedad("administradores", obtenerAdministradores(grupo.getAdministradores())))
-	        		))
+	                new Propiedad("miembros", obtenerMiembros(grupo.getMiembros())),
+	                new Propiedad("administradores", obtenerAdministradores(grupo.getAdministradores())))
+	        		)
 	        		
 	        	);
 	        return e;
@@ -88,10 +90,12 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 
 		// *-*-*-*-*-*-*-*-*-*--*-*-Objetos Fijos
 		String nombreg = servPersistencia.recuperarPropiedadEntidad(eGrupo, "nombre");
+		String idPadre = servPersistencia.recuperarPropiedadEntidad(eGrupo, "idPadre");
 
 		// Crear un ChatGrupo solo con los objetos fijos.
 		ChatGrupo grupo = new ChatGrupo(nombreg);
 		grupo.setId(eGrupo.getId());
+		grupo.setIdPadre(idPadre);
 		// Lo guardamos en el Pool (por eficiencia, no por evitar ciclos)
 		PoolDAO.getUnicaInstancia().addObjeto(grupo.getId(), grupo);
 
@@ -103,7 +107,7 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 
 		System.out.println("Comienzo a intentar recuperar miembors y eso de grupos");
 		grupo.setMiembros(obtenerMiembrosDesdeId(miembros));
-		//grupo.setAdministradores(obtenerAdministradoresDesdeId(administradores));
+		grupo.setAdministradores(obtenerAdministradoresDesdeId(administradores));
 		
 		System.out.println("Comienzo a intentar recuperar mensjes de grupos");
 		try { //Evitar null pointerExceptions
@@ -201,6 +205,7 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 		return g;
 	}
 
+	
 	@Override
 	/**
 	 * Funcion para obtener una lista de todos los grupos del catálogo

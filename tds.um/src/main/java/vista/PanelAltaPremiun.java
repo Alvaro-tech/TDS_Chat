@@ -7,6 +7,9 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import controlador.ControladorUsuarios;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -15,6 +18,7 @@ import java.awt.Font;
 import java.awt.Color;
 import java.awt.SystemColor;
 import javax.swing.JEditorPane;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JTextField;
@@ -82,6 +86,7 @@ public class PanelAltaPremiun extends JDialog {
 			panel.setLayout(gbl_panel);
 			{
 				JRadioButton rdbtnMensajes = new JRadioButton("Descuento para Jovenes");
+				rdbtnMensajes.setActionCommand("Descuento para Jovenes");
 				buttonGroup.add(rdbtnMensajes);
 				GridBagConstraints gbc_rdbtnMensajes = new GridBagConstraints();
 				gbc_rdbtnMensajes.anchor = GridBagConstraints.NORTHWEST;
@@ -92,6 +97,7 @@ public class PanelAltaPremiun extends JDialog {
 			}
 			{
 				JRadioButton rdbtnEspecialVerano = new JRadioButton("Descuento para Viciados");
+				rdbtnEspecialVerano.setActionCommand("Descuento para Viciados");
 				buttonGroup.add(rdbtnEspecialVerano);
 				GridBagConstraints gbc_rdbtnEspecialVerano = new GridBagConstraints();
 				gbc_rdbtnEspecialVerano.anchor = GridBagConstraints.NORTHWEST;
@@ -102,6 +108,7 @@ public class PanelAltaPremiun extends JDialog {
 			}
 			{
 				JRadioButton rdbtnEstandar = new JRadioButton("Descuento de Santa Tecla");
+				rdbtnEstandar.setActionCommand("Descuento de Santa Tecla");
 				buttonGroup.add(rdbtnEstandar);
 				GridBagConstraints gbc_rdbtnEstandar = new GridBagConstraints();
 				gbc_rdbtnEstandar.insets = new Insets(0, 0, 5, 5);
@@ -127,7 +134,7 @@ public class PanelAltaPremiun extends JDialog {
 			{
 				textField = new JTextField();
 				textField.setFont(new Font("Tahoma", Font.BOLD, 14));
-				textField.setText("0 €");
+				textField.setText("0€");							//texto donde aparece el precio.
 				textField.setEditable(false);
 				GridBagConstraints gbc_textField = new GridBagConstraints();
 				gbc_textField.fill = GridBagConstraints.BOTH;
@@ -149,8 +156,22 @@ public class PanelAltaPremiun extends JDialog {
 			{
 				JButton okButton = new JButton("OK");
 				okButton.setActionCommand("OK");
-				//TODO: HACER EL ACTION PERFORMED cambiar los nombres del radio button
-				buttonGroup.getSelection().getActionCommand(); //string tipo descuento
+				okButton.addActionListener((new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						String tipoDescuento = buttonGroup.getSelection().getActionCommand(); //string tipo descuento
+						System.out.println("TIPO DE DESCUENTO (VENTANA PREMIUM)= "+ tipoDescuento);
+						//consigo el pago mensual con el descuento seleccionado
+						double precio = ControladorUsuarios.getUnicaInstancia().getPrecioPremiumConDescuento(tipoDescuento);
+						if(precio != 0.0) {
+							Double p = (Double) precio;
+							textField.setText(p.toString()+ "€");
+						}else {
+							//TODO: MOSTRAR VENTANA DE ERROR
+							System.out.println("NO LO CALCULA PORQUE NO CUMPLES LOS REQUISITOS MUAJAJA.");
+						}
+					}
+				}));
+				
 			
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);

@@ -267,13 +267,19 @@ public class ControladorUsuarios {
 	 * @param tipo, tipo de descuento que se aplica, si se aplica uno.
 	 * @return  precio a pagar de la cuenta premium.
 	 */
-	public double getPrecioPremiumConDescuento(String tipo, Usuario u) {
+	public double getPrecioPremiumConDescuento(String tipo) {
 		//calcular con la clase descuento según lo que necesitemos.
+		Usuario u = this.getusuarioActual();
+		System.out.println("EL TIPO DE DESCUENTO ES= "+ tipo);
 		if(tipo != "") {
 			Descuento des = Descuento.seleccionarDescuento(tipo, u);
-			this.setDescuento(des);
-			return d.calcularDescuento(precioPremium/12);
-		}else return precioPremium/12;
+			if (! (des == null)) { //cumple los requisitos.
+				this.setDescuento(des);
+				return d.calcularDescuento(precioPremium/12);
+			}else return 0.0; //no cunmple los requisitos (lo trata la vista)
+		}
+		
+		return precioPremium/12;
 	}
 
 	/**
@@ -292,6 +298,15 @@ public class ControladorUsuarios {
 		//hacer un if else comprobando con instanceof para que valga para grupo.
 	}
 	
+	
+	//TODO: añadir admin al grupo.
+	public void anyiadirAdmin(ChatGrupo grupo, Usuario u) {
+		grupo.addAdmin(u);
+	}
+	
+	public void anyiadirAdmin(ChatGrupo grupo, ChatIndividual contacto) {
+		grupo.addAdmin(contacto.getContacto());
+	}
 	
 	//TODO: ENVIAR MENSAJE A GRUPO.
 	

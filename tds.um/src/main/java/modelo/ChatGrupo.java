@@ -17,6 +17,8 @@ public class ChatGrupo extends Chat{
 	//TODO: añadir un int IDPadre para localizar los grupos duplicados
 	//grupo duplicado: todo igual menos los miembros.
 	//tener en cuenta cuando cree los grupos hijos.
+	private String idPadre;
+	
 	
 	/**
 	 * Constructor de ChatGurpo
@@ -58,6 +60,10 @@ public class ChatGrupo extends Chat{
 	public HashSet<Usuario> getAdministradores() {
 		return this.administradores;
 	}
+	
+	public String getIdPadre() {
+		return this.idPadre;
+	}
 
 	/**
 	 * Método set de ChatGrupo.
@@ -73,6 +79,14 @@ public class ChatGrupo extends Chat{
 	 */
 	public void setAdministradores(HashSet<Usuario> admins) {
 		this.administradores.addAll(admins);
+	}
+	
+	/**
+	 * Método set de ChatGrupo.
+	 * @param String idPadre
+	 */
+	public void setIdPadre(String idPadre2) {
+		this.idPadre = idPadre2;	
 	}
 	
 	/**
