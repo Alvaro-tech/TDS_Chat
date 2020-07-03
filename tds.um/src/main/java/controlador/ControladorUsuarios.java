@@ -29,7 +29,7 @@ public class ControladorUsuarios {
 	private Usuario usuarioActual;
 	private static ControladorUsuarios unicaInstancia;
 	private FactoriaDAO factoria;
-	private static final double precioPremium = 10.50; // al año.
+	private static final double PRECIOPREMIUM = 10.50; // al año.
 	private Descuento d;
 
 	/**
@@ -93,7 +93,7 @@ public class ControladorUsuarios {
 	 * @return el precio mensual de premium sin descuento aplicado
 	 */
 	public String getPrecioPremiumMes() {
-		Double precio = (Double) this.precioPremium / 12;
+		Double precio = (Double) PRECIOPREMIUM / 12;
 		return precio.toString();
 	}
 
@@ -246,7 +246,7 @@ public class ControladorUsuarios {
 		addChatToUser(chatAux);
 	}
 
-	// TODO: BUSCA POR RANGO DE FECHAS INUTIL.
+	
 	/**
 	 * Funcion que realiza una busqueda de mensajes a través de un chat dado que
 	 * pertenezcaa al usuario actual de la sesión. Se podrá hacer una busqueda
@@ -305,12 +305,12 @@ public class ControladorUsuarios {
 			Descuento des = Descuento.seleccionarDescuento(tipo, u);
 			if (!(des == null)) { // cumple los requisitos.
 				this.setDescuento(des);
-				return d.calcularDescuento(precioPremium / 12);
+				return d.calcularDescuento(PRECIOPREMIUM / 12);
 			} else
 				return 0.0; // no cunmple los requisitos (lo trata la vista)
 		}
 
-		return precioPremium / 12;
+		return PRECIOPREMIUM / 12;
 	}
 
 	/**
@@ -339,7 +339,29 @@ public class ControladorUsuarios {
 		grupo.addAdmin(contacto.getContacto());
 	}
 
-	// TODO: ENVIAR MENSAJE A GRUPO.
+	/**
+	 * Envia un mensaje a un grupo. (y a sus hijos)
+	 * @param Mensaje m, cuyo emisor es el usuario que ha creado el mensaje
+	 * @param ChatGrupo grupo, grupo al que pertenece el emisor
+	 */
+	public void enviarMensajeAGrupo(Mensaje m, ChatGrupo grupo) {
+		//añadimos el mensaje al grupo.
+		//RECORDAR: el mensaje de un chat de grupo no tiene un contacto.
+		
+		//vemos si el grupo es el padre o es un hijo
+		Integer id = (Integer) grupo.getId();
+		String idGrupo = id.toString();
+		
+		if(idGrupo == grupo.getIdPadre()) { //es el padre
+			grupo.addMensajeHistorial(m);
+			grupo.getGruposHijo().stream()
+								.forEach(g -> this.enviarMensajeAGrupo(m, g));
+		}else { //No es el padre, pasa de él y busca al padre 
+			int idPadre = Integer.parseInt(grupo.getIdPadre());
+			ChatGrupo grupoPadre = AdaptadorChatGrupoDAO.getUnicaInstancia().get(idPadre);
+			this.enviarMensajeAGrupo(m, grupoPadre);
+		}
+	}
 
 	// TODO
 	public void cargarMensajes() {

@@ -14,10 +14,10 @@ public class ChatGrupo extends Chat{
 	//Aqui el atributo nombre se entiende como el nombre del grupo
 	private LinkedList<ChatIndividual> miembros = new LinkedList<ChatIndividual>();
 	private HashSet<Usuario> administradores = new HashSet<Usuario>();
-	//TODO: añadir un int IDPadre para localizar los grupos duplicados
-	//grupo duplicado: todo igual menos los miembros.
-	//tener en cuenta cuando cree los grupos hijos.
+	//si es el padre (el primer grupo que se crea) su idPadre = idChat
 	private String idPadre;
+	//grupo duplicado: todo igual menos los miembros.
+	private HashSet<ChatGrupo> gruposHijo = new HashSet<ChatGrupo>();
 	
 	
 	/**
@@ -61,10 +61,30 @@ public class ChatGrupo extends Chat{
 		return this.administradores;
 	}
 	
+	/**
+	 * Método get de ChatGrupo.
+	 * @return String idPadre, idChat del padre.
+	 */
 	public String getIdPadre() {
 		return this.idPadre;
 	}
 
+	/**
+	 * Método get de ChatGrupo.
+	 * @return HashSet<ChatGrupo> grupos hijo.
+	 */
+	public HashSet<ChatGrupo> getGruposHijo() {
+		return gruposHijo;
+	}
+
+	/**
+	 *  Método set de ChatGrupo.
+	 * @param HashSet<ChatGrupo> gruposHijo
+	 */
+	public void setGruposHijo(HashSet<ChatGrupo> gruposHijo) {
+		this.gruposHijo = gruposHijo;
+	}
+	
 	/**
 	 * Método set de ChatGrupo.
 	 * @param LinkedList<ChatIndividual> miembros
@@ -83,10 +103,11 @@ public class ChatGrupo extends Chat{
 	
 	/**
 	 * Método set de ChatGrupo.
+	 * Se utilizará cuando sea la primera vez que se crea el grupo (en el controlador)
 	 * @param String idPadre
 	 */
-	public void setIdPadre(String idPadre2) {
-		this.idPadre = idPadre2;	
+	public void setIdPadre(String idPadre) {
+		this.idPadre = idPadre;	
 	}
 	
 	/**
@@ -125,5 +146,6 @@ public class ChatGrupo extends Chat{
 		filtrados.addAll(mensajes);
 		return filtrados;
 	}
+
 	
 }
