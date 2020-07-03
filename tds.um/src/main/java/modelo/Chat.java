@@ -126,7 +126,7 @@ public abstract class Chat implements Comparator<Chat> {
 	 * @param u
 	 * @return mensajes con los filtros introducidos.
 	 */
-	public LinkedList<Mensaje> BuscarPorFiltros(String texto, LocalDate fecha, ChatIndividual u) {
+	public LinkedList<Mensaje> BuscarPorFiltros(String texto, LocalDate fechaInicio, LocalDate fechaFin, ChatIndividual u) {
 		LinkedList<Mensaje> mensajes = new LinkedList<Mensaje>();
 
 		if (u != null) {
@@ -138,8 +138,8 @@ public abstract class Chat implements Comparator<Chat> {
 			mensajes = this.BuscarPorTexto(texto, mensajes);
 		}
 		
-		if(fecha != null) {
-			mensajes = this.BuscarPorFecha(fecha, mensajes);
+		if(fechaInicio != null && fechaFin != null) {
+			mensajes = this.BuscarPorFechas(fechaInicio, fechaFin, mensajes);
 		}
 
 		return mensajes;
@@ -180,11 +180,11 @@ public abstract class Chat implements Comparator<Chat> {
 	 * @param f
 	 * @return Lista de mensajes coincidentes.
 	 */
-	public LinkedList<Mensaje> BuscarPorFecha(LocalDate f) {
+	public LinkedList<Mensaje> BuscarPorFechas(LocalDate fi, LocalDate ffin) {
 		LinkedList<Mensaje> mensajesFiltrados = new LinkedList<Mensaje>();
 
 		this.historial.stream()
-					.filter(m -> m.getFecha().isEqual(f))
+					.filter(m -> m.esEntreFechas(fi, ffin))
 					.forEach(m -> mensajesFiltrados.add(m));
 
 		return mensajesFiltrados;
@@ -197,8 +197,8 @@ public abstract class Chat implements Comparator<Chat> {
 	 * @param f
 	 * @return Lista de mensajes coincidentes.
 	 */
-	public LinkedList<Mensaje> BuscarPorFecha(LocalDate f, LinkedList<Mensaje> mensajes) {
-		LinkedList<Mensaje> mensajesFiltrados = this.BuscarPorFecha(f);
+	public LinkedList<Mensaje> BuscarPorFechas(LocalDate fi, LocalDate ffin, LinkedList<Mensaje> mensajes) {
+		LinkedList<Mensaje> mensajesFiltrados = this.BuscarPorFechas(fi, ffin);
 
 		mensajes.stream()
 				.filter(m -> !mensajesFiltrados.contains(m))

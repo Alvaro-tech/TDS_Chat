@@ -161,7 +161,7 @@ public class PanelAltaPremiun extends JDialog {
 			{
 				textPrecio = new JTextField();
 				textPrecio.setFont(new Font("Tahoma", Font.BOLD, 14));
-				textPrecio.setText("0€");							//texto donde aparece el precio.
+				textPrecio.setText(ControladorUsuarios.getUnicaInstancia().getPrecioPremiumMes());//texto donde aparece el precio.
 				textPrecio.setEditable(false);
 				GridBagConstraints gbc_textPrecio = new GridBagConstraints();
 				gbc_textPrecio.fill = GridBagConstraints.BOTH;
@@ -185,21 +185,25 @@ public class PanelAltaPremiun extends JDialog {
 				okButton.setActionCommand("OK");
 				okButton.addActionListener((new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						String tipoDescuento = buttonGroup.getSelection().getActionCommand(); //string tipo descuento
-						System.out.println("TIPO DE DESCUENTO (VENTANA PREMIUM)= "+ tipoDescuento);
-						//consigo el pago mensual con el descuento seleccionado
-						double precio = ControladorUsuarios.getUnicaInstancia().getPrecioPremiumConDescuento(tipoDescuento);
-						if(precio != 0.0) {
-							Double p = (Double) precio;
-							textPrecio.setText(p.toString()+ "€");
-						}else {
-							JOptionPane.showMessageDialog(ventana,
-		                            "No cumples con los requisitos especificados",
-		                            "Error",
-		                            JOptionPane.ERROR_MESSAGE);
-						}
+						if (!(buttonGroup.getSelection() ==null)) { 
+							//si no se ha seleccionado nada no se trata.
+							String tipoDescuento = buttonGroup.getSelection().getActionCommand(); //string tipo descuento
+							System.out.println("TIPO DE DESCUENTO (VENTANA PREMIUM)= "+ tipoDescuento);
+							//consigo el pago mensual con el descuento seleccionado
+							double precio = ControladorUsuarios.getUnicaInstancia().getPrecioPremiumConDescuento(tipoDescuento);
+							if(precio != 0.0) {
+								Double p = (Double) precio;
+								textPrecio.setText(p.toString()+ "€");
+							}else {
+								JOptionPane.showMessageDialog(ventana,
+			                            "No cumples con los requisitos especificados",
+			                            "Error",
+			                            JOptionPane.ERROR_MESSAGE);
+							}
+						}	
 					}
 				}));
+				
 				{
 					JButton btnAnular = new JButton("Anular\r\n");
 					buttonPane.add(btnAnular);

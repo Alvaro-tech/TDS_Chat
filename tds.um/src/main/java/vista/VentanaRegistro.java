@@ -72,7 +72,7 @@ public class VentanaRegistro extends JPanel {
 						registrado = ControladorUsuarios.getUnicaInstancia().registrarUsuario(
 										textName_W.getText(),
 										textEmail_W.getText(),
-										parsear(dateChooser.getDate().toString()),
+										ControladorUsuarios.getUnicaInstancia().parsear(dateChooser.getDate().toString()),
 										textPhone_W.getText(),										
 										new String(passwordClave_W.getPassword()));
 						if (registrado) {
@@ -95,51 +95,6 @@ public class VentanaRegistro extends JPanel {
 						JOptionPane.ERROR_MESSAGE);
 				ventana.setTitle("Login Gestor Eventos");	
 				
-			}
-
-			private String parsear(String fechaMal) {
-				String fechaBien= "";
-				//Formato a corregir : 'Sat Oct 16 11:23:48 CEST 1999'
-				StringTokenizer tok = new StringTokenizer(fechaMal, " ");
-				tok.nextToken();
-				String mesMal = tok.nextToken();
-				String diaMes = tok.nextToken();
-				tok.nextToken(); tok.nextToken();
-				String anyo = tok.nextToken();
-				String mes = "";
-				
-				switch (mesMal) { //Jan, Feb, Mar, Apr, May, Jun,Jul, Aug, Sep, Oct, Nov, Dec
-				case "Jan":
-					mes = "01"; break;
-				case "Feb":
-					mes = "02"; break;
-				case "Mar":
-					mes = "03";	break;
-				case "Apr":
-					mes = "04";	break;
-				case "May":
-					mes = "05";	break;
-				case "Jun":
-					mes = "06";	break;
-				case "Jul":
-					mes = "07";	break;
-				case "Aug":
-					mes = "08";	break;
-				case "Sep":
-					mes = "09";	break;
-				case "Oct":
-					mes = "10";	break;
-				case "Nov":
-					mes = "11";	break;
-				case "Dec":
-					mes = "12"; break;
-
-				default:
-					break;
-				}
-				fechaBien = diaMes + "/" + mes + "/" + anyo ;
-				//System.out.println("DIA BIEN PARSEADO: " + fechaBien);
-				return fechaBien;
 			}
 
 		});

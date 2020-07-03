@@ -142,6 +142,16 @@ public class Mensaje {
 	public String toString() {
 		return "Mensaje= " + this.texto;
 	}
+	
+	/**
+	 * comprueba que un mensaje ha sido enviado entre dos fechas.
+	 * @param LocalDate fi, fecha de inicio
+	 * @param LocalDate ff, fecha final
+	 * @return
+	 */
+	public boolean esEntreFechas(LocalDate fi, LocalDate ff) {
+		return fi.isEqual(this.fecha) || fi.isBefore(this.fecha) || ff.isEqual(this.fecha) || ff.isAfter(this.fecha);
+	}
 
 
 }

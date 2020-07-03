@@ -10,6 +10,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -20,6 +22,7 @@ import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 import com.toedter.calendar.JDateChooser;
 
+import controlador.ControladorUsuarios;
 import modelo.Chat;
 
 import java.awt.Component;
@@ -29,9 +32,13 @@ import javax.swing.JTextField;
 public class VentanaLupa extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
+	private JTextPane textTextoBuscar;
+	//no he usado estas
 	private JTextField textFinicial;
 	private JTextField textFfinal;
-
+	//he usado estas, porque ya que tengo el parser hecho...
+	private JDateChooser fInicio;
+	private JDateChooser fFinal;
 	private Chat chatCargado;
 	private JFrame ventana;
 	/**
@@ -44,7 +51,7 @@ public class VentanaLupa extends JDialog {
 	public VentanaLupa(Chat chat, JFrame ventana) {
 		chatCargado = chat;												//chat del que se va a buscar
 		this.ventana = ventana;
-		//TODO: meter un Usuario para hacer pruebas. Será el usuario del que se hace la busqueda.
+		//TODO: PARA ALVARO. introducir la posibilidad de escoger un usuario para las busquedas.
 		setBounds(100, 100, 550, 300);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{79, 323, 0};
@@ -81,7 +88,7 @@ public class VentanaLupa extends JDialog {
 			getContentPane().add(chckbxTexto, gbc_chckbxTexto);
 		}
 		{
-			JTextPane textTextoBuscar = new JTextPane();						//testo que se quiere buscar
+			textTextoBuscar = new JTextPane();						//testo que se quiere buscar
 			textTextoBuscar.setEnabled(false);
 			GridBagConstraints gbc_textTextoBuscar = new GridBagConstraints();
 			gbc_textTextoBuscar.insets = new Insets(0, 0, 5, 0);
@@ -117,7 +124,7 @@ public class VentanaLupa extends JDialog {
 				textFinicial.setColumns(10);
 			}
 			{
-				JDateChooser fInicio = new JDateChooser();							//fecha a buscar inicial
+				fInicio = new JDateChooser();							//fecha a buscar inicial
 				panelFechas.add(fInicio);
 			}
 			{
@@ -128,7 +135,7 @@ public class VentanaLupa extends JDialog {
 				textFfinal.setColumns(10);
 			}
 			{
-				JDateChooser fFinal = new JDateChooser();							//fecha a buscar final
+				fFinal = new JDateChooser();							//fecha a buscar final
 				panelFechas.add(fFinal);
 			}
 		}
@@ -153,7 +160,17 @@ public class VentanaLupa extends JDialog {
 				JButton okButton = new JButton("Buscar");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						//TODO: hacer para las busquedas
+						LocalDate fIni = null;
+						LocalDate fFin = null;
+						if(fInicio.getDate() != null && fFinal.getDate() != null) { //se ha seleccionado una fecha
+							String fechaDeInicio = ControladorUsuarios.getUnicaInstancia().parsear(fInicio.getDate().toString());
+							String fechaDeFin = ControladorUsuarios.getUnicaInstancia().parsear(fFinal.getDate().toString());
+					        fIni = LocalDate.parse(fechaDeInicio, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+					        fFin = LocalDate.parse(fechaDeFin, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+						}
+						String textoABuscar = textTextoBuscar.getText();
+						//TODO: lo del usuario, por ahora lo pongo a null cuando llamas al controlador.
+						ControladorUsuarios.getUnicaInstancia().BuscarPorFiltro(chatCargado, textoABuscar, fIni, fFin, null);
 					}
 				});
 				okButton.setActionCommand("OK");
