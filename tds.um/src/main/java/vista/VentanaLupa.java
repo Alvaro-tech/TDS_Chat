@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionListener;
@@ -32,6 +33,7 @@ public class VentanaLupa extends JDialog {
 	private JTextField textFfinal;
 
 	private Chat chatCargado;
+	private JFrame ventana;
 	/**
 	 * Launch the application.
 	 */
@@ -39,8 +41,9 @@ public class VentanaLupa extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public VentanaLupa(Chat chat) {
+	public VentanaLupa(Chat chat, JFrame ventana) {
 		chatCargado = chat;												//chat del que se va a buscar
+		this.ventana = ventana;
 		//TODO: meter un Usuario para hacer pruebas. Será el usuario del que se hace la busqueda.
 		setBounds(100, 100, 550, 300);
 		GridBagLayout gridBagLayout = new GridBagLayout();

@@ -50,6 +50,7 @@ public class VentanaPrincipal extends JFrame {
 	
 	private PanelChatsRecientes pChatRec;
 	private PanelShowCont panelShowCont;
+	private PanelConversacion panelConver;
 	private VentanaPrincipal venPrinAc;
 	
 
@@ -161,7 +162,7 @@ public class VentanaPrincipal extends JFrame {
 		JMenuItem mntmPremium = new JMenuItem("Premium");
 		mntmPremium.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PanelAltaPremiun nuevo = new PanelAltaPremiun();
+				PanelAltaPremiun nuevo = new PanelAltaPremiun(ventana);
 				nuevo.setVisible(true);
 			}
 		});
@@ -213,7 +214,7 @@ public class VentanaPrincipal extends JFrame {
 		btnLupa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (chatActual!=null) {
-					VentanaLupa venLupa = new VentanaLupa(chatActual); 
+					VentanaLupa venLupa = new VentanaLupa(chatActual, ventana); 
 					venLupa.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 					venLupa.setVisible(true);	
 				}
@@ -289,6 +290,23 @@ public class VentanaPrincipal extends JFrame {
 	
 	public void setChatActual(Chat c) {
 		chatActual = c;
+		System.out.println("chat actual en la ventana principal");
+		//CUando seleccionos uno es para hablar con el  
+		
+		panelConver = new PanelConversacion(chatActual, ventana, venPrinAc);
+		panelDividido.remove(panellzq);
+		panellzq = panelConver; 
+		
+		GridBagConstraints gbc_panelzq = new GridBagConstraints();
+		gbc_panelzq.insets = new Insets(0, 0, 5, 0);
+		gbc_panelzq.fill = GridBagConstraints.BOTH;
+		gbc_panelzq.gridx = 1;
+		gbc_panelzq.gridy = 0;
+		panelDividido.add(panelConver, gbc_panelzq); 
+		
+		panelDividido.revalidate(); 
+		panelDividido.repaint(); 
+		
 	}
 
 }

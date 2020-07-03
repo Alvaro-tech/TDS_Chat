@@ -18,6 +18,7 @@ import java.awt.Font;
 import java.awt.Color;
 import java.awt.SystemColor;
 import javax.swing.JEditorPane;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
@@ -25,32 +26,24 @@ import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.border.BevelBorder;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.SwingConstants;
 
 public class PanelAltaPremiun extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private final ButtonGroup buttonGroup = new ButtonGroup();
-	private JTextField textField;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			PanelAltaPremiun dialog = new PanelAltaPremiun();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	private JTextField textPrecio;
+	private JFrame ventana;
 
 	
 	/**
 	 * Create the dialog.
 	 */
-	public PanelAltaPremiun() {
-		setBounds(100, 100, 450, 300);
+	public PanelAltaPremiun(JFrame ventana) {
+		this.ventana = ventana;
+		setBounds(80, 80, 500, 320);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{434, 0};
 		gridBagLayout.rowHeights = new int[]{228, 33, 0};
@@ -75,6 +68,7 @@ public class PanelAltaPremiun extends JDialog {
 			contentPanel.add(dtrpnconvierteteEnPremium, BorderLayout.NORTH);
 		}
 		{
+			//El numero cambia antes de darle al ok
 			JPanel panel = new JPanel();
 			panel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 			contentPanel.add(panel, BorderLayout.CENTER);
@@ -86,6 +80,29 @@ public class PanelAltaPremiun extends JDialog {
 			panel.setLayout(gbl_panel);
 			{
 				JRadioButton rdbtnMensajes = new JRadioButton("Descuento para Jovenes");
+				rdbtnMensajes.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						mostrarPrecioSinCompromiso();
+					}
+					
+				});
+				{
+					JRadioButton rdbtnSinDescuento = new JRadioButton("Sin descuento");
+					rdbtnSinDescuento.setHorizontalAlignment(SwingConstants.LEFT);
+					rdbtnSinDescuento.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							
+						}
+					});
+					rdbtnSinDescuento.setActionCommand("Descuento para Jovenes");
+					GridBagConstraints gbc_rdbtnSinDescuento = new GridBagConstraints();
+					gbc_rdbtnSinDescuento.anchor = GridBagConstraints.WEST;
+					gbc_rdbtnSinDescuento.insets = new Insets(0, 0, 5, 5);
+					gbc_rdbtnSinDescuento.gridx = 0;
+					gbc_rdbtnSinDescuento.gridy = 0;
+					panel.add(rdbtnSinDescuento, gbc_rdbtnSinDescuento);
+					buttonGroup.add(rdbtnSinDescuento);
+				}
 				rdbtnMensajes.setActionCommand("Descuento para Jovenes");
 				buttonGroup.add(rdbtnMensajes);
 				GridBagConstraints gbc_rdbtnMensajes = new GridBagConstraints();
@@ -97,6 +114,11 @@ public class PanelAltaPremiun extends JDialog {
 			}
 			{
 				JRadioButton rdbtnEspecialVerano = new JRadioButton("Descuento para Viciados");
+				rdbtnEspecialVerano.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						mostrarPrecioSinCompromiso();
+					}
+				});
 				rdbtnEspecialVerano.setActionCommand("Descuento para Viciados");
 				buttonGroup.add(rdbtnEspecialVerano);
 				GridBagConstraints gbc_rdbtnEspecialVerano = new GridBagConstraints();
@@ -108,6 +130,11 @@ public class PanelAltaPremiun extends JDialog {
 			}
 			{
 				JRadioButton rdbtnEstandar = new JRadioButton("Descuento de Santa Tecla");
+				rdbtnEstandar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						mostrarPrecioSinCompromiso();
+					}
+				});
 				rdbtnEstandar.setActionCommand("Descuento de Santa Tecla");
 				buttonGroup.add(rdbtnEstandar);
 				GridBagConstraints gbc_rdbtnEstandar = new GridBagConstraints();
@@ -132,16 +159,16 @@ public class PanelAltaPremiun extends JDialog {
 				panel.add(txtpnPrecio, gbc_txtpnPrecio);
 			}
 			{
-				textField = new JTextField();
-				textField.setFont(new Font("Tahoma", Font.BOLD, 14));
-				textField.setText("0€");							//texto donde aparece el precio.
-				textField.setEditable(false);
-				GridBagConstraints gbc_textField = new GridBagConstraints();
-				gbc_textField.fill = GridBagConstraints.BOTH;
-				gbc_textField.gridx = 3;
-				gbc_textField.gridy = 4;
-				panel.add(textField, gbc_textField);
-				textField.setColumns(10);
+				textPrecio = new JTextField();
+				textPrecio.setFont(new Font("Tahoma", Font.BOLD, 14));
+				textPrecio.setText("0€");							//texto donde aparece el precio.
+				textPrecio.setEditable(false);
+				GridBagConstraints gbc_textPrecio = new GridBagConstraints();
+				gbc_textPrecio.fill = GridBagConstraints.BOTH;
+				gbc_textPrecio.gridx = 3;
+				gbc_textPrecio.gridy = 4;
+				panel.add(textPrecio, gbc_textPrecio);
+				textPrecio.setColumns(10);
 			}
 		}
 		{
@@ -164,19 +191,36 @@ public class PanelAltaPremiun extends JDialog {
 						double precio = ControladorUsuarios.getUnicaInstancia().getPrecioPremiumConDescuento(tipoDescuento);
 						if(precio != 0.0) {
 							Double p = (Double) precio;
-							textField.setText(p.toString()+ "€");
+							textPrecio.setText(p.toString()+ "€");
 						}else {
-							//TODO: MOSTRAR VENTANA DE ERROR
-							System.out.println("NO LO CALCULA PORQUE NO CUMPLES LOS REQUISITOS MUAJAJA.");
+							JOptionPane.showMessageDialog(ventana,
+		                            "No cumples con los requisitos especificados",
+		                            "Error",
+		                            JOptionPane.ERROR_MESSAGE);
 						}
 					}
 				}));
+				{
+					JButton btnAnular = new JButton("Anular\r\n");
+					buttonPane.add(btnAnular);
+				}
 				
 			
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
 		}
+		
 	}
-
+	
+	//----Funcion auxiliar para mostrar los precios antes de pagar.
+	private void mostrarPrecioSinCompromiso() {
+		String tipoDescuento = buttonGroup.getSelection().getActionCommand(); //string tipo descuento
+		//consigo el pago mensual con el descuento seleccionado
+		double precio = ControladorUsuarios.getUnicaInstancia().getPrecioPremiumConDescuento(tipoDescuento);
+		if(precio != 0.0) {
+			Double p = (Double) precio;
+			textPrecio.setText(p.toString()+ "€");
+		}
+	}
 }
