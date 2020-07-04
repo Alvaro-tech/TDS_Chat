@@ -16,6 +16,8 @@ public class ChatGrupo extends Chat{
 	private HashSet<Usuario> administradores = new HashSet<Usuario>();
 	//si es el padre (el primer grupo que se crea) su idPadre = idChat
 	private String idPadre;
+	//Usuario "dueño" del grupo
+	private Usuario duenyo;
 	//grupo duplicado: todo igual menos los miembros.
 	private HashSet<ChatGrupo> gruposHijo = new HashSet<ChatGrupo>();
 	
@@ -26,6 +28,19 @@ public class ChatGrupo extends Chat{
 	 * @param mi
 	 */
 	public ChatGrupo(String nombreg, ChatIndividual... mi) {
+		super(nombreg);
+		for (ChatIndividual m : mi) { 
+			System.out.println("ejecucion de chatGrupo");
+			miembros.addFirst(m);
+		}
+	}
+	
+	/**
+	 * Constructor de ChatGurpo
+	 * @param nombreg
+	 * @param LinkedList<ChatIndividual> mi
+	 */
+	public ChatGrupo(String nombreg, LinkedList<ChatIndividual> mi) {
 		super(nombreg);
 		for (ChatIndividual m : mi) { 
 			System.out.println("ejecucion de chatGrupo");
@@ -111,7 +126,16 @@ public class ChatGrupo extends Chat{
 	}
 	
 	/**
-	 * 
+	 * Método set de ChatGrupo.
+	 * Indica el usuario "dueño" de este grupo
+	 * @param Usuario u
+	 */
+	public void setDuenyo(Usuario u) {
+		this.duenyo = u;
+	}
+	
+	/**
+	 * Añade un nuevo administrador al grupo.
 	 * @param Usuario u
 	 * @return true si lo añade, false en otro caso.
 	 */
@@ -119,6 +143,17 @@ public class ChatGrupo extends Chat{
 		return administradores.add(u);
 	}
 	
+	/**
+	 * Añade un nuevo miembro al grupo.
+	 * @param ChatIndividual m, nuevo miembro (contacto del usuario dueño del grupo.)
+	 */
+	public void addMiembro(ChatIndividual m) {
+		miembros.add(m);
+	}
+	
+	public void addGrupoHijo(ChatGrupo hijo) {
+		this.gruposHijo.add(hijo);
+	}
 
 	// ##################### FUNCIONALIDAD #######################
 	

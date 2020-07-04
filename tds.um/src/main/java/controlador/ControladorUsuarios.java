@@ -432,4 +432,15 @@ public class ControladorUsuarios {
 		return fechaBien;
 	}
 
+	/**
+	 * Funcion que crea un nuevo grupo. Grupo padre.
+	 * @param nombreGrupo
+	 * @param contactos
+	 */
+	public void crearGrupo(String nombreGrupo, ChatIndividual... contactos) {
+		//es la primera vez que se crea un grupo.
+		this.usuarioActual.crearGrupoNuevo(nombreGrupo, contactos);
+		
+	}
+
 }

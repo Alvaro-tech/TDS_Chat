@@ -259,6 +259,12 @@ public class PanelCrearGrupo extends JDialog {
 				JButton okButton = new JButton("OK"); //quiero crear el grupo
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
+						//Cada persona al crearse el usuario lo primero que debe tener es a sí mismo de contacto.
+						//creamos el grupo. LLamamos directamente al controlador xd lo haga todo como debe ser.
+						ChatIndividual[] auxG = miembrosPotenciales.toArray(new ChatIndividual[miembrosPotenciales.size()]);
+						ControladorUsuarios.getUnicaInstancia().crearGrupo(textGroupName.getText(), auxG);
+						
+						/*
 						//Te creas a ti mismo como un miembro más y te añades como admin
 						//TODO: la vista no debería crear el chat.
 						//TODO: DARLE UNA VUELTA A ESTO DE LOS GRUPOS QUE...
@@ -279,6 +285,7 @@ public class PanelCrearGrupo extends JDialog {
 						//TODO: CREAR EL GRUPO PARA LOS DEMAS MIEMBROS
 						//Actulizas el panel de chats recientes
 						padre.addChatsRecientes(newChatG);
+						*/
 					}
 				});
 				okButton.setActionCommand("OK");
