@@ -1,7 +1,11 @@
 package modelo;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
+
+import controlador.ControladorUsuarios;
+import persistencia.AdaptadorChatGrupoDAO;
 
 /**
  *  Un chat de grupo es un conjunto de contacto individual (chat individual)
@@ -91,6 +95,15 @@ public class ChatGrupo extends Chat{
 	public HashSet<ChatGrupo> getGruposHijo() {
 		return gruposHijo;
 	}
+	
+	/**
+	 * Método get de ChatGrupo.
+	 * @return Usuario dueño del grupo.
+	 * 
+	 */
+	public Usuario getDuenyo() {
+		return this.duenyo;
+	}
 
 	/**
 	 *  Método set de ChatGrupo.
@@ -140,17 +153,53 @@ public class ChatGrupo extends Chat{
 	 * @return true si lo añade, false en otro caso.
 	 */
 	public boolean addAdmin(Usuario u) {
+		Integer id = (Integer) this.getId();
+		
+		if( id.toString() == this.idPadre) { //es el grupo Padre
+			this.getGruposHijo().stream()
+						.forEach(h -> h.addAdmin(u)); 
+		}
+
 		return administradores.add(u);
 	}
 	
 	/**
-	 * Añade un nuevo miembro al grupo.
+	 * Añade un nuevo miembro al grupo. Solo un administrador puede llamar a esta funcion.
+	 * Lo hace en todos los grupos "hijo" y en el padre.
 	 * @param ChatIndividual m, nuevo miembro (contacto del usuario dueño del grupo.)
 	 */
 	public void addMiembro(ChatIndividual m) {
-		miembros.add(m);
+		//lo llama el administrador.
+		int idPadre = (int) Integer.valueOf(this.idPadre);
+		
+		if( this.getId() == idPadre) { //es el grupo Padre
+			this.miembros.add(m); //se lo añade
+			this.getGruposHijo().stream()
+						.forEach(h -> h.addMiembroAHijo(m)); 
+		}else {								//no es el grupo padre.
+			//conseguimos al padre para que haga lo que debe.
+			ChatGrupo padre = AdaptadorChatGrupoDAO.getUnicaInstancia().get(idPadre);
+			padre.addMiembro(m);
+		}
+		
 	}
 	
+	
+	
+	/**
+	 * Funcion que llama al usuario dueño del grupo para que devuelva lo que sería el contacto equivalente
+	 * @param ChatIndividual m
+	 */
+	private void addMiembroAHijo(ChatIndividual m) {
+		//estamos en un grupo hijo.
+		ChatIndividual correcto = this.getDuenyo().ContactoEquivalente(m);
+		this.miembros.add(correcto);
+	}
+
+	/**
+	 * Funcion que solo se aplica a un grupo padre (id == idPadre)
+	 * @param ChatGrupo hijo, grupo "duplicado" que pende de él.
+	 */
 	public void addGrupoHijo(ChatGrupo hijo) {
 		this.gruposHijo.add(hijo);
 	}
@@ -181,6 +230,7 @@ public class ChatGrupo extends Chat{
 		filtrados.addAll(mensajes);
 		return filtrados;
 	}
+
 
 	
 }

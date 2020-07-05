@@ -36,7 +36,6 @@ public class Usuario {
 	HashSet<ChatIndividual> chatsInd = new HashSet<ChatIndividual>();
 	HashSet<ChatGrupo> chatsGroup = new HashSet<ChatGrupo>();
 	// lista de chats abiertos de ppl que no tienes agregada
-	// TODO: ir funcion por funcion teniendo esto en cuenta.
 	HashSet<ChatIndividual> chatsDesconocido = new HashSet<ChatIndividual>();
 	
 
@@ -413,7 +412,6 @@ public class Usuario {
 	/**
 	 * Funcion que permite crear un chat de grupo "hijo" a partir de un "padre" dado.
 	 * @param ChatGrupo grupoPadre
-	 * @return ChatGrupo grupoHijo
 	 */
 	private void CrearGrupoHijo(ChatGrupo grupoPadre) {
 		// Vamos a crear un grupo hijo.
@@ -423,34 +421,13 @@ public class Usuario {
 		for (ChatIndividual c : grupoPadre.getMiembros()) {
 			//para crear los nuevos miembros vamos a basarnos en los miembros del grupo padre.
 			
-			if(! (c.getContacto().equals(this))) { //comprobamos que el contacto no es el miembro hijo
-				boolean fin = false;
-				//recorro la lista de miembros del usuario para ver si ya tengo el contacto del grupo
-				Iterator<ChatIndividual> iterator = this.getChatsInd().iterator(); 
-				
-				while (!fin && iterator.hasNext()) {
-					ChatIndividual aux = iterator.next();
-			        if (aux.getMovil() == c.getMovil()) { //si tienen el mismo movil, son el mismo.
-			        	fin = true;
-			        	nuevosMiembros.add(aux);
-			        }
-				}
-				if (!fin) { //sale porque no lo ha encontrado
-					//creamos un contacto "desconocido" y lo asociamos al grupo y a su lista de contactos desconocidos.
-					//contacto desconocido = tiene el nombre como su movil.
-					ChatIndividual anonimo = new ChatIndividual(c.getMovil(), c.getMovil(), c.getContacto());
-					this.chatsDesconocido.add(anonimo);
-					nuevosMiembros.add(anonimo);
-				}
-					
-			}
+			ChatIndividual miembroBien = this.ContactoEquivalente(c);
+			nuevosMiembros.add(miembroBien);		
 		}
 		
 		ChatGrupo grupoHijo = new ChatGrupo(grupoPadre.getNombre(), nuevosMiembros);
 		//idPadre del hijo == id del padre.
 		grupoHijo.setIdPadre(grupoPadre.getIdPadre());
-		//añado al usuario al grupo
-		this.anyadirmeAGrupo(grupoHijo);
 		//pongo al usuario como su dueño
 		grupoHijo.setDuenyo(this);
 		
@@ -486,6 +463,35 @@ public class Usuario {
 				this.chatsInd.add(desconocido);
 			}
 		}
+	}
+	
+	/**
+	 * Funcion que recorre la lista de contactos y devuelve el equivalente.
+	 * En caso de no tener el contacto devuelve uno "desconocido" que guardará.
+	 * @param ChatIndividual m
+	 * @return ChatIndividual contactoEquivalente.
+	 */
+	public ChatIndividual ContactoEquivalente(ChatIndividual m) {
+		boolean fin= false;
+		Iterator<ChatIndividual> iterator = this.getChatsInd().iterator(); 
+		
+		ChatIndividual aux = iterator.next();
+		while (!fin && iterator.hasNext()) {
+	        if (aux.getMovil() == m.getMovil()) { //si tienen el mismo movil, son el mismo. (no mismo objeto)
+	        	fin = true;
+	        }
+	        
+	        aux = iterator.next(); //contacto de mi lista de contactos
+		}
+		
+		if (!fin) { //sale porque no lo ha encontrado, es un contacto desconocido.
+			//creamos un contacto "desconocido" y lo asociamos al grupo y a su lista de contactos desconocidos.
+			//contacto desconocido = tiene el nombre como su movil.
+			ChatIndividual anonimo = new ChatIndividual(m.getMovil(), m.getMovil(), m.getContacto());
+			this.chatsDesconocido.add(anonimo);
+			return anonimo;
+			
+		}else return aux;
 	}
 
 }

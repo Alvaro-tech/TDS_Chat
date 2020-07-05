@@ -263,29 +263,6 @@ public class PanelCrearGrupo extends JDialog {
 						//creamos el grupo. LLamamos directamente al controlador xd lo haga todo como debe ser.
 						ChatIndividual[] auxG = miembrosPotenciales.toArray(new ChatIndividual[miembrosPotenciales.size()]);
 						ControladorUsuarios.getUnicaInstancia().crearGrupo(textGroupName.getText(), auxG);
-						
-						/*
-						//Te creas a ti mismo como un miembro más y te añades como admin
-						//TODO: la vista no debería crear el chat.
-						//TODO: DARLE UNA VUELTA A ESTO DE LOS GRUPOS QUE...
-						Chat yoChat = new ChatIndividual(ControladorUsuarios.getUnicaInstancia().getNombreUsuarioActual(),
-								ControladorUsuarios.getUnicaInstancia().getusuarioActual().getMovil(), ControladorUsuarios.getUnicaInstancia().getusuarioActual()); 
-						miembrosPotenciales.addFirst((ChatIndividual)yoChat);
-						
-						//Te registrar en persitencia como un chatIndividual en el grupo
-						ControladorUsuarios.getUnicaInstancia().addChatToUser(yoChat);
-						
-						
-						//Te añades este nuevo grupo a tu lista de grupos
-						ChatIndividual[] auxG = miembrosPotenciales.toArray(new ChatIndividual[miembrosPotenciales.size()]);
-						//TODO: pecado. NO debe crearlo la vista.
-						Chat newChatG = new ChatGrupo(textGroupName.getText(), auxG);
-						//TODO: cambiarla en el controlador.
-						ControladorUsuarios.getUnicaInstancia().addChatToUser(newChatG);
-						//TODO: CREAR EL GRUPO PARA LOS DEMAS MIEMBROS
-						//Actulizas el panel de chats recientes
-						padre.addChatsRecientes(newChatG);
-						*/
 					}
 				});
 				okButton.setActionCommand("OK");
