@@ -22,6 +22,7 @@ import javax.swing.plaf.basic.BasicIconFactory;
 import javax.swing.plaf.metal.MetalIconFactory;
 
 import org.eclipse.persistence.internal.libraries.asm.commons.StaticInitMerger;
+import org.knowm.xchart.*;
 
 import controlador.ControladorUsuarios;
 import modelo.Chat;
@@ -35,15 +36,18 @@ public class Pruebas {
 	
 	
 		
-		public static void main(String[] args) {
-			Usuario Ana = new Usuario("Ana", "ana@gamial.com", "18/11/1999", "111", "111");
-			Chat a = new ChatIndividual("lupta", "movil", Ana);
-			
-			System.out.println(a.toString());
-			
-
-			
-		}
+	 public static void main(String[] args) throws Exception {
+		 
+		    double[] xData = new double[] { 0.0, 1.0, 2.0 };
+		    double[] yData = new double[] { 2.0, 1.0, 0.0 };
+		 
+		    // Create Chart
+		    XYChart chart = QuickChart.getChart("Sample Chart", "X", "Y", "y(x)", xData, yData);
+		 
+		    // Show it
+		    new SwingWrapper(chart).displayChart();
+		 
+		  }
 		
 		 
 	
