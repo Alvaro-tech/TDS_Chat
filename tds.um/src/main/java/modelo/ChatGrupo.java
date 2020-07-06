@@ -1,10 +1,7 @@
 package modelo;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
-
-import controlador.ControladorUsuarios;
 import persistencia.AdaptadorChatGrupoDAO;
 
 /**
@@ -208,7 +205,7 @@ public class ChatGrupo extends Chat{
 	
 	/**
 	 * Busca los mensajes que ha enviado un miembro del grupo.
-	 * @param miems
+	 * @param ChatIndividual m
 	 * @return mensajes asociados a un miembro del grupo
 	 */
 	public LinkedList<Mensaje> BuscarMensajePorContactos(ChatIndividual m){
@@ -222,7 +219,8 @@ public class ChatGrupo extends Chat{
 	/**
 	 * Busca los mensajes que ha enviado un miembro del grupo. Se lo añade a los mensajes de
 	 * los que ya se había hecho una búsqueda por filtro.
-	 * @param miems
+	 * @param ChatIndividual m
+	 * @param LinkedList<Mensaje> mensajes
 	 * @return mensajes asociados a un miembro del grupo
 	 */
 	public LinkedList<Mensaje> BuscarMensajePorContactos(ChatIndividual m, LinkedList<Mensaje> mensajes){
