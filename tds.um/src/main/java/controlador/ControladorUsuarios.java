@@ -517,5 +517,14 @@ public class ControladorUsuarios {
 		return this.usuarioActual.getMensajesEnviadosEsteMes(i);
 	}
 	
+	public Mensaje crearMensaje(Usuario emisor, ChatIndividual receptor, String texto) {
+		
+		return new Mensaje(emisor, receptor, texto);
+	}
+	
+	public void enviarMensajeAChatInd(Mensaje m, ChatIndividual cI) {
+		
+	}
+	
 
 }

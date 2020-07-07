@@ -5,6 +5,8 @@ import java.awt.BorderLayout;
 import javax.swing.JTextField;
 
 import modelo.Chat;
+import modelo.ChatIndividual;
+import modelo.Mensaje;
 import modelo.Usuario;
 import tds.BubbleText;
 
@@ -20,6 +22,7 @@ import javax.swing.ScrollPaneConstants;
 import controlador.ControladorUsuarios;
 
 import javax.swing.BoxLayout;
+import java.awt.Scrollbar;
 
 public class PanelConversacion extends JPanel {
 	private JTextField textTexto;
@@ -28,6 +31,7 @@ public class PanelConversacion extends JPanel {
 	private VentanaPrincipal padre;
 	private JPanel panelMensajes;
 	private JPanel panelPrincipal;
+	private JScrollPane scrollPane;
 	/**
 	 * Create the panel.
 	 */
@@ -56,7 +60,8 @@ public class PanelConversacion extends JPanel {
 		JButton btnEnviar = new JButton("Enviar");
 		btnEnviar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				crearBurbujaMensaje();
+				crearBurbujaMensaje(); //Crear una burbuja para tu mensaje
+				enviarMensaje();
 			}
 		});
 		panelEscritura.add(btnEnviar);
@@ -65,6 +70,9 @@ public class PanelConversacion extends JPanel {
 		panelMensajes.setBackground(new Color(135, 206, 250));
 		panelPrincipal.add(panelMensajes, BorderLayout.CENTER);
 		panelMensajes.setLayout(new BoxLayout(panelMensajes, BoxLayout.Y_AXIS));
+		
+		scrollPane = new JScrollPane(panelMensajes);
+		panelPrincipal.add(scrollPane, BorderLayout.CENTER);
 
 	}
 	
@@ -79,5 +87,24 @@ public class PanelConversacion extends JPanel {
 		
 		
 	}
+	
+	private void enviarMensaje() {
+		Usuario emisor = ControladorUsuarios.getUnicaInstancia().getusuarioActual();
+				
+		switch (chat.getClass().getSimpleName()) {
+		case "ChatIndividual":
+			ChatIndividual c1 = (ChatIndividual) chat;
+			Mensaje m = ControladorUsuarios.getUnicaInstancia().crearMensaje(emisor, c1, textTexto.getText());
+			//From me (usuarioAcutal) to un chatIndv con un texto
+			ControladorUsuarios.getUnicaInstancia().enviarMensajeAChatInd(m, c1);
+			break;
+			
+		case "ChatGrupo":
+			
+			break;
+		
+	}
+	}
+		
 
 }
