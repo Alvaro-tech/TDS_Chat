@@ -409,6 +409,22 @@ public class ControladorUsuarios {
 		return null;
 
 	}
+	
+	public void imprimirChart(String tipo, Chart<?, ?> chart) {
+		GestorGraficas gg= new GestorGraficas();
+		switch(chart.getClass().getSimpleName()) {
+		case "XYChart":
+			XYChart aux = (XYChart) chart;
+			gg.convertirChartEn(aux, tipo);
+			break;
+		case "PieChart":
+			System.out.println("Entro a en el PieChart de Imprimir");
+			PieChart aux1= (PieChart) chart;
+			gg.convertirChartEn(aux1, tipo);
+			break;
+		}
+		
+	}
 
 	/**
 	 * Funcion para parsear las fechas horribles de JDateChooser a algo en lo que
@@ -547,7 +563,7 @@ public class ControladorUsuarios {
 			
 		}
 		
-		//Asociación de IdLigadas
+		//Asociación de IdLigadas e indicar que es una conversacion reciente.
 		cI.setIdChatLigado(chatEspejo.getId());
 		chatEspejo.setIdChatLigado(cI.getId());
 		

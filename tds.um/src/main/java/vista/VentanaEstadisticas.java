@@ -23,11 +23,19 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
+import javax.swing.JRadioButton;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import java.awt.Component;
+import javax.swing.Box;
 
 public class VentanaEstadisticas extends JFrame {
 
 	private JPanel contentPane;
 	private JPanel panelGrafica;
+	private Chart<?, ?> aux;
+	private JComboBox comboBox;
+	private String formatoSelect = "PNG";
 
 	
 	/**
@@ -44,8 +52,20 @@ public class VentanaEstadisticas extends JFrame {
 		JPanel panelBotones = new JPanel();
 		contentPane.add(panelBotones, BorderLayout.NORTH);
 		
+		comboBox = new JComboBox();
+		comboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				formatoSelect = (String) comboBox.getSelectedItem();
+			}
+		});
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"PNG", "JPG"}));
+		panelBotones.add(comboBox);
+		
 		JButton btnImprimir = new JButton("Imprimir");
 		panelBotones.add(btnImprimir);
+		
+		Component horizontalStrut = Box.createHorizontalStrut(20);
+		panelBotones.add(horizontalStrut);
 		
 		JButton btnLineal = new JButton("Lineal");
 		panelBotones.add(btnLineal);
@@ -59,7 +79,7 @@ public class VentanaEstadisticas extends JFrame {
 		
 		btnTarta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Chart<?, ?> aux = ControladorUsuarios.getUnicaInstancia().crearEstadisticas("Pie");
+				aux = ControladorUsuarios.getUnicaInstancia().crearEstadisticas("Pie");
 				PieChart aux1 = (PieChart) aux;
 				JPanel panelChart = new XChartPanel(aux1);
 				
@@ -74,7 +94,7 @@ public class VentanaEstadisticas extends JFrame {
 		});
 		btnLineal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Chart<?, ?> aux = ControladorUsuarios.getUnicaInstancia().crearEstadisticas("XY");
+				aux = ControladorUsuarios.getUnicaInstancia().crearEstadisticas("XY");
 				XYChart aux1 = (XYChart) aux;
 				
 				JPanel panelChart = new XChartPanel(aux1);
@@ -91,6 +111,7 @@ public class VentanaEstadisticas extends JFrame {
 		});
 		btnImprimir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				ControladorUsuarios.getUnicaInstancia().imprimirChart(formatoSelect, aux);
 				
 			}
 		});

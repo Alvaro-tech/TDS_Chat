@@ -82,14 +82,14 @@ public class GestorGraficas {
 		if (tipo == "PNG") {
 
 			try {
-				BitmapEncoder.saveBitmap(chart, "./" + chart.getTitle(), BitmapFormat.PNG);
+				BitmapEncoder.saveBitmap(chart, "./estadisticas" + chart.getTitle(), BitmapFormat.PNG);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 		if (tipo == "JPG") {
 			try {
-				BitmapEncoder.saveBitmap(chart, "./" + chart.getTitle(), BitmapFormat.JPG);
+				BitmapEncoder.saveBitmap(chart, "./estadisticas" + chart.getTitle(), BitmapFormat.JPG);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -108,14 +108,14 @@ public class GestorGraficas {
 		if (tipo == "PNG") {
 
 			try {
-				BitmapEncoder.saveBitmap(chart, "./" + chart.getTitle(), BitmapFormat.PNG);
+				BitmapEncoder.saveBitmap(chart, "./estadisticas" + chart.getTitle(), BitmapFormat.PNG);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 		if (tipo == "JPG") {
 			try {
-				BitmapEncoder.saveBitmap(chart, "./" + chart.getTitle(), BitmapFormat.JPG);
+				BitmapEncoder.saveBitmap(chart, "./estadisticas" + chart.getTitle(), BitmapFormat.JPG);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
