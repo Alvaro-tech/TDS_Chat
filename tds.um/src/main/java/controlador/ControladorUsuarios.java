@@ -523,6 +523,31 @@ public class ControladorUsuarios {
 	}
 	
 	public void enviarMensajeAChatInd(Mensaje m, ChatIndividual cI) {
+		if (cI.getIdChatLigado() == 0 ) {
+			enlazarChats(cI);
+		}
+		
+	}
+	
+	//Recorrer los chat indviduales de la otra persona y enlazarnos
+	private void enlazarChats(ChatIndividual cI) {
+		Usuario receptor = cI.getContacto();
+		
+		for (ChatIndividual i : receptor.getChatsInd()) {
+			if(i.getMovil() == usuarioActual.getMovil()) { //Si encuentras tu movil, es que te tiene en la agenda
+				cI.setIdChatLigado(i.getId());
+				i.setIdChatLigado(cI.getId());
+				
+				//Actualizo persistencia para ambos usuarios
+				AdaptadorChatIndividualDAO.getUnicaInstancia().updateChatLigado(cI);
+				AdaptadorChatIndividualDAO.getUnicaInstancia().updateChatLigado(i);
+				return;
+			}
+		}
+		//Si el bucle termino, es porque no te tiene añadido como user, se te crea como desconocido
+		ChatIndividual cDesconocido = new ChatIndividual(usuarioActual.getNombre(), usuarioActual.getMovil(), usuarioActual);
+		AdaptadorChatIndividualDAO.getUnicaInstancia().create(cDesconocido);
+		this.getusuarioActual().
 		
 	}
 	
