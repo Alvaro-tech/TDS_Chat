@@ -337,11 +337,11 @@ public class ControladorUsuarios {
 	 * @param tipo, tipo de descuento que se aplica, si se aplica uno.
 	 * @return precio a pagar de la cuenta premium.
 	 */
-	public void addChatRecienteToUser(Chat Chat) {
+	public void addChatRecienteToUser(Chat Chat, Usuario user) {
 		// añade la conversacion en su lista
 		usuarioActual.addConversacion(Chat.getId());
 		// actualiza las conversaciones
-		AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(usuarioActual);
+		AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(user);
 		// TODO: buscar el usuario del chat (el contacto) y hacer lo inverso;
 		// para que aparezca el chat a los dos. Ver si no te tienes gusradado.
 		// hacer un if else comprobando con instanceof para que valga para grupo.
@@ -372,7 +372,7 @@ public class ControladorUsuarios {
 		if(idGrupo == grupo.getIdPadre()) { //es el padre
 			grupo.addMensajeHistorial(m);
 			grupo.getGruposHijo().stream()
-								.forEach(g -> this.enviarMensajeAGrupo(m, g));
+								.forEach(g -> g.addMensajeHistorial(m));
 		}else { //No es el padre, pasa de él y busca al padre 
 			int idPadre = Integer.parseInt(grupo.getIdPadre());
 			ChatGrupo grupoPadre = AdaptadorChatGrupoDAO.getUnicaInstancia().get(idPadre);
@@ -538,22 +538,30 @@ public class ControladorUsuarios {
 	//Recorrer los chat indviduales de la otra persona y enlazarnos
 	private void enlazarChats(ChatIndividual cI) {
 		Usuario receptor = cI.getContacto();
+		ChatIndividual chatEspejo;
 		
+		boolean asignado = false;
 		for (ChatIndividual i : receptor.getChatsInd()) {
 			if(i.getMovil() == usuarioActual.getMovil()) { //Si encuentras tu movil, es que te tiene en la agenda
-				cI.setIdChatLigado(i.getId());
-				i.setIdChatLigado(cI.getId());
-				
-				//Actualizo persistencia para ambos usuarios
-				AdaptadorChatIndividualDAO.getUnicaInstancia().updateChatLigado(cI);
-				AdaptadorChatIndividualDAO.getUnicaInstancia().updateChatLigado(i);
-				return;
+				chatEspejo = i;
+				asignado = true;
+				break;
 			}
 		}
-		//Si el bucle termino, es porque no te tiene añadido como user, se te crea como desconocido
-		ChatIndividual cDesconocido = new ChatIndividual(usuarioActual.getNombre(), usuarioActual.getMovil(), usuarioActual);
-		AdaptadorChatIndividualDAO.getUnicaInstancia().create(cDesconocido);
-		this.getusuarioActual().
+		if (!asignado) {
+			//Si el bucle termino, es porque no te tiene añadido como user, se te crea como desconocido
+			ChatIndividual cDesconocido = new ChatIndividual(usuarioActual.getMovil(), usuarioActual.getMovil(), usuarioActual);
+			AdaptadorChatIndividualDAO.getUnicaInstancia().create(cDesconocido);
+			this.getusuarioActual().addChatDesconcido(cDesconocido);
+		}
+		
+		//Asociación de IdLigadas
+		cI.setIdChatLigado(chatEspejo.getId());
+		chatEspejo.setIdChatLigado(cI.getId());
+		
+		//Actualizo persistencia para ambos usuarios
+		AdaptadorChatIndividualDAO.getUnicaInstancia().updateChatLigado(cI);
+		AdaptadorChatIndividualDAO.getUnicaInstancia().updateChatLigado(chatEspejo);
 		
 	}
 
