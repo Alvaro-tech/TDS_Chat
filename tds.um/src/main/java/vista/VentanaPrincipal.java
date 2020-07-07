@@ -315,8 +315,5 @@ public class VentanaPrincipal extends JFrame {
 		
 	}
 	
-	public void addConversacionToUser(Chat newChat) {
-		controler.addChatRecienteToUser(newChat);
-	}
 
 }

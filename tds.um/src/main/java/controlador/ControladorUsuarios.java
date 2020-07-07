@@ -530,7 +530,7 @@ public class ControladorUsuarios {
 	//Recorrer los chat indviduales de la otra persona y enlazarnos
 	private void enlazarChats(ChatIndividual cI) {
 		Usuario receptor = cI.getContacto();
-		ChatIndividual chatEspejo;
+		ChatIndividual chatEspejo = null;
 		
 		boolean asignado = false;
 		for (ChatIndividual i : receptor.getChatsInd()) {
@@ -542,9 +542,9 @@ public class ControladorUsuarios {
 		}
 		if (!asignado) {
 			//Si el bucle termino, es porque no te tiene añadido como user, se te crea como desconocido
-			ChatIndividual cDesconocido = new ChatIndividual(usuarioActual.getMovil(), usuarioActual.getMovil(), usuarioActual);
-			AdaptadorChatIndividualDAO.getUnicaInstancia().create(cDesconocido);
-			this.getusuarioActual().addChatDesconcido(cDesconocido);
+			chatEspejo = receptor.addChatDesconocido(usuarioActual.getMovil(), usuarioActual);
+			AdaptadorChatIndividualDAO.getUnicaInstancia().create(chatEspejo);
+			
 		}
 		
 		//Asociación de IdLigadas
