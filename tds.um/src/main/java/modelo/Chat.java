@@ -219,15 +219,6 @@ public abstract class Chat implements Comparator<Chat> {
 		System.out.println(a);
 		return a;
 	}
-	
-	/**
-	 * Funcion para comparar dos chats de grupo y ver cual tiene mas mensajes.
-	 */
-	public int compararChatsGrupo(ChatGrupo o1, ChatGrupo o2) {
-		Integer mensajesO2 = o2.getMensajesTotales();
-		int a = mensajesO2.compareTo((Integer) o1.getMensajesTotales());
-		return a;
-	}
 
 
 	/**
@@ -237,6 +228,20 @@ public abstract class Chat implements Comparator<Chat> {
 	@Override
 	public String toString() {
 		return this.nombre;
+	}
+	
+	/**
+	 * Funcion que devuelve los mensajes enviados por un usuario concreto en un mes 
+	 * concreto.
+	 * @param int mes, del 1 al 12.
+	 * @param Usuario u, usuario emisor de los mensajes.
+	 * @return double numero de mensajes.
+	 */
+	public double getMensajesEnviadosEsteMes(int mes, Usuario u) {
+		return (double) this.getHistorial().stream()
+							.filter(m -> m.getEmisor().equals(u))
+							.filter(m -> m.getFecha().getMonthValue() == mes)
+							.count();
 	}
 
 }

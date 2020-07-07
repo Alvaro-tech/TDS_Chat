@@ -528,15 +528,41 @@ public class Usuario {
 	}
 
 	
-	//TODO: esto. implementarlo bien.
+	/**
+	 * Funcion que devuelve los seis grupos con más mensajes enviados.
+	 * @return List<ChatGrupo>  top6Grupos
+	 */
 	public List<ChatGrupo> get6GruposTop() {
 		ArrayList<ChatGrupo> grupos = new ArrayList<ChatGrupo>(6);
+		
 		for (ChatGrupo g : chatsGroup) {
 			int aux = g.getMensajesTotales();
-			if(grupos.size() < 6) {
-				grupos.add(g);
-			}else
+			//vemos si lo añadimos
+			int i = 1;
+			boolean fin = false;
+			while(!fin && i< grupos.size()) {
+				if (aux > grupos.get(i).getMensajesTotales()) {
+					grupos.add(i, g);
+					fin=true;
+				}
+				i++;
+			}
 		}
+		return grupos;
+	}
+
+	/**
+	 * Funcion que devuelve los mensajes enviados por el usuario en el mes concreto.
+	 * @param i
+	 * @return
+	 */
+	public double getMensajesEnviadosEsteMes(int i) {
+		double totales = 0.0;
+		for (Chat c : getTodosLosChats()) {
+			totales += c.getMensajesEnviadosEsteMes(i, this);
+		}
+		
+		return totales;
 	}
 
 }

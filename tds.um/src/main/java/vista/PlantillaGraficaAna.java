@@ -41,13 +41,14 @@ public class PlantillaGraficaAna {
 		XYSeries series = chart.addSeries("GraficaLineal", x , y);
 		series.setMarker(SeriesMarkers.NONE);
 		new SwingWrapper<XYChart>(chart).displayChart();
-		
+		/*
 		//2) TARTA: chats desconocidos vs contactos conocidos vs grupos que tienes
 		    PieChart pieChart = getChart();
 		    new SwingWrapper<PieChart>(pieChart).displayChart();
+		    */
 	}
 	
-
+	/*
 	  private static PieChart getChart() {
 	 
 	    // Create Chart
@@ -65,5 +66,6 @@ public class PlantillaGraficaAna {
 	    
 	    return chart;
 	  }
+	  */
 
 }

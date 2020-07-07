@@ -506,6 +506,16 @@ public class ControladorUsuarios {
 	public List<ChatGrupo> get6GruposTop() {
 		return this.usuarioActual.get6GruposTop();
 	}
+
+	/**
+	 * Funcion que devuelve los mensajes enviados por el usuario en un mes "i"
+	 * Siento 1= enero y 12 = diciembre.
+	 * @param i, mes. 1= enero y 12 = diciembre.
+	 * @return double numero de mensajes totales.
+	 */
+	public double getMensajesTotalesDelMes(int i) {
+		return this.usuarioActual.getMensajesEnviadosEsteMes(i);
+	}
 	
 
 }

@@ -20,103 +20,107 @@ import controlador.ControladorUsuarios;
 //mensajes enviados por ese usuario supone.
 
 public class GestorGraficas {
-	
+
 	public static PieChart getPieChart() {
-		 
-	    // Create Chart
-	    PieChart chart = new PieChartBuilder().width(800).height(600).title("Chats totales").build();
-	 
-	    // Customize Chart
-	    Color[] sliceColors = new Color[] { new Color(224, 68, 14), new Color(230, 105, 62), new Color(243, 180, 159) };
-	    chart.getStyler().setSeriesColors(sliceColors);
-	 
-	    List<ChatGrupo> sixTopGrups = ControladorUsuarios.getUnicaInstancia().get6GruposTop();
-	    sixTopGrups.stream()
-	    			.forEach(g -> chart.addSeries(g.getNombre(), g.getMensajesTotales()) );
-	    // Series //2) TARTA: seis grupos con mas mensajes enviados y el total de estos.
-	 	    
-	    return chart;
-	  }
-	
+		// Series //2) TARTA:mostrando los 6 grupos a los que se han enviado más
+		// mensajes y para cada grupo qué porcentaje del total de
+		// mensajes enviados por ese usuario supone.
+
+		// Create Chart
+		PieChart chart = new PieChartBuilder().width(800).height(600).title("Chats totales").build();
+
+		// Customize Chart
+		Color[] sliceColors = new Color[] { new Color(224, 68, 14), new Color(230, 105, 62), new Color(243, 180, 159) };
+		chart.getStyler().setSeriesColors(sliceColors);
+
+		List<ChatGrupo> sixTopGrups = ControladorUsuarios.getUnicaInstancia().get6GruposTop();
+		sixTopGrups.stream().forEach(g -> chart.addSeries(g.getNombre(), g.porcentajeDelTotal(ControladorUsuarios.getUnicaInstancia().getusuarioActual())));
+
+		return chart;
+	}
+
 	public static XYChart getXYChart() {
-		int dias = ControladorUsuarios.getUnicaInstancia().getDiasDelMes();
-		
-		//1) LINEAL: numero de mensajes enviados en un mes. X= tiempo (días del mes) Y= mensajes en un día.
-		//double[30] x = 1-30
-		double[] x = new double[dias];
+		// mostrando el número de mensajes enviados por el usuario en cada mes del año
+		// en curso
+
+		// 1) LINEAL: numero de mensajes enviados en un mes. X= tiempo (mes) Y= mensajes
+		// en un mes concreto.
+		// double[30] x = 1-30
+		double[] x = new double[12];
 		x[0] = 0.0;
 		for (int i = 1; i < x.length; i++) {
 			x[i] = (double) i;
 		}
-		
-		//Double[30] y = mensajes del día (y[1]== mensajes del primer dia del mes)
-		double[] y = new double[dias];
+
+		// Double[30] y = mensajes del día (y[1]== mensajes del primer dia del mes)
+		double[] y = new double[12];
 		y[0] = 0.0;
 		for (int i = 1; i < y.length; i++) {
-			y[i] = (double) ControladorUsuarios.getUnicaInstancia().getMensajesTotalesDelDia(i);
+			y[i] = (double) ControladorUsuarios.getUnicaInstancia().getMensajesTotalesDelMes(i);
 		}
-		
-		XYChart chart = new XYChartBuilder().xAxisTitle("Días del mes").yAxisTitle("Mensajes envíados").width(600).height(400).build();
-		chart.getStyler().setYAxisMin((double) -50); //lo hago pequeño por ahora
+
+		XYChart chart = new XYChartBuilder().xAxisTitle("Mes").yAxisTitle("Mensajes envíados").width(600).height(400)
+				.build();
+		chart.getStyler().setYAxisMin((double) -50); // lo hago pequeño por ahora
 		chart.getStyler().setYAxisMax((double) 50);
-	
-										//nombre //double[] dataX //Double[] dataY
-		XYSeries series = chart.addSeries("GraficaLineal", x , y);
+
+		// nombre //double[] dataX //Double[] dataY
+		XYSeries series = chart.addSeries("GraficaLineal", x, y);
 		series.setMarker(SeriesMarkers.NONE);
-		
-		
+
 		return chart;
 	}
-	
-	
+
 	/**
 	 * Convierte una grafica XY en un PNG o un JPG segun el tipo que se le pase.
+	 * 
 	 * @param XYchart chart
-	 * @param String tipo == "JPG" o "PNG"
+	 * @param String  tipo == "JPG" o "PNG"
 	 */
 	public void convertirChartEn(XYChart chart, String tipo) {
-		//tipo = "PNG" o "JPG"
+		// tipo = "PNG" o "JPG"
 		if (tipo == "PNG") {
 
 			try {
-				BitmapEncoder.saveBitmap(chart, "./"+ chart.getTitle(), BitmapFormat.PNG);
+				BitmapEncoder.saveBitmap(chart, "./" + chart.getTitle(), BitmapFormat.PNG);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 		if (tipo == "JPG") {
 			try {
-				BitmapEncoder.saveBitmap(chart, "./"+ chart.getTitle(), BitmapFormat.JPG);
+				BitmapEncoder.saveBitmap(chart, "./" + chart.getTitle(), BitmapFormat.JPG);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-		
+
 	}
-	
+
 	/**
-	 * Convierte una grafica  tarta en un PNG o un JPG segun el tipo que se le pase.
+	 * Convierte una grafica tarta en un PNG o un JPG segun el tipo que se le pase.
+	 * 
 	 * @param Piechart chart
-	 * @param String tipo == "JPG" o "PNG"
+	 * @param String   tipo == "JPG" o "PNG"
 	 */
 	public void convertirChartEn(PieChart chart, String tipo) {
-		//tipo = "PNG" o "JPG"
+		// tipo = "PNG" o "JPG"
 		if (tipo == "PNG") {
 
 			try {
-				BitmapEncoder.saveBitmap(chart, "./"+ chart.getTitle(), BitmapFormat.PNG);
+				BitmapEncoder.saveBitmap(chart, "./" + chart.getTitle(), BitmapFormat.PNG);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 		if (tipo == "JPG") {
 			try {
-				BitmapEncoder.saveBitmap(chart, "./"+ chart.getTitle(), BitmapFormat.JPG);
+				BitmapEncoder.saveBitmap(chart, "./" + chart.getTitle(), BitmapFormat.JPG);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-		
+
 	}
 
 }
