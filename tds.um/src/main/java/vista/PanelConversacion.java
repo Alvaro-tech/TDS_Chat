@@ -8,6 +8,7 @@ import modelo.Chat;
 import modelo.ChatIndividual;
 import modelo.Mensaje;
 import modelo.Usuario;
+import persistencia.AdaptadorMensajeDAO;
 import tds.BubbleText;
 
 import javax.swing.JButton;
@@ -129,6 +130,10 @@ public class PanelConversacion extends JPanel {
 		case "ChatIndividual":
 			ChatIndividual c1 = (ChatIndividual) chat;
 			Mensaje m = ControladorUsuarios.getUnicaInstancia().crearMensaje(emisor, c1, textTexto.getText());
+			//Guardamos el mensaje en persistencia, para que tenga un idPropio
+			AdaptadorMensajeDAO.getUnicaInstancia().create(m);
+			System.out.println("Controlador | enviarMensaje, id del mensaje: " + m.getId());
+
 			//From me (usuarioAcutal) to un chatIndv con un texto
 			ControladorUsuarios.getUnicaInstancia().enviarMensajeAChatInd(m, c1);
 			break;
