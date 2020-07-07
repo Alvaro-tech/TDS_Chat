@@ -262,8 +262,9 @@ public class PanelCrearGrupo extends JDialog {
 						//Cada persona al crearse el usuario lo primero que debe tener es a sí mismo de contacto.
 						//creamos el grupo. LLamamos directamente al controlador xd lo haga todo como debe ser.
 						ChatIndividual[] auxG = miembrosPotenciales.toArray(new ChatIndividual[miembrosPotenciales.size()]);
-						ControladorUsuarios.getUnicaInstancia().crearGrupo(textGroupName.getText(), auxG);
-					}
+						ChatGrupo cg1 = ControladorUsuarios.getUnicaInstancia().crearGrupo(textGroupName.getText(), auxG);
+						padre.addChatsRecientes(cg1);
+					} 
 				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);

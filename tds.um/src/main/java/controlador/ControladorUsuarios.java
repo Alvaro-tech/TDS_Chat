@@ -157,8 +157,15 @@ public class ControladorUsuarios {
 		AdaptadorUsuarioDAO UsuarioDAO = (AdaptadorUsuarioDAO) factoria
 				.getUsuarioDAO(); /* Adaptador DAO para almacenar el nuevo Usuario en la BD */
 		UsuarioDAO.create(Usuario);
-
 		CatalogoUsuarios.getUnicaInstancia().addUsuario(Usuario);
+		
+		//Tienes que agregarte como un chatIndvidual a ti mismo (Como hace Telegram)
+		ChatIndividual tu = new ChatIndividual(nombre, movil, Usuario);
+		AdaptadorChatIndividualDAO ChatDAO = (AdaptadorChatIndividualDAO) factoria.getChatIndividualDAO();
+		ChatDAO.create(tu);
+		Usuario.agregarChatIndividual(tu);	
+		UsuarioDAO.updateChats(Usuario, tu);
+		
 		return true;
 	}
 
@@ -437,9 +444,10 @@ public class ControladorUsuarios {
 	 * @param nombreGrupo
 	 * @param contactos
 	 */
-	public void crearGrupo(String nombreGrupo, ChatIndividual... contactos) {
+	public ChatGrupo crearGrupo(String nombreGrupo, ChatIndividual... contactos) {
 		//es la primera vez que se crea un grupo.
-		this.usuarioActual.crearGrupoNuevo(nombreGrupo, contactos);
+		ChatGrupo cg1 = this.usuarioActual.crearGrupoNuevo(nombreGrupo, contactos);
+		return cg1; //parche
 		
 	}
 

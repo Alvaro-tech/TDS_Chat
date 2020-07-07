@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 
+import persistencia.AdaptadorChatGrupoDAO;
 import persistencia.AdaptadorChatIndividualDAO;
 
 /**
@@ -60,10 +61,7 @@ public class Usuario {
 		this.saludo = "Hey there, I'm using TDSchat.";
 		this.fotoPerfil = "./iconos/Defecto.PNG";
 		this.conversacionesAbiertas = "";
-		
-		//cuando se crea un usuario se introduce un chatIndividual de sí mismo a la lista.
-		ChatIndividual tu = new ChatIndividual(nombre, movil, this);
-		this.chatsInd.add(tu);
+
 	}
 
 	/**
@@ -380,11 +378,15 @@ public class Usuario {
 	 * @param nombreGrupo
 	 * @param contactos, argumento variable de tipo ChatIndividual.
 	 */
-	public void crearGrupoNuevo(String nombreGrupo, ChatIndividual... contactos) {
+	public ChatGrupo crearGrupoNuevo(String nombreGrupo, ChatIndividual... contactos) {
 		//primera vez que se crea un grupo (es decir, es el grupo padre)
 		ChatGrupo grupoPadre = new ChatGrupo(nombreGrupo, contactos);
 		grupoPadre.addAdmin(this);
 		grupoPadre.setDuenyo(this);
+		
+		AdaptadorChatGrupoDAO.getUnicaInstancia().create(grupoPadre);  //(pache) Añadido como prueba post-Preguntas para ver si arreglo (no persistencia)
+		grupoPadre.setIdPadre(grupoPadre.getId() + ""); //Parche
+		
 		//añado mi propio contacto al chatIndividual
 		this.anyadirmeAGrupo(grupoPadre);
 		this.chatsGroup.add(grupoPadre);
@@ -392,6 +394,8 @@ public class Usuario {
 		grupoPadre.getMiembros().stream()
 								.forEach(m -> m.getContacto().CrearGrupoHijo(grupoPadre));
 		
+		//TODO Lo he añadido para poder retornar el grupo y que aparezca en chats recientes (Parche)
+		return grupoPadre;
 	}
 
 	/**
@@ -405,6 +409,7 @@ public class Usuario {
 			ChatIndividual aux = iterator.next();
 			if(aux.getContacto().equals(this)) {
 				grupo.addMiembro(aux);
+				System.out.println("anyadirmeAGrupo, me añadi (movil): " + aux.getMovil());
 			}
 	    }
 	}
@@ -433,7 +438,13 @@ public class Usuario {
 		
 		//APARTIR DE AQUÍ: tengo en cuenta el aliasing y me aprovecho de ello
 		//meto los mensajes del grupo en este
-		grupoHijo.setHistorial(grupoPadre.getHistorial());
+		//TODO: Puede no haber mensajes aun y eso daría un error, sigo sin corregir persistencia
+		try {
+			grupoHijo.setHistorial(grupoPadre.getHistorial());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
 		//le pongo los mismo administradores
 		grupoHijo.setAdministradores(grupoPadre.getAdministradores());
 		//los grupoHijo siempre vacíos.

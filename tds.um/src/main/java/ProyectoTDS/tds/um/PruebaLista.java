@@ -31,7 +31,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 
-
 public class PruebaLista extends JFrame {
 
 	private JPanel contentPane;

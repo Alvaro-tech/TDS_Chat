@@ -24,14 +24,23 @@ import com.toedter.calendar.JDateChooser;
 
 import controlador.ControladorUsuarios;
 import modelo.Chat;
+import modelo.ChatGrupo;
+import modelo.ChatIndividual;
+import modelo.Usuario;
 
 import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.JTextField;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JRadioButton;
+import java.awt.List;
+import javax.swing.DefaultComboBoxModel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class VentanaLupa extends JDialog {
 
-	private final JPanel contentPanel = new JPanel();
+	private final JPanel usuariosPanel = new JPanel();
 	private JTextPane textTextoBuscar;
 	//no he usado estas
 	private JTextField textFinicial;
@@ -41,6 +50,7 @@ public class VentanaLupa extends JDialog {
 	private JDateChooser fFinal;
 	private Chat chatCargado;
 	private JFrame ventana;
+	private ChatIndividual userSelect;
 	/**
 	 * Launch the application.
 	 */
@@ -51,7 +61,6 @@ public class VentanaLupa extends JDialog {
 	public VentanaLupa(Chat chat, JFrame ventana) {
 		chatCargado = chat;												//chat del que se va a buscar
 		this.ventana = ventana;
-		//TODO: PARA ALVARO. introducir la posibilidad de escoger un usuario para las busquedas.
 		setBounds(100, 100, 550, 300);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{79, 323, 0};
@@ -73,6 +82,38 @@ public class VentanaLupa extends JDialog {
 			if(chat.getClass().getSimpleName().equalsIgnoreCase("ChatIndividual")){
 				chckbxUsuario.setEnabled(false);
 			}
+		}
+		usuariosPanel.setLayout(new FlowLayout());
+		usuariosPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		GridBagConstraints gbc_usuariosPanel = new GridBagConstraints();
+		gbc_usuariosPanel.fill = GridBagConstraints.BOTH;
+		gbc_usuariosPanel.insets = new Insets(0, 0, 5, 0);
+		gbc_usuariosPanel.gridx = 1;
+		gbc_usuariosPanel.gridy = 1;
+		getContentPane().add(usuariosPanel, gbc_usuariosPanel);
+		{
+			JComboBox<ChatIndividual> comboBox = new JComboBox<ChatIndividual>();
+			comboBox.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					userSelect = (ChatIndividual)comboBox.getSelectedItem();
+				}
+			});
+			comboBox.setMaximumRowCount(15);
+			comboBox.setSize(300, 30);
+			
+			if (chat.getClass().getSimpleName().equalsIgnoreCase("ChatGrupo")) {
+				DefaultComboBoxModel<ChatIndividual> comboBoxModel = new DefaultComboBoxModel<ChatIndividual>();
+				ChatGrupo c1 = (ChatGrupo) chat;
+				for (ChatIndividual i : c1.getMiembros()) {
+					comboBoxModel.addElement(i);
+				}
+				comboBox.setModel(comboBoxModel);
+			} else {
+				comboBox.setEnabled(false);
+			}
+			
+			usuariosPanel.add(comboBox);
 		}
 		
 	
@@ -139,14 +180,6 @@ public class VentanaLupa extends JDialog {
 				panelFechas.add(fFinal);
 			}
 		}
-		contentPanel.setLayout(new FlowLayout());
-		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		GridBagConstraints gbc_contentPanel = new GridBagConstraints();
-		gbc_contentPanel.fill = GridBagConstraints.BOTH;
-		gbc_contentPanel.insets = new Insets(0, 0, 5, 0);
-		gbc_contentPanel.gridx = 1;
-		gbc_contentPanel.gridy = 4;
-		getContentPane().add(contentPanel, gbc_contentPanel);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -170,7 +203,7 @@ public class VentanaLupa extends JDialog {
 						}
 						String textoABuscar = textTextoBuscar.getText();
 						//TODO: lo del usuario, por ahora lo pongo a null cuando llamas al controlador.
-						ControladorUsuarios.getUnicaInstancia().BuscarPorFiltro(chatCargado, textoABuscar, fIni, fFin, null);
+						ControladorUsuarios.getUnicaInstancia().BuscarPorFiltro(chatCargado, textoABuscar, fIni, fFin, userSelect);
 					}
 				});
 				okButton.setActionCommand("OK");

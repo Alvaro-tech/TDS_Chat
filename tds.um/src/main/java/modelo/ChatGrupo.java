@@ -18,7 +18,7 @@ public class ChatGrupo extends Chat{
 	//si es el padre (el primer grupo que se crea) su idPadre = idChat
 	private String idPadre;
 	//Usuario "dueño" del grupo
-	private Usuario duenyo;
+	private Usuario duenyo; 
 	//grupo duplicado: todo igual menos los miembros.
 	private HashSet<ChatGrupo> gruposHijo = new HashSet<ChatGrupo>();
 	
@@ -167,6 +167,8 @@ public class ChatGrupo extends Chat{
 	 */
 	public void addMiembro(ChatIndividual m) {
 		//lo llama el administrador.
+		System.out.println("chatGrupo, add miembro, el id "  + idPadre);
+		//TODO: Aqui puede que aun no tengas un idPadre asignado -> NullPointer
 		int idPadre = (int) Integer.valueOf(this.idPadre);
 		
 		if( this.getId() == idPadre) { //es el grupo Padre
