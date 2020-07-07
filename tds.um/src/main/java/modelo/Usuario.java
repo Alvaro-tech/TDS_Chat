@@ -187,6 +187,17 @@ public class Usuario {
 	public HashSet<ChatGrupo> getChatsGroup() {
 		return chatsGroup;
 	}
+	
+	/**
+	 * Método get de Usuario.
+	 * @return chats individuales y desconocidos unificado.
+	 */
+	public HashSet<ChatIndividual> getCHatsIndividualesYDesconocidos(){
+		HashSet<ChatIndividual> chats = new HashSet<ChatIndividual>();
+		chats.addAll(chatsDesconocido);
+		chats.addAll(chatsInd);
+		return chats;
+	}
 
 	/**
 	 * Metodo get de Usuario.
@@ -563,6 +574,24 @@ public class Usuario {
 		}
 		
 		return totales;
+	}
+
+	public String getInfoChatsIndividuales() {
+		String infoTot = "";
+		for (ChatIndividual c : this.getCHatsIndividualesYDesconocidos()) {
+			infoTot += c.getInfo();
+		}
+		
+		return infoTot;
+	}
+
+	public String getInfoGrupo() {
+		String infoTot = "";
+		for (ChatGrupo c : this.chatsGroup) {
+			infoTot += c.getInfo();
+		}
+		
+		return infoTot;
 	}
 
 }

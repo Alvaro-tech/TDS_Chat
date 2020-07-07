@@ -2,6 +2,7 @@ package modelo;
 
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import persistencia.AdaptadorChatGrupoDAO;
 
@@ -251,6 +252,19 @@ public class ChatGrupo extends Chat {
 		//si para TOtales --> usuario
 		//para    100 --> x
 		return (double) usuario*100/totales;
+	}
+
+	public String getInfo() {
+		String infoTot = "";
+		infoTot = "[ Nombre de grupo= " + this.getNombre() + "Miembros: \n";
+		Iterator<ChatIndividual> iterador = miembros.iterator();
+		
+		while(iterador.hasNext()) {
+			infoTot += iterador.next().getInfo();
+		}
+		
+		infoTot += " ] \n";
+		return infoTot;
 	}
 
 
