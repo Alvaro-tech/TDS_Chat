@@ -249,6 +249,7 @@ public class PanelCrearGrupo extends JDialog {
 						ChatIndividual[] auxG = miembrosPotenciales.toArray(new ChatIndividual[miembrosPotenciales.size()]);
 						ChatGrupo cg1 = ControladorUsuarios.getUnicaInstancia().crearGrupo(textGroupName.getText(), auxG);
 						padre.addChatsRecientes(cg1);
+						padre.addConversacionToUser(cg1); //Un grupo sin mensajes ya se guarda
 					} 
 				});
 				okButton.setActionCommand("OK");

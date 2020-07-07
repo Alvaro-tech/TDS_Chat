@@ -5,6 +5,8 @@ import java.awt.BorderLayout;
 import javax.swing.JTextField;
 
 import modelo.Chat;
+import modelo.Usuario;
+import tds.BubbleText;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -15,11 +17,17 @@ import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
+import controlador.ControladorUsuarios;
+
+import javax.swing.BoxLayout;
+
 public class PanelConversacion extends JPanel {
 	private JTextField textTexto;
 	private Chat chat;
 	private JFrame ventana;
 	private VentanaPrincipal padre;
+	private JPanel panelMensajes;
+	private JPanel panelPrincipal;
 	/**
 	 * Create the panel.
 	 */
@@ -29,7 +37,7 @@ public class PanelConversacion extends JPanel {
 		this.padre = padre;
 		setLayout(new BorderLayout(0, 0));
 		
-		JPanel panelPrincipal = new JPanel();
+		panelPrincipal = new JPanel();
 		panelPrincipal.setBackground(new Color(173, 216, 230));
 		add(panelPrincipal);
 		panelPrincipal.setLayout(new BorderLayout(0, 0));
@@ -48,11 +56,28 @@ public class PanelConversacion extends JPanel {
 		JButton btnEnviar = new JButton("Enviar");
 		btnEnviar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//TODO
+				crearBurbujaMensaje();
 			}
 		});
 		panelEscritura.add(btnEnviar);
+		
+		panelMensajes = new JPanel();
+		panelMensajes.setBackground(new Color(135, 206, 250));
+		panelPrincipal.add(panelMensajes, BorderLayout.CENTER);
+		panelMensajes.setLayout(new BoxLayout(panelMensajes, BoxLayout.Y_AXIS));
 
+	}
+	
+	private void crearBurbujaMensaje() {
+		BubbleText burbuja;
+		Usuario emisor = ControladorUsuarios.getUnicaInstancia().getusuarioActual();
+		burbuja = new BubbleText(panelMensajes, textTexto.getText(), Color.GREEN, emisor.getNombre(), BubbleText.SENT, 18);
+		panelMensajes.add(burbuja);
+		
+		panelMensajes.revalidate();
+		panelMensajes.repaint();
+		
+		
 	}
 
 }

@@ -12,6 +12,7 @@ public class ChatIndividual extends Chat {
 	// ES UN CONTACTO INDIVIDUAL con su lista de mensajes asociado.
 	private String movil; // Movil del contacto
 	private Usuario contacto;
+	private int idChatLigado;
 
 	/**
 	 * Constructor de la clase ChatIndividual.
@@ -24,6 +25,7 @@ public class ChatIndividual extends Chat {
 		super(nombre);
 		this.movil = movil;
 		this.contacto = contacto;
+		this.idChatLigado = 0; //La persistencia no genera 0 como id, recien creado un chat,al no haber mensajes, no esta aún enlazado
 	}
 
 	/**
@@ -93,4 +95,13 @@ public class ChatIndividual extends Chat {
 		this.contacto = contacto;
 	}
 
+	public int getIdChatLigado() {
+		return idChatLigado;
+	}
+
+	public void setIdChatLigado(int idChatLigado) {
+		this.idChatLigado = idChatLigado;
+	}
+
+	
 }

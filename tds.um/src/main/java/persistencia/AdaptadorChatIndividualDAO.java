@@ -44,9 +44,11 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 		//FIJOS
 		String nombre = servPersistencia.recuperarPropiedadEntidad(eChat,"nombre");
 		String movil = servPersistencia.recuperarPropiedadEntidad(eChat, "movil");
+		String idChatLigado = servPersistencia.recuperarPropiedadEntidad(eChat, "idChatLigado");
 		
 		ChatIndividual chatIndividual = new ChatIndividual(nombre, movil);
 		chatIndividual.setId(eChat.getId());
+		chatIndividual.setIdChatLigado(Integer.valueOf(idChatLigado));
 		PoolDAO.getUnicaInstancia().addObjeto(chatIndividual.getId(), chatIndividual);
 		
 		//BIDIRECCIONALES
@@ -109,6 +111,7 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 						new Propiedad ("movil", chat.getMovil()),
 						new Propiedad ("contacto", chat.getUserId().toString()),
 						new Propiedad("ultimoMensaje", ""),
+						new Propiedad("idChatLigado", "0"),
 						new Propiedad("historial", "" )
 								
 						))
@@ -173,6 +176,13 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 		PoolDAO.getUnicaInstancia().addObjeto(id, chatIndividual);
 		return chatIndividual;
 	}
+	
+	//Función para establecer el chat equivalente en otro usuario.
+	public void updateChatLigado(ChatIndividual chat) {
+		Entidad eChat = servPersistencia.recuperarEntidad(chat.getId());
+		servPersistencia.eliminarPropiedadEntidad(eChat, "idChatLigado");
+		servPersistencia.anadirPropiedadEntidad(eChat, "idChatLigado", Integer.toString(chat.getIdChatLigado()));
+	}
 
 	//TODO: Necesaria esta función???????
 	@Override
@@ -210,6 +220,8 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 		}
 		return mensajes;
 	}
+	
+	
 	
 	
 }

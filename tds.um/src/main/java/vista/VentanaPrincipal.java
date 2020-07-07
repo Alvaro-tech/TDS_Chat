@@ -289,7 +289,7 @@ public class VentanaPrincipal extends JFrame {
 		pChatRec.updateChatsRecientes(newChat);
 		//llama al controlador.
 		//TODO: no llamar a esta funcion todavía, simplemente abrir la ventana de chat con esa persona.
-		controler.addChatRecienteToUser(newChat);
+		//controler.addChatRecienteToUser(newChat);
 		
 	}
 	
@@ -313,6 +313,10 @@ public class VentanaPrincipal extends JFrame {
 		panelDividido.revalidate(); 
 		panelDividido.repaint(); 
 		
+	}
+	
+	public void addConversacionToUser(Chat newChat) {
+		controler.addChatRecienteToUser(newChat);
 	}
 
 }
