@@ -3,11 +3,17 @@ package controlador;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
+
+import org.knowm.xchart.PieChart;
+import org.knowm.xchart.SwingWrapper;
+import org.knowm.xchart.internal.chartpart.Chart;
+
 import modelo.CatalogoUsuarios;
 import modelo.Chat;
 import modelo.ChatGrupo;
 import modelo.ChatIndividual;
 import modelo.Descuento;
+import modelo.GestorGraficas;
 import modelo.Mensaje;
 import modelo.Usuario;
 import persistencia.AdaptadorChatGrupoDAO;
@@ -380,7 +386,22 @@ public class ControladorUsuarios {
 	}
 
 	// TODO
-	public void crearEstadisticas() {
+	public Chart crearEstadisticas(String tipo) {
+		
+		switch (tipo) {
+		case "Pie":
+			System.out.println("entre a generar el pie en el controlador");
+			Chart<?, ?> aPie= GestorGraficas.getPieChart();
+			return aPie;
+
+		case "XY":
+			Chart<?, ?> aXY = GestorGraficas.getXYChart();
+			return aXY;
+		default:
+			break;
+		}
+		
+		return null;
 
 	}
 

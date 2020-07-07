@@ -7,7 +7,7 @@ import java.awt.Color;
 
 import org.knowm.xchart.*;
 
-public class VistaGraficas {
+public class PlantillaGraficaAna {
 	//Gráficas
 	//(POR AHORA)
 	//1) LINEAL: numero de mensajes enviados en un mes. X= tiempo (días del mes) Y= mensajes en un día.
@@ -62,6 +62,7 @@ public class VistaGraficas {
 	    chart.addSeries("Contactos individuales", ControladorUsuarios.getUnicaInstancia().getNumeroContactos());
 	    chart.addSeries("Contactos desconocidos", ControladorUsuarios.getUnicaInstancia().getNumeroContactosDesconocidos());
 	 
+	    
 	    return chart;
 	  }
 

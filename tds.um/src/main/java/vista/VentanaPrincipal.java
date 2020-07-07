@@ -169,6 +169,12 @@ public class VentanaPrincipal extends JFrame {
 		mnMenu.add(mntmPremium);
 		
 		JMenuItem mntmMostrarEstadis = new JMenuItem("Mostrar Estadísticas");
+		mntmMostrarEstadis.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				VentanaEstadisticas frame = new VentanaEstadisticas();
+				frame.setVisible(true);
+			}
+		});
 		mnMenu.add(mntmMostrarEstadis);
 		
 		JMenuItem mntmCerrarSesion = new JMenuItem("Cerrar Sesión");
