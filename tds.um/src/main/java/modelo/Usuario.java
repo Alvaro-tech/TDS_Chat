@@ -3,6 +3,7 @@ package modelo;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -526,28 +527,16 @@ public class Usuario {
 				.filter(m -> m.getFecha().getMonth().equals(LocalDate.now().getMonth())); // Equals sobre enumerado
 	}
 
-	/**
-	 * Funcion que devuelve el numero de grupos al que pertenece el usuario.
-	 * @return int numero de grupos.
-	 */ 
-	public int getNumeroGrupos() {
-		return (int) this.chatsGroup.stream().count();
-	}
-
-	/**
-	 * Funcion que devuelve el numero de chats individuales al que pertenece el usuario.
-	 * @return int numero de chats individuales.
-	 */ 
-	public Number getNumeroContactos() {
-		return (int) this.chatsInd.stream().count();
-	}
-
-	/**
-	 * Funcion que devuelve el numero de chats desconocidos al que pertenece el usuario.
-	 * @return int numero de chats desconocidos.
-	 */ 
-	public Number getNumeroDesconocidos() {
-		return (int) this.chatsDesconocido.stream().count();
+	
+	//TODO: esto. implementarlo bien.
+	public List<ChatGrupo> get6GruposTop() {
+		ArrayList<ChatGrupo> grupos = new ArrayList<ChatGrupo>(6);
+		for (ChatGrupo g : chatsGroup) {
+			int aux = g.getMensajesTotales();
+			if(grupos.size() < 6) {
+				grupos.add(g);
+			}else
+		}
 	}
 
 }

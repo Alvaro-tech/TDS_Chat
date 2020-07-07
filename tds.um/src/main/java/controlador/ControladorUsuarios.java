@@ -2,12 +2,11 @@ package controlador;
 
 import java.time.LocalDate;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.StringTokenizer;
-
 import org.knowm.xchart.PieChart;
-import org.knowm.xchart.SwingWrapper;
+import org.knowm.xchart.XYChart;
 import org.knowm.xchart.internal.chartpart.Chart;
-
 import modelo.CatalogoUsuarios;
 import modelo.Chat;
 import modelo.ChatGrupo;
@@ -386,7 +385,7 @@ public class ControladorUsuarios {
 	}
 
 	// TODO
-	public Chart crearEstadisticas(String tipo) {
+	public Chart<?, ?> crearEstadisticas(String tipo) {
 		
 		switch (tipo) {
 		case "Pie":
@@ -487,29 +486,25 @@ public class ControladorUsuarios {
 	public int getDiasDelMes() {
 		return LocalDate.now().getMonth().maxLength();
 	}
-
+	
 	/**
-	 * Funcion que devuelve el numero de grupos al que pertenece el usuario.
-	 * @return int numero de grupos.
-	 */ 
-	public Number getNumeroGrupos() {
-		return this.usuarioActual.getNumeroGrupos();
-	}
-
-	/**
-	 * Funcion que devuelve el numero de chats individuales al que pertenece el usuario.
-	 * @return int numero de chats individuales.
+	 * COnsigue una grafica tarta
+	 * @return PieChart
 	 */
-	public Number getNumeroContactos() {
-		return this.usuarioActual.getNumeroContactos();
+	public PieChart getGraficaTart() {
+		return GestorGraficas.getPieChart();
+	}
+	
+	/**
+	 * Consigue la grafica XY
+	 * @return XYChart 
+	 */
+	public XYChart getGraficaUso() {
+		return GestorGraficas.getXYChart();
 	}
 
-	/**
-	 * Funcion que devuelve el numero de chats desconocidos al que pertenece el usuario.
-	 * @return int numero de chats desconocidos.
-	 */ 
-	public Number getNumeroContactosDesconocidos() {
-		return this.usuarioActual.getNumeroDesconocidos();
+	public List<ChatGrupo> get6GruposTop() {
+		return this.usuarioActual.get6GruposTop();
 	}
 	
 

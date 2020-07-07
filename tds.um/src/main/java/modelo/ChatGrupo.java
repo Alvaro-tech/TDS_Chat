@@ -1,5 +1,6 @@
 package modelo;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedList;
 import persistencia.AdaptadorChatGrupoDAO;
@@ -10,7 +11,7 @@ import persistencia.AdaptadorChatGrupoDAO;
  * @author Álvaro y Ana.
  *
  */
-public class ChatGrupo extends Chat{
+public class ChatGrupo extends Chat {
 	
 	//Aqui el atributo nombre se entiende como el nombre del grupo
 	private LinkedList<ChatIndividual> miembros = new LinkedList<ChatIndividual>();
@@ -229,6 +230,27 @@ public class ChatGrupo extends Chat{
 		LinkedList<Mensaje> filtrados = this.BuscarMensajePorContactos(m);
 		filtrados.addAll(mensajes);
 		return filtrados;
+	}
+
+	/**
+	 * Devuelve el numero de mensajes totales enviads en el grupo.
+	 * @return int mensajes totales del grupo.
+	 */
+	public int getMensajesTotales() {
+		return (int) this.getHistorial().stream().count();
+	}
+	
+	/**
+	 * Funcion que devuelve el porcentaje de mensajes que ha enviado un usuario.
+	 * @param Usuario u
+	 * @return int porcentaje de mensajes que ha enviado el usuario.
+	 */
+	public double porcentajeDelTotal(Usuario u) {
+		int totales = this.getMensajesTotales();
+		int usuario = (int) this.getHistorial().stream().filter(m -> m.getEmisor().equals(u)).count();
+		//si para TOtales --> usuario
+		//para    100 --> x
+		return (double) usuario*100/totales;
 	}
 
 

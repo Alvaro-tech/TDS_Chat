@@ -1,16 +1,23 @@
 package modelo;
 
 import java.awt.Color;
+import java.io.IOException;
+import java.util.List;
 
+import org.knowm.xchart.BitmapEncoder;
 import org.knowm.xchart.PieChart;
 import org.knowm.xchart.PieChartBuilder;
-import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.XYChartBuilder;
 import org.knowm.xchart.XYSeries;
+import org.knowm.xchart.BitmapEncoder.BitmapFormat;
 import org.knowm.xchart.style.markers.SeriesMarkers;
 
 import controlador.ControladorUsuarios;
+
+//mostrando el número de mensajes enviados por el usuario en cada mes del año en curso y un diagrama de tarta
+//mostrando los 6 grupos a los que se han enviado más mensajes y para cada grupo qué porcentaje del total de
+//mensajes enviados por ese usuario supone.
 
 public class GestorGraficas {
 	
@@ -23,10 +30,10 @@ public class GestorGraficas {
 	    Color[] sliceColors = new Color[] { new Color(224, 68, 14), new Color(230, 105, 62), new Color(243, 180, 159) };
 	    chart.getStyler().setSeriesColors(sliceColors);
 	 
-	    // Series //2) TARTA: chats desconocidos vs contactos conocidos vs grupos que tienes
-	    chart.addSeries("Chats de grupo", ControladorUsuarios.getUnicaInstancia().getNumeroGrupos());
-	    chart.addSeries("Contactos individuales", ControladorUsuarios.getUnicaInstancia().getNumeroContactos());
-	    chart.addSeries("Contactos desconocidos", ControladorUsuarios.getUnicaInstancia().getNumeroContactosDesconocidos());
+	    List<ChatGrupo> sixTopGrups = ControladorUsuarios.getUnicaInstancia().get6GruposTop();
+	    sixTopGrups.stream()
+	    			.forEach(g -> chart.addSeries(g.getNombre(), g.getMensajesTotales()) );
+	    // Series //2) TARTA: seis grupos con mas mensajes enviados y el total de estos.
 	 	    
 	    return chart;
 	  }
@@ -59,6 +66,57 @@ public class GestorGraficas {
 		
 		
 		return chart;
+	}
+	
+	
+	/**
+	 * Convierte una grafica XY en un PNG o un JPG segun el tipo que se le pase.
+	 * @param XYchart chart
+	 * @param String tipo == "JPG" o "PNG"
+	 */
+	public void convertirChartEn(XYChart chart, String tipo) {
+		//tipo = "PNG" o "JPG"
+		if (tipo == "PNG") {
+
+			try {
+				BitmapEncoder.saveBitmap(chart, "./"+ chart.getTitle(), BitmapFormat.PNG);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		if (tipo == "JPG") {
+			try {
+				BitmapEncoder.saveBitmap(chart, "./"+ chart.getTitle(), BitmapFormat.JPG);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	
+	/**
+	 * Convierte una grafica  tarta en un PNG o un JPG segun el tipo que se le pase.
+	 * @param Piechart chart
+	 * @param String tipo == "JPG" o "PNG"
+	 */
+	public void convertirChartEn(PieChart chart, String tipo) {
+		//tipo = "PNG" o "JPG"
+		if (tipo == "PNG") {
+
+			try {
+				BitmapEncoder.saveBitmap(chart, "./"+ chart.getTitle(), BitmapFormat.PNG);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		if (tipo == "JPG") {
+			try {
+				BitmapEncoder.saveBitmap(chart, "./"+ chart.getTitle(), BitmapFormat.JPG);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
 	}
 
 }
