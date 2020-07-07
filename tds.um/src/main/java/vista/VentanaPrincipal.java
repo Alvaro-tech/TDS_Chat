@@ -288,8 +288,7 @@ public class VentanaPrincipal extends JFrame {
 		//vete al panel de la izq de los chats y añadelo
 		pChatRec.updateChatsRecientes(newChat);
 		//llama al controlador.
-		//TODO: no llamar a esta funcion todavía, simplemente abrir la ventana de chat con esa persona.
-		//controler.addChatRecienteToUser(newChat);
+		
 		
 	}
 	

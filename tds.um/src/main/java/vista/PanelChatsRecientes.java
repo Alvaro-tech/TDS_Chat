@@ -37,9 +37,10 @@ public class PanelChatsRecientes extends JPanel {
 		contentPanel.setLayout(new BorderLayout(0, 0));
 		
 		
-		
+		System.out.println("Comienzo a cargar los chats recientes");
 		for(Chat c : chatRec) {
 			listModel.addElement(c);
+			System.out.println("cargado mensajes en panelChatRecientes " + c.getId());
 		}
 		
 		

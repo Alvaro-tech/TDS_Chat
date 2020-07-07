@@ -541,18 +541,32 @@ public class ControladorUsuarios {
 			enlazarChats(cI);
 		}
 		
+		//Para este punto ya estas enlazado correctamente y eres una conversacion reciente para el otro
+		//Actualizamos los historiales
+		
+		System.out.println("#####3enviar mensaje " + m.getTexto());
+		
+		cI.addMensajeHistorial(m);
+		ChatIndividual extremo = AdaptadorChatIndividualDAO.getUnicaInstancia().get(cI.getIdChatLigado());
+		extremo.addMensajeHistorial(m);
+		
+		AdaptadorChatIndividualDAO.getUnicaInstancia().updateHistorial(extremo);
+		AdaptadorChatIndividualDAO.getUnicaInstancia().updateHistorial(cI);
+		
 	}
 	
 	//Recorrer los chat indviduales de la otra persona y enlazarnos
-	private void enlazarChats(ChatIndividual cI) {
-		Usuario receptor = cI.getContacto();
+	private void enlazarChats(ChatIndividual cI) { //mi chat de ana
+		Usuario receptor = cI.getContacto(); //ana
 		ChatIndividual chatEspejo = null;
 		
 		boolean asignado = false;
 		for (ChatIndividual i : receptor.getChatsInd()) {
-			if(i.getMovil() == usuarioActual.getMovil()) { //Si encuentras tu movil, es que te tiene en la agenda
+			if(i.getMovil().equals(usuarioActual.getMovil())) { //Si encuentras tu movil, es que te tiene en la agenda
+				//System.out.println("#####movil que itera " + i + "movil que busco" + usuarioActual.getMovil() );
 				chatEspejo = i;
 				asignado = true;
+				System.out.println("enlazarChats / controlador -> Encontre el movil");
 				break;
 			}
 		}
@@ -567,11 +581,24 @@ public class ControladorUsuarios {
 		cI.setIdChatLigado(chatEspejo.getId());
 		chatEspejo.setIdChatLigado(cI.getId());
 		
+		//System.out.println("id ligado a: " + cI.getIdChatLigado());
+		//System.out.println("id ligado b: " + chatEspejo.getIdChatLigado());
+		
 		receptor.addConversacion(chatEspejo.getId());
+		
+		//System.out.println("enlazar chats | Soy el receptor: " + receptor.getNombre() + " y me enlace con: " + chatEspejo.getContacto().getNombre());
+		usuarioActual.addConversacion(cI.getId());
 		
 		//Actualizo persistencia para ambos usuarios
 		AdaptadorChatIndividualDAO.getUnicaInstancia().updateChatLigado(cI);
 		AdaptadorChatIndividualDAO.getUnicaInstancia().updateChatLigado(chatEspejo);
+		
+		//System.out.println("enlazarChats / controlador: se updateron los chatLigados");
+		
+		AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(usuarioActual);
+		AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(receptor);
+		
+		//System.out.println("se updateron las conversaciones");
 		
 	}
 

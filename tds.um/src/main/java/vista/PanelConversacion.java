@@ -73,20 +73,50 @@ public class PanelConversacion extends JPanel {
 		
 		scrollPane = new JScrollPane(panelMensajes);
 		panelPrincipal.add(scrollPane, BorderLayout.CENTER);
+		
+		cargarBurbujas();
 
 	}
 	
+	
+	
+	
+	
+	//Funcionalidad
 	private void crearBurbujaMensaje() {
 		BubbleText burbuja;
 		Usuario emisor = ControladorUsuarios.getUnicaInstancia().getusuarioActual();
+		
 		burbuja = new BubbleText(panelMensajes, textTexto.getText(), Color.GREEN, emisor.getNombre(), BubbleText.SENT, 18);
 		panelMensajes.add(burbuja);
 		
 		panelMensajes.revalidate();
 		panelMensajes.repaint();
 		
-		
 	}
+	
+	private void burbujaMensajeRecibida(Mensaje m) {
+		BubbleText burbuja;
+		Usuario emisor = m.getEmisor();
+		burbuja = new BubbleText(panelMensajes, m.getTexto(), Color.CYAN, emisor.getNombre(), BubbleText.RECEIVED, 18);
+		panelMensajes.add(burbuja);
+		burbuja.setVisible(true);
+			
+	}
+	
+	private void burbujaMensajeEnviada(Mensaje m) {
+		BubbleText burbuja;
+		Usuario emisor = m.getEmisor();
+		System.out.println(".-.-.-crearBurBuMensaje: " + m.getTexto());
+		System.out.println(".-.-.-crearBurBuMensaje: " + emisor.getNombre());
+		burbuja = new BubbleText(panelMensajes, m.getTexto(), Color.CYAN, emisor.getNombre(), BubbleText.RECEIVED, 18);
+		panelMensajes.add(burbuja);
+		burbuja.setVisible(true);
+		
+		
+			
+	}
+	
 	
 	private void enviarMensaje() {
 		Usuario emisor = ControladorUsuarios.getUnicaInstancia().getusuarioActual();
@@ -103,7 +133,25 @@ public class PanelConversacion extends JPanel {
 			
 			break;
 		
+		}
 	}
+	
+	private void cargarBurbujas() {
+		Usuario yo = ControladorUsuarios.getUnicaInstancia().getusuarioActual();
+		for (Mensaje m : chat.getHistorial()) {
+			if(m.getEmisor().equals(yo)) {
+				System.out.println("------ cargar burbu " + m.getTexto());
+				burbujaMensajeEnviada(m);
+				
+				panelMensajes.revalidate();
+				panelMensajes.repaint();
+				
+			}else {
+				burbujaMensajeRecibida(m);
+			}
+			panelMensajes.revalidate();
+			panelMensajes.repaint();
+		}
 	}
 		
 
