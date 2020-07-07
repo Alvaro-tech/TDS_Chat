@@ -7,6 +7,12 @@ import java.util.StringTokenizer;
 import org.knowm.xchart.PieChart;
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.internal.chartpart.Chart;
+
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+
 import modelo.CatalogoUsuarios;
 import modelo.Chat;
 import modelo.ChatGrupo;
@@ -549,6 +555,25 @@ public class ControladorUsuarios {
 		AdaptadorChatIndividualDAO.getUnicaInstancia().create(cDesconocido);
 		this.getusuarioActual().
 		
+	}
+
+	/**
+	 * Funcion que devuelve la info del usuario de sus chats individuales.
+	 * nombre + movil.
+	 * @return Chunk informacion.
+	 */
+	public Chunk getInfoChatsIndividualesPDF() {
+		return  new Chunk(this.usuarioActual.getInfoChatsIndividuales(),
+				 FontFactory.getFont(FontFactory.COURIER, 20, Font.ITALIC, new BaseColor(255, 0,0)));
+	}
+	
+	/**
+	 * Funcion que devuelve la info del usuario sobre sus grupos.
+	 * @return Chunk informacion.
+	 */
+	public Chunk getInfoChatsGrupoPDF() {
+		return  new Chunk(this.usuarioActual.getInfoGrupo(),
+				 FontFactory.getFont(FontFactory.COURIER, 20, Font.ITALIC, new BaseColor(255, 0,0)));
 	}
 	
 
