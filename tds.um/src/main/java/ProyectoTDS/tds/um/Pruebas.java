@@ -1,6 +1,7 @@
 package ProyectoTDS.tds.um;
 
 import java.awt.Component;
+
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
@@ -32,9 +33,11 @@ import modelo.Mensaje;
 import modelo.Usuario;
 
 
+
 public class Pruebas {
 	
-	
+	public void helo() {
+	}
 		
 	 public static void main(String[] args) throws Exception {
 		 

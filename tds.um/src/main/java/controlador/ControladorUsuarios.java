@@ -567,6 +567,8 @@ public class ControladorUsuarios {
 		cI.setIdChatLigado(chatEspejo.getId());
 		chatEspejo.setIdChatLigado(cI.getId());
 		
+		receptor.addConversacion(chatEspejo.getId());
+		
 		//Actualizo persistencia para ambos usuarios
 		AdaptadorChatIndividualDAO.getUnicaInstancia().updateChatLigado(cI);
 		AdaptadorChatIndividualDAO.getUnicaInstancia().updateChatLigado(chatEspejo);
