@@ -7,11 +7,9 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import java.awt.event.ActionListener;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.awt.event.ActionEvent;
@@ -21,26 +19,13 @@ import java.awt.Insets;
 import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.JTextField;
-import java.awt.GridLayout;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-
 import controlador.ControladorUsuarios;
-import modelo.Chat;
 import modelo.ChatGrupo;
 import modelo.ChatIndividual;
-import net.miginfocom.swing.MigLayout;
-import javax.swing.AbstractListModel;
 import java.awt.SystemColor;
 import java.awt.Font;
-import javax.swing.border.LineBorder;
 import java.awt.Color;
-import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
-
-import org.eclipse.persistence.internal.queries.ListContainerPolicy;
-
 import javax.swing.UIManager;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;

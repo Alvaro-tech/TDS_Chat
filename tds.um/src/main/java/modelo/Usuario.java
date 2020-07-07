@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import persistencia.AdaptadorChatGrupoDAO;
 import persistencia.AdaptadorChatIndividualDAO;
@@ -348,30 +349,6 @@ public class Usuario {
 		return recientes;
 
 	}
-
-	/**
-	 * Funcion que retorna el numero de mensajes totales enviados por el usuario en
-	 * este mes.
-	 * 
-	 * @return int numero de mensajes.
-	 */
-	public int getNumeroDeMensajesDelMes() {
-		LinkedList<Chat> todos = new LinkedList<Chat>();
-		todos.addAll(this.getTodosLosChats());
-
-		// saco de todos una lista de listas de mensajes
-		List<List<Mensaje>> mensas = todos.stream().map(c -> c.getHistorial()).collect(Collectors.toList());
-
-		// de mensas hago un flatmap para convertir la lista de listas en una lista
-		// simple
-		List<Mensaje> mensajes = // lista con todos los mensajes
-				mensas.stream().flatMap(List::stream).collect(Collectors.toList());
-
-		// hago la busqueda de los mensajes y los cuento.
-		return (int) mensajes.stream().filter(m -> m.getEmisor().equals(this))
-				.filter(m -> m.getFecha().getMonth().equals(LocalDate.now().getMonth())) // Equals sobre enumerado
-				.count();
-	}
 	
 	/**
 	 * Funcion que crea un grupoPadre. Crea los grupo hijo en los respectivos miembros de este.
@@ -503,6 +480,74 @@ public class Usuario {
 			return anonimo;
 			
 		}else return aux;
+	}
+
+	/**
+	 * Funcion que devuelve los mensajes enviados en un día concreto de este mes
+	 * @param int dia, día del mes del que se quiere realizar la busqueda.
+	 * @return int numero de mensajes de este dia (parámetro)
+	 */
+	public int getMensajesEnviadosEsteDia(int dia) {
+		// hago la busqueda de los mensajes y los cuento.
+		return (int)this.getMensajesDelMes()
+				.filter(m -> m.getFecha().getDayOfWeek().getValue() == dia)
+				.count();
+	}
+	
+	/**
+	 * Funcion que retorna el numero de mensajes totales enviados por el usuario en
+	 * este mes.
+	 * 
+	 * @return int numero de mensajes.
+	 */
+	public int getNumeroDeMensajesDelMes() {
+		return (int) this.getMensajesDelMes().count();
+	}
+	
+	
+	/**
+	 * Funcion que devuelve un stream de los mensajes que se envian en el mes actual.
+	 * @return Stream<Mensaje> mensajes del mes.
+	 */
+	private Stream<Mensaje> getMensajesDelMes(){
+		LinkedList<Chat> todos = new LinkedList<Chat>();
+		todos.addAll(this.getTodosLosChats());
+
+		// saco de todos una lista de listas de mensajes
+		List<List<Mensaje>> mensas = todos.stream().map(c -> c.getHistorial()).collect(Collectors.toList());
+
+		// de mensas hago un flatmap para convertir la lista de listas en una lista
+		// simple
+		List<Mensaje> mensajes = // lista con todos los mensajes
+				mensas.stream().flatMap(List::stream).collect(Collectors.toList());
+
+		// hago la busqueda de los mensajes y los cuento.
+		return  mensajes.stream().filter(m -> m.getEmisor().equals(this))
+				.filter(m -> m.getFecha().getMonth().equals(LocalDate.now().getMonth())); // Equals sobre enumerado
+	}
+
+	/**
+	 * Funcion que devuelve el numero de grupos al que pertenece el usuario.
+	 * @return int numero de grupos.
+	 */ 
+	public int getNumeroGrupos() {
+		return (int) this.chatsGroup.stream().count();
+	}
+
+	/**
+	 * Funcion que devuelve el numero de chats individuales al que pertenece el usuario.
+	 * @return int numero de chats individuales.
+	 */ 
+	public Number getNumeroContactos() {
+		return (int) this.chatsInd.stream().count();
+	}
+
+	/**
+	 * Funcion que devuelve el numero de chats desconocidos al que pertenece el usuario.
+	 * @return int numero de chats desconocidos.
+	 */ 
+	public Number getNumeroDesconocidos() {
+		return (int) this.chatsDesconocido.stream().count();
 	}
 
 }

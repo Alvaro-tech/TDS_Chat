@@ -3,7 +3,6 @@ package controlador;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
-
 import modelo.CatalogoUsuarios;
 import modelo.Chat;
 import modelo.ChatGrupo;
@@ -450,5 +449,47 @@ public class ControladorUsuarios {
 		return cg1; //parche
 		
 	}
+
+	/**
+	 * Devuelve el numero de mensajes que envio un usuario en un día concreto de este mes.
+	 * @param int dia del mes.
+	 * @return int numero de mensajes.
+	 */
+	public int getMensajesTotalesDelDia(int dia) {
+		return this.getusuarioActual().getMensajesEnviadosEsteDia(dia);
+	}
+
+	/**
+	 * Funcion que te dice cuantos dias tiene el mes actual en concreto.
+	 * @return int numero de días de 29 a 31.
+	 */
+	public int getDiasDelMes() {
+		return LocalDate.now().getMonth().maxLength();
+	}
+
+	/**
+	 * Funcion que devuelve el numero de grupos al que pertenece el usuario.
+	 * @return int numero de grupos.
+	 */ 
+	public Number getNumeroGrupos() {
+		return this.usuarioActual.getNumeroGrupos();
+	}
+
+	/**
+	 * Funcion que devuelve el numero de chats individuales al que pertenece el usuario.
+	 * @return int numero de chats individuales.
+	 */
+	public Number getNumeroContactos() {
+		return this.usuarioActual.getNumeroContactos();
+	}
+
+	/**
+	 * Funcion que devuelve el numero de chats desconocidos al que pertenece el usuario.
+	 * @return int numero de chats desconocidos.
+	 */ 
+	public Number getNumeroContactosDesconocidos() {
+		return this.usuarioActual.getNumeroDesconocidos();
+	}
+	
 
 }
