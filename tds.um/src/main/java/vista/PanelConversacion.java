@@ -14,7 +14,10 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionListener;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
@@ -62,6 +65,7 @@ public class PanelConversacion extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				crearBurbujaMensaje(); //Crear una burbuja para tu mensaje
 				enviarMensaje();
+				textTexto.setText("");
 			}
 		});
 		panelEscritura.add(btnEnviar);
@@ -70,7 +74,7 @@ public class PanelConversacion extends JPanel {
 		panelMensajes.setBackground(new Color(135, 206, 250));
 		panelPrincipal.add(panelMensajes, BorderLayout.CENTER);
 		panelMensajes.setLayout(new BoxLayout(panelMensajes, BoxLayout.Y_AXIS));
-		
+		panelMensajes.setSize(new Dimension(400, 400));
 		scrollPane = new JScrollPane(panelMensajes);
 		panelPrincipal.add(scrollPane, BorderLayout.CENTER);
 		
@@ -109,7 +113,7 @@ public class PanelConversacion extends JPanel {
 		Usuario emisor = m.getEmisor();
 		System.out.println(".-.-.-crearBurBuMensaje: " + m.getTexto());
 		System.out.println(".-.-.-crearBurBuMensaje: " + emisor.getNombre());
-		burbuja = new BubbleText(panelMensajes, m.getTexto(), Color.CYAN, emisor.getNombre(), BubbleText.RECEIVED, 18);
+		burbuja = new BubbleText(panelMensajes, m.getTexto(), Color.GREEN, emisor.getNombre(), BubbleText.SENT, 18);
 		panelMensajes.add(burbuja);
 		burbuja.setVisible(true);
 		
@@ -138,16 +142,16 @@ public class PanelConversacion extends JPanel {
 	
 	private void cargarBurbujas() {
 		Usuario yo = ControladorUsuarios.getUnicaInstancia().getusuarioActual();
-		for (Mensaje m : chat.getHistorial()) {
+		LinkedList<Mensaje> aux = new LinkedList<Mensaje>(chat.getHistorial());
+		 Collections.reverse(aux);
+		for (Mensaje m : aux) {
 			if(m.getEmisor().equals(yo)) {
 				System.out.println("------ cargar burbu " + m.getTexto());
 				burbujaMensajeEnviada(m);
 				
-				panelMensajes.revalidate();
-				panelMensajes.repaint();
-				
 			}else {
 				burbujaMensajeRecibida(m);
+				
 			}
 			panelMensajes.revalidate();
 			panelMensajes.repaint();
