@@ -187,6 +187,17 @@ public class Usuario {
 	public HashSet<ChatGrupo> getChatsGroup() {
 		return chatsGroup;
 	}
+	
+	/**
+	 * Método get de Usuario.
+	 * @return chats individuales y desconocidos unificado.
+	 */
+	public HashSet<ChatIndividual> getCHatsIndividualesYDesconocidos(){
+		HashSet<ChatIndividual> chats = new HashSet<ChatIndividual>();
+		chats.addAll(chatsDesconocido);
+		chats.addAll(chatsInd);
+		return chats;
+	}
 
 	/**
 	 * Metodo get de Usuario.
@@ -482,18 +493,6 @@ public class Usuario {
 			
 		}else return aux;
 	}
-
-	/**
-	 * Funcion que devuelve los mensajes enviados en un día concreto de este mes
-	 * @param int dia, día del mes del que se quiere realizar la busqueda.
-	 * @return int numero de mensajes de este dia (parámetro)
-	 */
-	public int getMensajesEnviadosEsteDia(int dia) {
-		// hago la busqueda de los mensajes y los cuento.
-		return (int)this.getMensajesDelMes()
-				.filter(m -> m.getFecha().getDayOfWeek().getValue() == dia)
-				.count();
-	}
 	
 	/**
 	 * Funcion que retorna el numero de mensajes totales enviados por el usuario en
@@ -563,6 +562,36 @@ public class Usuario {
 		}
 		
 		return totales;
+	}
+
+	public String getInfoChatsIndividuales() {
+		String infoTot = "";
+		for (ChatIndividual c : this.getCHatsIndividualesYDesconocidos()) {
+			infoTot += c.getInfo();
+		}
+		
+		return infoTot;
+	}
+
+	public String getInfoGrupo() {
+		String infoTot = "";
+		for (ChatGrupo c : this.chatsGroup) {
+			infoTot += c.getInfo();
+		}
+		
+		return infoTot;
+	}
+	
+	/**
+	 * Funcion que crea un chatDesconocido y lo añade al usuario.
+	 * @param movil del nuevo contacto, será su nombre también.
+	 * @param Usuario u, usuario desconocido.
+	 * @return ChatIndividual desconocido.
+	 */
+	public ChatIndividual addChatDesconocido(String movil, Usuario u) {
+		ChatIndividual desconocido = new ChatIndividual(movil, movil, u);
+		this.chatsDesconocido.add(desconocido);
+		return desconocido;
 	}
 
 }

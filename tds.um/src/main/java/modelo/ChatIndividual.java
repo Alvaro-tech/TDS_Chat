@@ -103,5 +103,12 @@ public class ChatIndividual extends Chat {
 		this.idChatLigado = idChatLigado;
 	}
 
-	
+	/**
+	 * Devuelve la informacion de un contacto o chat Individual.
+	 * @return info.
+	 */
+	public String getInfo() {
+		return "[Nombre de contacto: " + this.getNombre() + ", Número de teléfono= " + this.getMovil() +" ] \n";
+	}
+
 }

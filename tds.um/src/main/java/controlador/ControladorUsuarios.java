@@ -476,14 +476,6 @@ public class ControladorUsuarios {
 		
 	}
 
-	/**
-	 * Devuelve el numero de mensajes que envio un usuario en un día concreto de este mes.
-	 * @param int dia del mes.
-	 * @return int numero de mensajes.
-	 */
-	public int getMensajesTotalesDelDia(int dia) {
-		return this.getusuarioActual().getMensajesEnviadosEsteDia(dia);
-	}
 
 	/**
 	 * Funcion que te dice cuantos dias tiene el mes actual en concreto.
