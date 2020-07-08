@@ -1,6 +1,6 @@
 package modelo;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.LinkedList;
 
@@ -126,7 +126,7 @@ public abstract class Chat implements Comparator<Chat> {
 	 * @param u
 	 * @return mensajes con los filtros introducidos.
 	 */
-	public LinkedList<Mensaje> BuscarPorFiltros(String texto, LocalDate fechaInicio, LocalDate fechaFin, ChatIndividual u) {
+	public LinkedList<Mensaje> BuscarPorFiltros(String texto, LocalDateTime fechaInicio, LocalDateTime fechaFin, ChatIndividual u) {
 		LinkedList<Mensaje> mensajes = new LinkedList<Mensaje>();
 		mensajes = this.historial;
 
@@ -173,7 +173,7 @@ public abstract class Chat implements Comparator<Chat> {
 	 * @param f
 	 * @return Lista de mensajes coincidentes.
 	 */
-	public LinkedList<Mensaje> BuscarPorFechas(LocalDate fi, LocalDate ffin, LinkedList<Mensaje> mensajes) {
+	public LinkedList<Mensaje> BuscarPorFechas(LocalDateTime fi, LocalDateTime ffin, LinkedList<Mensaje> mensajes) {
 	LinkedList<Mensaje> mensajesFiltrados = new LinkedList<Mensaje>();
 		
 		mensajes.stream()

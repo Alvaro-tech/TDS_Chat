@@ -1,6 +1,6 @@
 package modelo;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Clase que representa los mensajes en el modelo del sistema.
@@ -12,7 +12,7 @@ public class Mensaje {
 	private Usuario usuarioAct; //emisor
 	private ChatIndividual contacto; //receptor
 	private String texto;
-	private LocalDate fecha; //fecha en la que se crea el mensaje
+	private LocalDateTime fecha; //fecha en la que se crea el mensaje
 	private int id;
 	//Imagen emoticon;
 	
@@ -26,7 +26,7 @@ public class Mensaje {
 		this.usuarioAct = u;
 		this.contacto = c; 
 		this.texto = texto;
-		this.fecha = LocalDate.now(); //cuando creas el mensaje se le pone la fecha actual.
+		this.fecha = LocalDateTime.now(); //cuando creas el mensaje se le pone la fecha actual.
 	}
 	
 	/**
@@ -40,7 +40,7 @@ public class Mensaje {
 		this.usuarioAct = u;
 		this.contacto = c; 
 		this.texto = texto;
-		this.fecha = LocalDate.parse(fecha); //cuando creas el mensaje se le pone la fecha actual.
+		this.fecha = LocalDateTime.parse(fecha); //cuando creas el mensaje se le pone la fecha actual.
 	} 
 	
 	/**
@@ -50,7 +50,7 @@ public class Mensaje {
 	 */
 	public Mensaje(String texto, String fecha) {
 		this.texto = texto;
-		this.fecha =  LocalDate.parse(fecha);
+		this.fecha =  LocalDateTime.parse(fecha);
 	}
 	
 	/**
@@ -62,7 +62,7 @@ public class Mensaje {
 		this.usuarioAct = u;
 		this.contacto = null; //ESTO QUIERE DECIR QUE ES UN MENSAJE DE GRUPO.
 		this.texto = texto;
-		this.fecha = LocalDate.now();
+		this.fecha = LocalDateTime.now();
 	}
 	
 
@@ -88,7 +88,7 @@ public class Mensaje {
 	 * Método get de Mensaje.
 	 * @return LocalDate fecha
 	 */
-	public LocalDate getFecha() {
+	public LocalDateTime getFecha() {
 		return fecha;
 	}
 	
@@ -145,11 +145,11 @@ public class Mensaje {
 	
 	/**
 	 * comprueba que un mensaje ha sido enviado entre dos fechas.
-	 * @param LocalDate fi, fecha de inicio
-	 * @param LocalDate ff, fecha final
+	 * @param LocalDateTime fi, fecha de inicio
+	 * @param LocalDateTime ff, fecha final
 	 * @return
 	 */
-	public boolean esEntreFechas(LocalDate fi, LocalDate ff) {
+	public boolean esEntreFechas(LocalDateTime fi, LocalDateTime ff) {
 		return (fi.isEqual(this.fecha) || fi.isBefore(this.fecha)) && (ff.isEqual(this.fecha) || ff.isAfter(this.fecha));
 	}
 

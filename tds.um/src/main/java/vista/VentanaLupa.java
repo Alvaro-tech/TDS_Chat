@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.awt.event.ActionEvent;
@@ -195,13 +196,13 @@ public class VentanaLupa extends JDialog {
 				JButton okButton = new JButton("Buscar");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						LocalDate fIni = null;
-						LocalDate fFin = null;
+						LocalDateTime fIni = null;
+						LocalDateTime fFin = null;
 						if(fInicio.getDate() != null && fFinal.getDate() != null) { //se ha seleccionado una fecha
 							String fechaDeInicio = ControladorUsuarios.getUnicaInstancia().parsear(fInicio.getDate().toString());
 							String fechaDeFin = ControladorUsuarios.getUnicaInstancia().parsear(fFinal.getDate().toString());
-					        fIni = LocalDate.parse(fechaDeInicio, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-					        fFin = LocalDate.parse(fechaDeFin, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+					        fIni = LocalDateTime.parse(fechaDeInicio, DateTimeFormatter.ofPattern("dd/MM/yyyy H:mm:ss"));
+					        fFin = LocalDateTime.parse(fechaDeFin, DateTimeFormatter.ofPattern("dd/MM/yyyy H:mm:ss"));
 						}
 						String textoABuscar = textTextoBuscar.getText();
 						//TODO: lo del usuario, por ahora lo pongo a null cuando llamas al controlador.

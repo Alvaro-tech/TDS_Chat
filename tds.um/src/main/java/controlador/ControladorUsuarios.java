@@ -1,18 +1,13 @@
 package controlador;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 import org.knowm.xchart.PieChart;
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.internal.chartpart.Chart;
-
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
-
 import modelo.CatalogoUsuarios;
 import modelo.Chat;
 import modelo.ChatGrupo;
@@ -279,7 +274,7 @@ public class ControladorUsuarios {
 	 * @return Lista de mensajes que corresponden a los parámetros de filtro de la
 	 *         búsqueda.
 	 */
-	public LinkedList<Mensaje> BuscarPorFiltro(Chat chat, String texto, LocalDate fechaInicio, LocalDate fechaFin,
+	public LinkedList<Mensaje> BuscarPorFiltro(Chat chat, String texto, LocalDateTime fechaInicio, LocalDateTime fechaFin,
 			ChatIndividual u) {
 		LinkedList<Mensaje> mensajes = new LinkedList<Mensaje>();
 		// ¿Comprobar aqui que el chat pasado pertenece al usuario? supongo que sí...
