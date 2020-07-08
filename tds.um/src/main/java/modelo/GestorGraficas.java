@@ -59,7 +59,7 @@ public class GestorGraficas {
 			y[i] = (double) ControladorUsuarios.getUnicaInstancia().getMensajesTotalesDelMes(i);
 		}
 
-		XYChart chart = new XYChartBuilder().xAxisTitle("Mes").yAxisTitle("Mensajes envíados").width(600).height(400)
+		XYChart chart = new XYChartBuilder().xAxisTitle("Mes").yAxisTitle("Mensajes envíados").width(600).height(400).title("Mensajes al mes")
 				.build();
 		chart.getStyler().setYAxisMin((double) -50); // lo hago pequeño por ahora
 		chart.getStyler().setYAxisMax((double) 50);

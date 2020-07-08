@@ -173,7 +173,7 @@ public class ControladorUsuarios {
 		ChatIndividual tu = new ChatIndividual(nombre, movil, Usuario);
 		AdaptadorChatIndividualDAO ChatDAO = (AdaptadorChatIndividualDAO) factoria.getChatIndividualDAO();
 		ChatDAO.create(tu);
-		Usuario.agregarChatIndividual(tu);	
+		Usuario.agregarChatIndividual(tu);
 		UsuarioDAO.updateChats(Usuario, tu);
 		
 		return true;
@@ -248,12 +248,13 @@ public class ControladorUsuarios {
 
 	}
 
-	// TODO: parametros en javadoc
+	
 	/**
 	 * Funcion llamada desde el panel crear contacto, para añadir nuevos chats
-	 * individuales
+	 * individuales recientes.
 	 * 
-	 * @param
+	 * @param String nombre
+	 * @param String telefono
 	 */
 	public void addChatToUser(String nombre, String telefono) {
 		// busca el contacto con el que quiere iniciar la conversacion
@@ -495,11 +496,12 @@ public class ControladorUsuarios {
 		//Actualizar el idPadre
 		System.out.println("id del grupo padre: " + cg1.getId());
 		cg1.setIdPadre(Integer.toString(cg1.getId()));
-		/*
+		
+		
 		//Tratamiento de los hijos en memoria
 		for (ChatIndividual ci : cg1.getMiembros()) {
 			Usuario userAux = ci.getContacto();
-			ChatGrupo cgAux = userAux.CrearGrupoHijo(cg1);
+			ChatGrupo cgAux = userAux.CrearGrupoHijo(cg1); //crea el grupo hijo en memoria.
 			
 			//Crear el grupo en persistencia
 			AdaptadorChatGrupoDAO.getUnicaInstancia().create(cgAux);
@@ -507,7 +509,6 @@ public class ControladorUsuarios {
 			AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(userAux, cgAux);
 			AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(cgAux);
 		}
-		*/
 		
 		//Actualizar todos los hijos que se añadieron en el bucle
 		AdaptadorChatGrupoDAO.getUnicaInstancia().updateGruposHijos(cg1);
@@ -634,7 +635,7 @@ public class ControladorUsuarios {
 	 */
 	public Chunk getInfoChatsIndividualesPDF() {
 		return  new Chunk(this.usuarioActual.getInfoChatsIndividuales(),
-				 FontFactory.getFont(FontFactory.COURIER, 20, Font.ITALIC, new BaseColor(255, 0,0)));
+				 FontFactory.getFont(FontFactory.COURIER, 20, Font.NORMAL, new BaseColor(255, 0,0)));
 	}
 	
 	/**
@@ -643,8 +644,48 @@ public class ControladorUsuarios {
 	 */
 	public Chunk getInfoChatsGrupoPDF() {
 		return  new Chunk(this.usuarioActual.getInfoGrupo(),
-				 FontFactory.getFont(FontFactory.COURIER, 20, Font.ITALIC, new BaseColor(255, 0,0)));
+				 FontFactory.getFont(FontFactory.COURIER, 20, Font.NORMAL, new BaseColor(255, 0,0)));
 	}
 	
+	/**
+	 * Funcion que elimina el miembro de un grupo. En el padre y los hijos.
+	 * @param ChatGrupo grupo
+	 * @param ChatIndividual miembro
+	 */
+	public void eliminarMiembroGrupo(ChatGrupo grupo, ChatIndividual miembro) {
+		//comprobar si el usuario actual es admin y proceder si lo es.
+		if(grupo.getAdministradores().contains(this.usuarioActual)) {
+			//el usuario es admin, puede hacerlo.
+			//veo si es el grupo padre
+			if(Integer.valueOf(grupo.getId()).toString() == grupo.getIdPadre()) {
+				//si es el padre procedemos.
+				grupo.eliminarMiembro(miembro);
+			}else{//si no es el padre, se busca al padre para que llame a esta funcion.
+				ChatGrupo grupoPadre = AdaptadorChatGrupoDAO.getUnicaInstancia().get( (int) Integer.valueOf(grupo.getIdPadre()));
+				ChatIndividual miembroPadre = grupoPadre.getDuenyo().ContactoEquivalente(miembro);
+				this.eliminarMiembroGrupo(grupoPadre, miembroPadre);
+			}
+		} //si no, no puede, que le den.
+	}
+	
+	/**
+	 * Funcion que actualiza el nombre del grupo en el padre y los hijos.
+	 * @param ChatGrupo grupo
+	 * @param String nombre
+	 */
+	public void actualizarNombreGrupo(ChatGrupo grupo, String nombre) {
+		//Puede hacerlo cualquier miembro del grupo
+		if(Integer.valueOf(grupo.getId()).toString() == grupo.getIdPadre()) {
+			//si es el padre procedemos.
+			grupo.cambiarNombre(nombre); //cambia su nombre y el de sus hijos.
+			//actualizamos los grupos en persistencia
+			AdaptadorChatGrupoDAO.getUnicaInstancia().updateNombre(grupo, nombre); //lo cambio tambien en persistencia
+			//lo cambiamos en sus hijos en su persistencia.
+			grupo.getGruposHijo().stream().forEach(g -> AdaptadorChatGrupoDAO.getUnicaInstancia().updateNombre(g, nombre));
+		}else{//si no es el padre, se busca al padre para que llame a esta funcion.
+			ChatGrupo grupoPadre = AdaptadorChatGrupoDAO.getUnicaInstancia().get( (int) Integer.valueOf(grupo.getIdPadre()));
+			this.actualizarNombreGrupo(grupoPadre, nombre);
+		}
+	}
 
 }

@@ -63,6 +63,9 @@ public class Usuario {
 		this.saludo = "Hey there, I'm using TDSchat.";
 		this.fotoPerfil = "./iconos/Defecto.PNG";
 		this.conversacionesAbiertas = "";
+		
+		ChatIndividual tu = new ChatIndividual(nombre, movil, this);
+		this.chatsInd.add(tu);
 
 	}
 
@@ -430,6 +433,8 @@ public class Usuario {
 		//APARTIR DE AQUÍ: tengo en cuenta el aliasing y me aprovecho de ello
 		//meto los mensajes del grupo en este
 		//TODO: Puede no haber mensajes aun y eso daría un error, sigo sin corregir persistencia
+		//Pero el objeto per se está creado, no debería dar null nunca...
+		//me aprovecho del aliasing para que todos apunten al mismo objeto historial.
 		try {
 			grupoHijo.setHistorial(grupoPadre.getHistorial());
 		} catch (Exception e) {
@@ -438,7 +443,8 @@ public class Usuario {
 		
 		//le pongo los mismo administradores
 		grupoHijo.setAdministradores(grupoPadre.getAdministradores());
-		//los grupoHijo siempre vacíos.
+		//los grupoHijo siempre vacíos. 
+		//Lo mismo, me aprovecho del aliasing y no. No debería estar vacío en absoluto. EL padre tiene al creador de admin.
 		
 		//Por ultimo, lo añado a la lista de los grupo hijo del padre. y a la lista de chat de grupo del usuario.
 		grupoPadre.addGrupoHijo(grupoHijo);
