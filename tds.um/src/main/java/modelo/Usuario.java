@@ -484,9 +484,9 @@ public class Usuario {
 		boolean fin= false;
 		Iterator<ChatIndividual> iterator = this.getChatsInd().iterator(); 
 		
-		ChatIndividual aux = iterator.next();
-		System.out.println("###En contacto equivalante, movil en agenda pre bucle" + aux.getMovil());
-		while (fin == false && iterator.hasNext()) {
+			ChatIndividual aux = null;
+			while (fin == false && iterator.hasNext()) {
+			aux = iterator.next();
 			System.out.println("###En contacto equivalante, movil en agenda" + aux.getMovil());
 			System.out.println("###En contacto equivalante, miembro del grupo " + m.getMovil());
 	        if (aux.getMovil() == m.getMovil()) { //si tienen el mismo movil, son el mismo. (no mismo objeto)
@@ -494,7 +494,6 @@ public class Usuario {
 	        	System.out.println("encontre contacto equivalente");
 	        }
 	        
-	        aux = iterator.next(); //contacto de mi lista de contactos
 		}
 		
 		if (!fin) { //sale porque no lo ha encontrado, es un contacto desconocido.

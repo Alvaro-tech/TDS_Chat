@@ -117,8 +117,13 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 		Usuario u = AdaptadorUsuarioDAO.getUnicaInstancia().get(Integer.parseInt(duenyo));
 		grupo.setDuenyo(u);
 		
-		System.out.println("Recuperar los hijos");
-		grupo.setGruposHijo(obtenerGruposDesdeId(gruposHijo));
+		try {
+			System.out.println("Recuperar los hijos");
+			grupo.setGruposHijo(obtenerGruposDesdeId(gruposHijo));
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
 		
 		System.out.println("Comienzo a intentar recuperar mensjes de grupos");
 		try { //Evitar null pointerExceptions
