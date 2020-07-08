@@ -490,11 +490,12 @@ public class ControladorUsuarios {
 		ChatGrupo cg1 = this.usuarioActual.crearGrupoNuevo(nombreGrupo, contactos);
 		AdaptadorChatGrupoDAO.getUnicaInstancia().create(cg1);
 		AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(usuarioActual, cg1);
+		AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(cg1);
 		
 		//Actualizar el idPadre
 		System.out.println("id del grupo padre: " + cg1.getId());
 		cg1.setIdPadre(Integer.toString(cg1.getId()));
-		
+		/*
 		//Tratamiento de los hijos en memoria
 		for (ChatIndividual ci : cg1.getMiembros()) {
 			Usuario userAux = ci.getContacto();
@@ -504,8 +505,9 @@ public class ControladorUsuarios {
 			AdaptadorChatGrupoDAO.getUnicaInstancia().create(cgAux);
 			//Actualizar al usuario en persistencia
 			AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(userAux, cgAux);
+			AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(cgAux);
 		}
-		
+		*/
 		
 		//Actualizar todos los hijos que se añadieron en el bucle
 		AdaptadorChatGrupoDAO.getUnicaInstancia().updateGruposHijos(cg1);

@@ -293,7 +293,7 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 		for (ChatIndividual iterador : miembros) {
 			aux += iterador.getId() + " ";
 		}
-		System.out.println("obtenerMiebmros " + aux);
+		System.out.println("Adapt chat grupo  obtenerMiebmros " + aux);
 		return aux.trim();
 	}
 

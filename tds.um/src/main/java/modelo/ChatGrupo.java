@@ -170,7 +170,7 @@ public class ChatGrupo extends Chat {
 	 */
 	public void addMiembro(ChatIndividual m) {
 		//lo llama el administrador.
-		System.out.println("chatGrupo, add miembro, el id "  + idPadre);
+		System.out.println("chatGrupo, add miembro, el idpadre "  + idPadre);
 		//TODO: Aqui puede que aun no tengas un idPadre asignado -> NullPointer
 		int idPadre = (int) Integer.valueOf(this.idPadre);
 		
