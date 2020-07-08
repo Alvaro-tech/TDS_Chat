@@ -168,6 +168,16 @@ public class Usuario {
 		return saludo;
 	}
 
+	
+	
+	public HashSet<ChatIndividual> getChatsDesconocido() {
+		return chatsDesconocido;
+	}
+
+	public void setChatsDesconocido(HashSet<ChatIndividual> chatsDesconocido) {
+		this.chatsDesconocido = chatsDesconocido;
+	}
+
 	/**
 	 * Metodo get de Usuario.
 	 * 
@@ -480,7 +490,12 @@ public class Usuario {
 	 */
 	
 	public ChatIndividual ContactoEquivalente(ChatIndividual m) {
-		Iterator<ChatIndividual> iterator = this.getChatsInd().iterator(); 
+		LinkedList<ChatIndividual> chats = new LinkedList<ChatIndividual>();
+		chats.addAll(chatsInd);
+		chats.addAll(chatsDesconocido);
+
+		//Comprueba si esta tanto en la agenda como en los chat desconocidos
+		Iterator<ChatIndividual> iterator = chats.iterator(); 
 		
 			ChatIndividual aux = null;
 			while (iterator.hasNext()) {

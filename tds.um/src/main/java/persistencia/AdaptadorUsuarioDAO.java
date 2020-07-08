@@ -61,9 +61,17 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 		//*-*-*-*-*--*-*-*-*-* Tratamiento de las propiedad bi-direccionales
 		String chatInd = servPersistencia.recuperarPropiedadEntidad(eUsuario, "chatIndividual");
 		String chatGroup = servPersistencia.recuperarPropiedadEntidad(eUsuario, "chatGrupo");
+		String chatDesc = servPersistencia.recuperarPropiedadEntidad(eUsuario, "chatDesconocidos");
 				
 		Usuario.setGrupos(obtenerGruposDesdeId(chatGroup));
 		Usuario.setChatIndividuales(obtenerChatIndividualesDesdeId(chatInd));
+		
+		try {
+			Usuario.setChatsDesconocido(obtenerChatIndividualesDesdeId(chatDesc));
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
 		return Usuario;
 	}
 
@@ -83,6 +91,7 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 						new Propiedad("saludo", Usuario.getSaludo()),
 						new Propiedad("conversacionesAbiertas", Usuario.getConversacionesAbiertas()),
 						new Propiedad("chatIndividual", obtenerIdChatIndividual(Usuario.getChatsInd())),
+						new Propiedad("chatDesconocidos", obtenerIdChatIndividual(Usuario.getCHatsIndividualesYDesconocidos())),
 						new Propiedad("chatGrupo", obtenerIdContactosSet(Usuario.getChatsGroup())),
 						new Propiedad("fotoPerfil", Usuario.getFotoPerfil())
 						))
@@ -217,9 +226,9 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 	}
 	
 	public void updateChatsDesconocidos(Usuario usuario, Chat newChat) {
-		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getId());b
-			   servPersistencia.eliminarPropiedadEntidad(eUsuario, "chatIndividual");
-			   servPersistencia.anadirPropiedadEntidad(eUsuario,"chatIndividual", obtenerIdChatIndividual(usuario.getChatsInd()));
+		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getId());
+			   servPersistencia.eliminarPropiedadEntidad(eUsuario, "chatDesconocidos");
+			   servPersistencia.anadirPropiedadEntidad(eUsuario,"chatDesconocidos", obtenerIdChatIndividual(usuario.getChatsDesconocido()));
 		
 		
 	}

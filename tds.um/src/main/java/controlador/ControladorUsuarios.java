@@ -510,12 +510,17 @@ public class ControladorUsuarios {
 				Chat cgAux0 = userAux.CrearGrupoHijo(cg1); //crea el grupo hijo en memoria.
 				
 				if (cgAux0.getClass().getSimpleName().equals("ChatIndividual")) {
-					//Le paso al usuario el chat que no tenia equivalente para lo cree como un desconocido
-					ChatIndividual cgAux2 = (ChatIndividual) cgAux0;
-					ChatIndividual chatAux = userAux.addChatDesconocido(cgAux2.getMovil(), cgAux2.getContacto()); 
-					//Lo guardo en persistencia 
-					AdaptadorChatIndividualDAO.getUnicaInstancia().create(chatAux);          
-					AdaptadorUsuarioDAO.getUnicaInstancia().updateChatsDesconocidos(userAux, chatAux);
+					//Tengo que ejecutar estos pasos para todos los miembros desonocidos, hasta que cgAux0 deje de retornar un chatIndividual
+					
+					while(cgAux0.getClass().getSimpleName().equals("ChatIndividual")){
+						//Le paso al usuario el chat que no tenia equivalente para lo cree como un desconocido
+						ChatIndividual cgAux2 = (ChatIndividual) cgAux0;
+						ChatIndividual chatAux = userAux.addChatDesconocido(cgAux2.getMovil(), cgAux2.getContacto()); 
+						//Lo guardo en persistencia 
+						AdaptadorChatIndividualDAO.getUnicaInstancia().create(chatAux);          
+						AdaptadorUsuarioDAO.getUnicaInstancia().updateChatsDesconocidos(userAux, chatAux);	
+						cgAux0 = userAux.CrearGrupoHijo(cg1);
+					}	
 					
 				   }
 					ChatGrupo cgAux = (ChatGrupo) cgAux0;
