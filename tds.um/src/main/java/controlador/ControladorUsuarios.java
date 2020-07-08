@@ -371,15 +371,23 @@ public class ControladorUsuarios {
 		Integer id = (Integer) grupo.getId();
 		String idGrupo = id.toString();
 		
-		if(idGrupo == grupo.getIdPadre()) { //es el padre
-			grupo.addMensajeHistorial(m);
-			grupo.getGruposHijo().stream()
-								.forEach(g -> g.addMensajeHistorial(m));
-		}else { //No es el padre, pasa de él y busca al padre 
+		ChatGrupo grupoPadre = grupo; //Suponemos que es el padre
+		if(!idGrupo.equals(grupo.getIdPadre())) { //Encontrar al padre, porque es quien conoce a todos los grupos a actualizar
 			int idPadre = Integer.parseInt(grupo.getIdPadre());
-			ChatGrupo grupoPadre = AdaptadorChatGrupoDAO.getUnicaInstancia().get(idPadre);
-			this.enviarMensajeAGrupo(m, grupoPadre);
+			 grupoPadre = AdaptadorChatGrupoDAO.getUnicaInstancia().get(idPadre);
 		}
+		
+		//Añadir cosas al padre
+		grupoPadre.addMensajeHistorial(m);
+		AdaptadorChatGrupoDAO.getUnicaInstancia().updateHistorial(grupoPadre);
+		
+		//Añadir cosas a los hijos
+		
+		for (ChatGrupo cAux : grupo.getGruposHijo()) {
+			cAux.addMensajeHistorial(m);
+			AdaptadorChatGrupoDAO.getUnicaInstancia().updateHistorial(cAux);
+		}
+		
 	}
 
 	// TODO

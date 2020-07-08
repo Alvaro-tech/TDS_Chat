@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import javax.swing.JTextField;
 
 import modelo.Chat;
+import modelo.ChatGrupo;
 import modelo.ChatIndividual;
 import modelo.Mensaje;
 import modelo.Usuario;
@@ -139,6 +140,12 @@ public class PanelConversacion extends JPanel {
 			break;
 			
 		case "ChatGrupo":
+			ChatGrupo c2 = (ChatGrupo) chat;
+			ChatIndividual ciAux = c2.getMiembros().getFirst();
+			Mensaje m1 = ControladorUsuarios.getUnicaInstancia().crearMensaje(emisor, ciAux, textTexto.getText()); //No se le envia a alguien en concreto
+			//Guardamos el mensaje en persistencia, para que tenga un idPropio
+			AdaptadorMensajeDAO.getUnicaInstancia().create(m1);
+			ControladorUsuarios.getUnicaInstancia().enviarMensajeAGrupo(m1, c2);
 			
 			break;
 		
@@ -146,8 +153,10 @@ public class PanelConversacion extends JPanel {
 	}
 	
 	private void cargarBurbujas() {
+		System.out.println(".-.-.-.-.-.-.-.-.-Procedo a cargar burbujis");
 		Usuario yo = ControladorUsuarios.getUnicaInstancia().getusuarioActual();
 		LinkedList<Mensaje> aux = new LinkedList<Mensaje>(chat.getHistorial());
+		System.out.println("un mensaje del chat cargado---> " + chat.getHistorial().getFirst().getTexto());
 		 Collections.reverse(aux);
 		for (Mensaje m : aux) {
 			if(m.getEmisor().equals(yo)) {

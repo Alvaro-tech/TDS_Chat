@@ -6,6 +6,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import complementosGUI.JPanelBackground;
+
 import javax.swing.JButton;
 
 public class PruebaJFrame extends JFrame {
@@ -41,8 +44,9 @@ public class PruebaJFrame extends JFrame {
 		
 		JPanel panelSuperior = new JPanel();
 		contentPane.add(panelSuperior, BorderLayout.NORTH);
-		
-		JPanel panelCentral = new JPanel();
+
+		JPanelBackground panelCentral = new JPanelBackground();
+		panelCentral.setBackground("./interfaz/Info_contacto.jpg");
 		contentPane.add(panelCentral, BorderLayout.CENTER);
 		
 		JButton btnNewButton = new JButton("New button");

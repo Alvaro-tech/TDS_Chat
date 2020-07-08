@@ -1,4 +1,4 @@
-package ProyectoTDS.tds.um;
+package complementosGUI;
 
 //Clase sacada de www.driverlandia.com/java-anadir-background-a-jpanel/
 

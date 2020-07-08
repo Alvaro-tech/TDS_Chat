@@ -18,5 +18,6 @@ public interface IAdaptadorChatGrupoDAO {
 	void updateGruposHijos(ChatGrupo cg1);
 	void updateMiembros(ChatGrupo cg1);
 	void updateIdPadre(ChatGrupo cg1);
+	void updateHistorial(ChatGrupo grupoPadre);
 	
 }

@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import complementosGUI.JPanelBackground;
 import modelo.Usuario;
 import java.awt.Image;
 
@@ -25,7 +26,7 @@ import javax.swing.SwingConstants;
 
 public class VentanaCuentaC extends JFrame {
 
-	private JPanel contentPane;
+	private JPanelBackground contentPane;
 	private Usuario contacto;
 	private JTextField textTelefono;
 	private JTextField textNombre;
@@ -49,12 +50,15 @@ public class VentanaCuentaC extends JFrame {
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(300, 40, 450, 500);
 		setTitle("Infomarción sobre contacto");
-		contentPane = new JPanel();
+		contentPane = new JPanelBackground();
+		contentPane.setBackground("./interfaz/Info_contacto.jpg");
+		
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
-		JPanel panelFoto = new JPanel();
+		JPanelBackground panelFoto = new JPanelBackground();
+		panelFoto.setOpaque(false);
 		contentPane.add(panelFoto, BorderLayout.NORTH);
 		
 		JLabel lblFoto = new JLabel();
@@ -64,7 +68,9 @@ public class VentanaCuentaC extends JFrame {
 		lblFoto.setIcon(imageIcon2);
 		panelFoto.add(lblFoto);
 		
-		JPanel panelInfo = new JPanel();
+		JPanelBackground panelInfo = new JPanelBackground();
+		panelInfo.setOpaque(false);
+		
 		contentPane.add(panelInfo, BorderLayout.CENTER);
 		GridBagLayout gbl_panelInfo = new GridBagLayout();
 		gbl_panelInfo.columnWidths = new int[]{0, 0, 0, 0, 0};

@@ -103,7 +103,7 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 
 		// *-*-*-*-*-*-*-*-*-*--*-*-Tratamos las propiedades bi-direccionales
 		String ultimoMensaje = servPersistencia.recuperarPropiedadEntidad(eGrupo, "ultimoMensaje");
-		String historial = servPersistencia.recuperarPropiedadEntidad(eGrupo, "historial ");
+		String historial = servPersistencia.recuperarPropiedadEntidad(eGrupo, "historial");
 		String miembros = servPersistencia.recuperarPropiedadEntidad(eGrupo, "miembros");
 		String administradores = servPersistencia.recuperarPropiedadEntidad(eGrupo, "administradores");
 		String duenyo = servPersistencia.recuperarPropiedadEntidad(eGrupo, "duenyo");
@@ -126,9 +126,18 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 		
 		
 		System.out.println("Comienzo a intentar recuperar mensjes de grupos");
-		try { //Evitar null pointerExceptions
-			grupo.setUltimoMensaje(obtenerUltimoMensaje(ultimoMensaje));
+		System.out.println("----#####----pre cargarhisto");
+		if(!historial.equals("")) {
 			grupo.setHistorial(obtenerHistorialDesdeId(historial));
+			System.out.println("----######----post cargarhisto");
+			for (Mensaje m : grupo.getHistorial()) {
+				System.out.println("soy el grupo " + grupo.getNombre() + " cargando el mensaje: " + m.getTexto());
+			}
+		}
+		try { //Evitar null pointerExceptions
+			
+
+			grupo.setUltimoMensaje(obtenerUltimoMensaje(ultimoMensaje));
 		} catch (Exception e) {
 			
 		}
@@ -162,7 +171,7 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 		StringTokenizer tok = new StringTokenizer(miems, " ");
 		while (tok.hasMoreTokens()) {
 			String id = (String) tok.nextElement();
-			System.out.println("obtenerMiembrosDesde id: " + id);
+			System.out.println("##########obtenerMiembrosDesde id: " + id);
 			ChatIndividual aux = AdaptadorChatIndividualDAO.getUnicaInstancia().get(Integer.valueOf(id));
 			miembros.add(aux);
 		}
@@ -177,6 +186,7 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 		while (tok.hasMoreTokens()) {
 			String id = (String) tok.nextElement();
 			Mensaje aux = AdaptadorMensajeDAO.getUnicaInstancia().get(Integer.valueOf(id));
+			System.out.println(".-.-.-.-.-.-.-.-.-recupere el mensaje de grupo: " + aux.getId());
 			historial.add(aux);
 		}
 
@@ -281,6 +291,8 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 		for (Mensaje iterador : mens) {
 			aux += iterador.getId() + " ";
 		}
+		
+		System.out.println("Mensajes en grupo que guarde sus id: " + aux);
 		return aux.trim();
 	}
 
