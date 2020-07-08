@@ -509,26 +509,34 @@ public class ControladorUsuarios {
 				Usuario userAux = ci.getContacto();
 				Chat cgAux0 = userAux.CrearGrupoHijo(cg1); //crea el grupo hijo en memoria.
 				
+				if (cgAux0.getClass().getSimpleName().equals("ChatIndividual")) {
+					//Le paso al usuario el chat que no tenia equivalente para lo cree como un desconocido
+					ChatIndividual cgAux2 = (ChatIndividual) cgAux0;
+					ChatIndividual chatAux = userAux.addChatDesconocido(cgAux2.getMovil(), cgAux2.getContacto()); 
+					//Lo guardo en persistencia 
+					AdaptadorChatIndividualDAO.getUnicaInstancia().create(chatAux);          
+					AdaptadorUsuarioDAO.getUnicaInstancia().updateChatsDesconocidos(userAux, chatAux);
+					
+				   }
+					ChatGrupo cgAux = (ChatGrupo) cgAux0;
+					//Crear el grupo en persistencia
+					AdaptadorChatGrupoDAO.getUnicaInstancia().create(cgAux);
+					userAux.addConversacion(cgAux.getId());
+					//Actualizar al usuario en persistencia
+					AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(userAux, cgAux);
+					AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(cgAux);
+					AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(userAux);
+					
 				
+			} //Fin else
 				
-				ChatGrupo cgAux = (ChatGrupo) cgAux0;
-				//Crear el grupo en persistencia
-				AdaptadorChatGrupoDAO.getUnicaInstancia().create(cgAux);
-				userAux.addConversacion(cgAux.getId());
-				//Actualizar al usuario en persistencia
-				AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(userAux, cgAux);
-				AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(cgAux);
-				AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(userAux);
-			}
-			
-			
-		}
+		} //Fin for
 		
 		//Actualizar todos los hijos que se añadieron en el bucle
 		AdaptadorChatGrupoDAO.getUnicaInstancia().updateGruposHijos(cg1);
 		AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(usuarioActual, cg1);
 		AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(cg1);
-		return cg1; //parche
+		return cg1; 
 		
 	}
 

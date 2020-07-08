@@ -216,6 +216,14 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 		
 	}
 	
+	public void updateChatsDesconocidos(Usuario usuario, Chat newChat) {
+		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getId());b
+			   servPersistencia.eliminarPropiedadEntidad(eUsuario, "chatIndividual");
+			   servPersistencia.anadirPropiedadEntidad(eUsuario,"chatIndividual", obtenerIdChatIndividual(usuario.getChatsInd()));
+		
+		
+	}
+	
 	// -------------------Funciones auxiliares-----------------------------
 	//TODO: Estas funciones existen aqui porque son necesarias, pero habria que mover su funcionamiento (código) a sus adaptadores pertinentes
 

@@ -417,12 +417,17 @@ public class Usuario {
 			
 			ChatIndividual miembroBien = this.ContactoEquivalente(c);
 			if(miembroBien == null) {
-				return miembroBien;
+				return c;
 			}
 			System.out.println("añadi como miembro en crearGrupoHijo a: " + miembroBien.getNombre());
 			nuevosMiembros.add(miembroBien);		
 		}
 		
+		return this.tratarChatGrupoHijo(grupoPadre, nuevosMiembros);
+		
+	}
+	
+	public ChatGrupo tratarChatGrupoHijo(ChatGrupo grupoPadre, LinkedList<ChatIndividual> nuevosMiembros) {
 		ChatGrupo grupoHijo = new ChatGrupo(grupoPadre.getNombre(), nuevosMiembros);
 		//idPadre del hijo == id del padre.
 		grupoHijo.setIdPadre(grupoPadre.getIdPadre());
@@ -440,26 +445,11 @@ public class Usuario {
 		
 		//le pongo los mismo administradores
 		grupoHijo.setAdministradores(grupoPadre.getAdministradores());
-		//los grupoHijo siempre vacíos. 
-		//Lo mismo, me aprovecho del aliasing y no. No debería estar vacío en absoluto. EL padre tiene al creador de admin.
-		
 		//Por ultimo, lo añado a la lista de los grupo hijo del padre. y a la lista de chat de grupo del usuario.
 		grupoPadre.addGrupoHijo(grupoHijo);
 		this.chatsGroup.add(grupoHijo);
-		
 		return grupoHijo;
-		
 	}
-	
-	public ChatIndividual crearChatDesconocidoEnGrupo(ChatIndividual m) {
-			System.out.println("####en contacto equivaletente voy a retornar un  contacto desconcdio");
-			ChatIndividual anonimo = new ChatIndividual(m.getMovil(), m.getMovil(), m.getContacto());
-			this.chatsDesconocido.add(anonimo);
-			return anonimo;
-			
-	}
-	
-
 	
 	
 	/**
