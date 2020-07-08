@@ -535,10 +535,12 @@ public class ControladorUsuarios {
 					ChatGrupo cgAux = (ChatGrupo) cgAux0;
 					//Crear el grupo en persistencia
 					AdaptadorChatGrupoDAO.getUnicaInstancia().create(cgAux);
+					System.out.println("+++++++++++Soy un Grupo hijo creado de: " + cgAux.getDuenyo().getNombre() + " con un id: " + cgAux.getId());
 					userAux.addConversacion(cgAux.getId());
 					//Actualizar al usuario en persistencia
 					AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(userAux, cgAux);
 					AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(cgAux);
+					userAux.addConversacion(cgAux.getId());
 					AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(userAux);
 					
 				
@@ -550,6 +552,7 @@ public class ControladorUsuarios {
 		AdaptadorChatGrupoDAO.getUnicaInstancia().updateGruposHijos(cg1);
 		AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(usuarioActual, cg1);
 		AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(cg1);
+		
 		return cg1; 
 		
 	}
@@ -636,6 +639,7 @@ public class ControladorUsuarios {
 			//Si el bucle termino, es porque no te tiene añadido como user, se te crea como desconocido
 			chatEspejo = receptor.addChatDesconocido(usuarioActual.getMovil(), usuarioActual);
 			AdaptadorChatIndividualDAO.getUnicaInstancia().create(chatEspejo);
+			AdaptadorUsuarioDAO.getUnicaInstancia().updateChatsDesconocidos(receptor, chatEspejo); 
 			
 		}
 		

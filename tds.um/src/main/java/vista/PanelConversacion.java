@@ -156,7 +156,6 @@ public class PanelConversacion extends JPanel {
 		System.out.println(".-.-.-.-.-.-.-.-.-Procedo a cargar burbujis");
 		Usuario yo = ControladorUsuarios.getUnicaInstancia().getusuarioActual();
 		LinkedList<Mensaje> aux = new LinkedList<Mensaje>(chat.getHistorial());
-		System.out.println("un mensaje del chat cargado---> " + chat.getHistorial().getFirst().getTexto());
 		 Collections.reverse(aux);
 		for (Mensaje m : aux) {
 			if(m.getEmisor().equals(yo)) {

@@ -49,7 +49,7 @@ public class PanelChatsRecientes extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				chatSelected = list.getSelectedValue();
-				System.out.println("Selected: " + chatSelected.getNombre());
+				System.out.println("Selected: " + chatSelected.getNombre() + " id " + chatSelected.getId());
 				padre.setChatActual(chatSelected); //TODO: Herejia
 			}
 		});

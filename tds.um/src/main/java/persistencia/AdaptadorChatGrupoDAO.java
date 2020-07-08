@@ -131,7 +131,7 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 			grupo.setHistorial(obtenerHistorialDesdeId(historial));
 			System.out.println("----######----post cargarhisto");
 			for (Mensaje m : grupo.getHistorial()) {
-				System.out.println("soy el grupo " + grupo.getNombre() + " cargando el mensaje: " + m.getTexto());
+				System.out.println("soy el grupo " + grupo.getNombre() + " id " + grupo.getId() +" cargando el mensaje: " + m.getTexto());
 			}
 		}
 		try { //Evitar null pointerExceptions
@@ -209,8 +209,6 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 		servPersistencia.eliminarPropiedadEntidad(eChat, "miembros");
 		servPersistencia.anadirPropiedadEntidad(eChat, "miembros", obtenerMiembros(chat.getMiembros()));
 		
-		String miembros = servPersistencia.recuperarPropiedadEntidad(eChat, "miembros");
-		System.out.println("Miembros del grupo al update: "+ miembros);
 	}
 	
 //#####################################################################
@@ -269,8 +267,9 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 	
 	public void updateGruposHijos(ChatGrupo grupo) {
 		Entidad eGrupo = servPersistencia.recuperarEntidad(grupo.getId());
-		servPersistencia.eliminarPropiedadEntidad(eGrupo, "gruposHijos");
-		servPersistencia.anadirPropiedadEntidad(eGrupo, "gruposHijos", obtenerGruposHijos(grupo.getGruposHijo()));
+		servPersistencia.eliminarPropiedadEntidad(eGrupo, "gruposHijo");
+		servPersistencia.anadirPropiedadEntidad(eGrupo, "gruposHijo", obtenerGruposHijos(grupo.getGruposHijo()));
+		System.out.println("++++++++  mis id hijos guardados: " + servPersistencia.recuperarPropiedadEntidad(eGrupo, "gruposHijo"));
 
 	}
 	

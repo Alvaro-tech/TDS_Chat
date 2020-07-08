@@ -442,7 +442,7 @@ public class Usuario {
 		//idPadre del hijo == id del padre.
 		grupoHijo.setIdPadre(grupoPadre.getIdPadre());
 		//pongo al usuario como su dueño
-		grupoHijo.setDuenyo(grupoPadre.getDuenyo()); 
+		grupoHijo.setDuenyo(this); 
 		
 		//TODO: Puede no haber mensajes aun y eso daría un error, sigo sin corregir persistencia
 		//Pero el objeto per se está creado, no debería dar null nunca...
