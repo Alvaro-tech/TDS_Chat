@@ -66,7 +66,7 @@ public class PDFGenerator {
 	 */
 	public Chunk getInfoChatsIndividualesPDF(Usuario u) {
 		return  new Chunk(u.getInfoChatsIndividuales(),
-				 FontFactory.getFont(FontFactory.COURIER, 12, Font.NORMAL, new BaseColor(255, 255, 255)));
+				 FontFactory.getFont(FontFactory.COURIER, 12, Font.NORMAL, BaseColor.BLACK));
 	}
 	
 	/**
@@ -75,7 +75,7 @@ public class PDFGenerator {
 	 */
 	public Chunk getInfoChatsGrupoPDF(Usuario u) {
 		return  new Chunk(u.getInfoGrupo(),
-				 FontFactory.getFont(FontFactory.COURIER, 12, Font.NORMAL, new BaseColor(255, 255,255)));
+				 FontFactory.getFont(FontFactory.COURIER, 12, Font.NORMAL, BaseColor.BLACK));
 	}
 
 }
