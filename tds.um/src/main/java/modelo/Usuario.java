@@ -407,7 +407,7 @@ public class Usuario {
 	 * Funcion que permite crear un chat de grupo "hijo" a partir de un "padre" dado.
 	 * @param ChatGrupo grupoPadre
 	 */
-	public ChatGrupo CrearGrupoHijo(ChatGrupo grupoPadre) {
+	public Chat CrearGrupoHijo(ChatGrupo grupoPadre) {
 		// Vamos a crear un grupo hijo.
 		//recorremos toda la lista de grupoPadre de miembros
 		LinkedList<ChatIndividual> nuevosMiembros = new LinkedList<ChatIndividual>();
@@ -416,6 +416,9 @@ public class Usuario {
 			//para crear los nuevos miembros vamos a basarnos en los miembros del grupo padre.
 			
 			ChatIndividual miembroBien = this.ContactoEquivalente(c);
+			if(miembroBien == null) {
+				return miembroBien;
+			}
 			System.out.println("añadi como miembro en crearGrupoHijo a: " + miembroBien.getNombre());
 			nuevosMiembros.add(miembroBien);		
 		}
@@ -426,11 +429,9 @@ public class Usuario {
 		//pongo al usuario como su dueño
 		grupoHijo.setDuenyo(grupoPadre.getDuenyo()); 
 		
-		//APARTIR DE AQUÍ: tengo en cuenta el aliasing y me aprovecho de ello
-		//meto los mensajes del grupo en este
 		//TODO: Puede no haber mensajes aun y eso daría un error, sigo sin corregir persistencia
 		//Pero el objeto per se está creado, no debería dar null nunca...
-		//me aprovecho del aliasing para que todos apunten al mismo objeto historial.
+		
 		try {
 			grupoHijo.setHistorial(grupoPadre.getHistorial());
 		} catch (Exception e) {
@@ -448,6 +449,14 @@ public class Usuario {
 		
 		return grupoHijo;
 		
+	}
+	
+	public ChatIndividual crearChatDesconocidoEnGrupo(ChatIndividual m) {
+			System.out.println("####en contacto equivaletente voy a retornar un  contacto desconcdio");
+			ChatIndividual anonimo = new ChatIndividual(m.getMovil(), m.getMovil(), m.getContacto());
+			this.chatsDesconocido.add(anonimo);
+			return anonimo;
+			
 	}
 	
 
@@ -481,30 +490,20 @@ public class Usuario {
 	 */
 	
 	public ChatIndividual ContactoEquivalente(ChatIndividual m) {
-		boolean fin= false;
 		Iterator<ChatIndividual> iterator = this.getChatsInd().iterator(); 
 		
 			ChatIndividual aux = null;
-			while (fin == false && iterator.hasNext()) {
+			while (iterator.hasNext()) {
 			aux = iterator.next();
 			System.out.println("###En contacto equivalante, movil en agenda" + aux.getMovil());
 			System.out.println("###En contacto equivalante, miembro del grupo " + m.getMovil());
-	        if (aux.getMovil() == m.getMovil()) { //si tienen el mismo movil, son el mismo. (no mismo objeto)
-	        	fin = true;
+	        if (aux.getMovil().equals(m.getMovil())) { //si tienen el mismo movil, son el mismo. (no mismo objeto)
 	        	System.out.println("encontre contacto equivalente");
+	        	return aux; //Se encontro el chat equivalente de la otra persona
 	        }
 	        
 		}
-		
-		if (!fin) { //sale porque no lo ha encontrado, es un contacto desconocido.
-			//creamos un contacto "desconocido" y lo asociamos al grupo y a su lista de contactos desconocidos.
-			//contacto desconocido = tiene el nombre como su movil.
-			System.out.println("####en contacto equivaletente voy a retornar un  contacto desconcdio");
-			ChatIndividual anonimo = new ChatIndividual(m.getMovil(), m.getMovil(), m.getContacto());
-			this.chatsDesconocido.add(anonimo);
-			return anonimo;
-			
-		}else return aux;
+		return null;	
 	}
 	
 	/**

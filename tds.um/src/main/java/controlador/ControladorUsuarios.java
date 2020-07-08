@@ -502,14 +502,26 @@ public class ControladorUsuarios {
 		
 		//Tratamiento de los hijos en memoria
 		for (ChatIndividual ci : cg1.getMiembros()) {
-			Usuario userAux = ci.getContacto();
-			ChatGrupo cgAux = userAux.CrearGrupoHijo(cg1); //crea el grupo hijo en memoria.
 			
-			//Crear el grupo en persistencia
-			AdaptadorChatGrupoDAO.getUnicaInstancia().create(cgAux);
-			//Actualizar al usuario en persistencia
-			AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(userAux, cgAux);
-			AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(cgAux);
+			if(ci.getContacto().equals(cg1.getDuenyo())) {  //Si eres el dueño del grupo, no ncesitas que se te cree un nodo hijo
+				
+			} else {
+				Usuario userAux = ci.getContacto();
+				Chat cgAux0 = userAux.CrearGrupoHijo(cg1); //crea el grupo hijo en memoria.
+				
+				
+				
+				ChatGrupo cgAux = (ChatGrupo) cgAux0;
+				//Crear el grupo en persistencia
+				AdaptadorChatGrupoDAO.getUnicaInstancia().create(cgAux);
+				userAux.addConversacion(cgAux.getId());
+				//Actualizar al usuario en persistencia
+				AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(userAux, cgAux);
+				AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(cgAux);
+				AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(userAux);
+			}
+			
+			
 		}
 		
 		//Actualizar todos los hijos que se añadieron en el bucle
