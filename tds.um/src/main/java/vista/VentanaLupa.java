@@ -200,7 +200,9 @@ public class VentanaLupa extends JDialog {
 						LocalDateTime fFin = null;
 						if(fInicio.getDate() != null && fFinal.getDate() != null) { //se ha seleccionado una fecha
 							String fechaDeInicio = ControladorUsuarios.getUnicaInstancia().parsear(fInicio.getDate().toString());
+							fechaDeInicio += " 00:00:00";
 							String fechaDeFin = ControladorUsuarios.getUnicaInstancia().parsear(fFinal.getDate().toString());
+							fechaDeFin += " 23:59:59";
 					        fIni = LocalDateTime.parse(fechaDeInicio, DateTimeFormatter.ofPattern("dd/MM/yyyy H:mm:ss"));
 					        fFin = LocalDateTime.parse(fechaDeFin, DateTimeFormatter.ofPattern("dd/MM/yyyy H:mm:ss"));
 						}

@@ -1,6 +1,7 @@
 package modelo;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Clase que representa los mensajes en el modelo del sistema.
@@ -14,6 +15,7 @@ public class Mensaje {
 	private String texto;
 	private LocalDateTime fecha; //fecha en la que se crea el mensaje
 	private int id;
+	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
 	//Imagen emoticon;
 	
 	/**
@@ -130,6 +132,16 @@ public class Mensaje {
 	 */
 	public void setReceptor(ChatIndividual receptor) {
 		this.contacto = receptor;
+	}
+	
+	/**
+	 * Funcion que devuelve la fecha del LocalDateTime fecha de la clase mensaje con el formato
+	 * "MM/dd/yyyy HH:mm:ss"
+	 * @return fecha con el formato indicado.
+	 */
+	public String getFechaEnString() {
+        String a = this.fecha.format(formatter);
+       return a;
 	}
 
 

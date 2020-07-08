@@ -54,11 +54,11 @@ public class ChatRenderer  extends JLabel implements ListCellRenderer<Chat> {
 		   if (chat.getUltimoMensaje() != null) {
 			   Mensaje m = chat.getUltimoMensaje();
 			   texto =  m.getTexto();
-			   fecha = m.getFecha().toString();
+			   fecha = m.getFechaEnString();
 			   
 		   }
 		   
-		   textAux = "<html> <pre>" + nombre  +  "      " + fecha  + "<br/>" + texto;
+		   textAux = "<html> <pre>" + nombre  +  "  " + fecha  + "<br/>" + texto;
 		   
 		   setIcon(imageIcon2);
 		   setText(textAux);
