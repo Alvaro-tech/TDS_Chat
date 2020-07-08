@@ -164,7 +164,7 @@ public class PanelConversacion extends JPanel {
 				
 			}else {
 				burbujaMensajeRecibida(m);
-				
+				System.out.println("------ cargar burbu " + m.getTexto());
 			}
 			panelMensajes.revalidate();
 			panelMensajes.repaint();

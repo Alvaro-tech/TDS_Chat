@@ -383,8 +383,11 @@ public class ControladorUsuarios {
 		
 		//Añadir cosas a los hijos
 		
-		for (ChatGrupo cAux : grupo.getGruposHijo()) {
+		for (ChatGrupo cAux : grupoPadre.getGruposHijo()) {
 			cAux.addMensajeHistorial(m);
+			for (Mensaje m1 : cAux.getHistorial()) {
+				System.out.println("çççççççççççç -> mensajes en el historial de un  grupo hijo : " + m1.getTexto());
+			}
 			AdaptadorChatGrupoDAO.getUnicaInstancia().updateHistorial(cAux);
 		}
 		
@@ -395,7 +398,7 @@ public class ControladorUsuarios {
 
 	}
 
-	// TODO
+	// TODOs
 	public void exportarMensajes() {
 
 	}
