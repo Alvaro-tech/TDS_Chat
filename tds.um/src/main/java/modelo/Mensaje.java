@@ -86,7 +86,7 @@ public class Mensaje {
 	
 	/**
 	 * Método get de Mensaje.
-	 * @return LocalDate fecha
+	 * @return LocalDateTime fecha
 	 */
 	public LocalDateTime getFecha() {
 		return fecha;
