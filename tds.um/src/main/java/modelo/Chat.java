@@ -129,6 +129,10 @@ public abstract class Chat implements Comparator<Chat> {
 	public LinkedList<Mensaje> BuscarPorFiltros(String texto, LocalDate fechaInicio, LocalDate fechaFin, ChatIndividual u) {
 		LinkedList<Mensaje> mensajes = new LinkedList<Mensaje>();
 
+		if(fechaInicio != null && fechaFin != null) {
+			mensajes = this.BuscarPorFechas(fechaInicio, fechaFin, mensajes);
+		}
+		
 		if (u != null) {
 			ChatGrupo grupo = (ChatGrupo) this;
 			mensajes = grupo.BuscarMensajePorContactos(u);
@@ -136,10 +140,6 @@ public abstract class Chat implements Comparator<Chat> {
 
 		if (texto != null) {
 			mensajes = this.BuscarPorTexto(texto, mensajes);
-		}
-		
-		if(fechaInicio != null && fechaFin != null) {
-			mensajes = this.BuscarPorFechas(fechaInicio, fechaFin, mensajes);
 		}
 
 		return mensajes;

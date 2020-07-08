@@ -150,7 +150,7 @@ public class Mensaje {
 	 * @return
 	 */
 	public boolean esEntreFechas(LocalDate fi, LocalDate ff) {
-		return fi.isEqual(this.fecha) || fi.isBefore(this.fecha) || ff.isEqual(this.fecha) || ff.isAfter(this.fecha);
+		return (fi.isEqual(this.fecha) || fi.isBefore(this.fecha)) && (ff.isEqual(this.fecha) || ff.isAfter(this.fecha));
 	}
 
 

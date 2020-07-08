@@ -106,6 +106,11 @@ public class VentanaPrincipal extends JFrame {
 		
 		//-------Menu estado---------
 		JButton btnEstado = new JButton("Estado");
+		btnEstado.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ControladorUsuarios.getUnicaInstancia().getPDFInfo();
+			}
+		});
 		menuBar.add(btnEstado);
 		
 		Component horizontalStrut = Box.createHorizontalStrut(135);

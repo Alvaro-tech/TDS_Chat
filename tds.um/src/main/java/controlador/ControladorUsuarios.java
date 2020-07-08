@@ -20,6 +20,7 @@ import modelo.ChatIndividual;
 import modelo.Descuento;
 import modelo.GestorGraficas;
 import modelo.Mensaje;
+import modelo.PDFGenerator;
 import modelo.Usuario;
 import persistencia.AdaptadorChatGrupoDAO;
 import persistencia.AdaptadorChatIndividualDAO;
@@ -663,6 +664,16 @@ public class ControladorUsuarios {
 	public Chunk getInfoChatsIndividualesPDF() {
 		return  new Chunk(this.usuarioActual.getInfoChatsIndividuales(),
 				 FontFactory.getFont(FontFactory.COURIER, 20, Font.NORMAL, new BaseColor(255, 0,0)));
+	}
+	
+	
+	public void getPDFInfo() {
+		PDFGenerator pdfG = new PDFGenerator();
+		try {
+			pdfG.createPdf("./estadisticas/algo.pdf");
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 	
 	/**

@@ -12,6 +12,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
 import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -26,6 +27,7 @@ import controlador.ControladorUsuarios;
 import modelo.Chat;
 import modelo.ChatGrupo;
 import modelo.ChatIndividual;
+import modelo.Mensaje;
 import modelo.Usuario;
 
 import java.awt.Component;
@@ -130,7 +132,7 @@ public class VentanaLupa extends JDialog {
 		}
 		{
 			textTextoBuscar = new JTextPane();						//testo que se quiere buscar
-			textTextoBuscar.setEnabled(false);
+			textTextoBuscar.setEnabled(true);
 			GridBagConstraints gbc_textTextoBuscar = new GridBagConstraints();
 			gbc_textTextoBuscar.insets = new Insets(0, 0, 5, 0);
 			gbc_textTextoBuscar.fill = GridBagConstraints.BOTH;
@@ -203,7 +205,11 @@ public class VentanaLupa extends JDialog {
 						}
 						String textoABuscar = textTextoBuscar.getText();
 						//TODO: lo del usuario, por ahora lo pongo a null cuando llamas al controlador.
-						ControladorUsuarios.getUnicaInstancia().BuscarPorFiltro(chatCargado, textoABuscar, fIni, fFin, userSelect);
+						LinkedList<Mensaje> listMenEnc = ControladorUsuarios.getUnicaInstancia().BuscarPorFiltro(chatCargado, textoABuscar, fIni, fFin, userSelect);
+						
+						for (Mensaje mensaje : listMenEnc) {
+							System.out.println("############ -> " + mensaje.getTexto());
+						}
 					}
 				});
 				okButton.setActionCommand("OK");
