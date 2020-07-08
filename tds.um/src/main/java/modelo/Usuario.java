@@ -373,18 +373,17 @@ public class Usuario {
 		grupoPadre.addAdmin(this);
 		grupoPadre.setDuenyo(this);
 		
-		AdaptadorChatGrupoDAO.getUnicaInstancia().create(grupoPadre);  //(pache) Añadido como prueba post-Preguntas para ver si arreglo (no persistencia)
-		grupoPadre.setIdPadre(grupoPadre.getId() + ""); //Parche
-		
 		//añado mi propio contacto al chatIndividual
 		this.anyadirmeAGrupo(grupoPadre);
 		this.chatsGroup.add(grupoPadre);
 		
+		return grupoPadre;
+		/*
 		grupoPadre.getMiembros().stream()
 								.forEach(m -> m.getContacto().CrearGrupoHijo(grupoPadre));
 		
 		//TODO Lo he añadido para poder retornar el grupo y que aparezca en chats recientes (Parche)
-		return grupoPadre;
+		return grupoPadre;*/
 	}
 
 	/**
@@ -403,11 +402,14 @@ public class Usuario {
 	    }
 	}
 
+	
+	
+	
 	/**
 	 * Funcion que permite crear un chat de grupo "hijo" a partir de un "padre" dado.
 	 * @param ChatGrupo grupoPadre
 	 */
-	private void CrearGrupoHijo(ChatGrupo grupoPadre) {
+	public ChatGrupo CrearGrupoHijo(ChatGrupo grupoPadre) {
 		// Vamos a crear un grupo hijo.
 		//recorremos toda la lista de grupoPadre de miembros
 		LinkedList<ChatIndividual> nuevosMiembros = new LinkedList<ChatIndividual>();
@@ -423,7 +425,7 @@ public class Usuario {
 		//idPadre del hijo == id del padre.
 		grupoHijo.setIdPadre(grupoPadre.getIdPadre());
 		//pongo al usuario como su dueño
-		grupoHijo.setDuenyo(this);
+		grupoHijo.setDuenyo(grupoPadre.getDuenyo()); 
 		
 		//APARTIR DE AQUÍ: tengo en cuenta el aliasing y me aprovecho de ello
 		//meto los mensajes del grupo en este
@@ -442,7 +444,11 @@ public class Usuario {
 		grupoPadre.addGrupoHijo(grupoHijo);
 		this.chatsGroup.add(grupoHijo);
 		
+		return grupoHijo;
+		
 	}
+	
+
 	
 	
 	/**
@@ -471,6 +477,7 @@ public class Usuario {
 	 * @param ChatIndividual m
 	 * @return ChatIndividual contactoEquivalente.
 	 */
+	
 	public ChatIndividual ContactoEquivalente(ChatIndividual m) {
 		boolean fin= false;
 		Iterator<ChatIndividual> iterator = this.getChatsInd().iterator(); 

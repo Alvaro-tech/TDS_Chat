@@ -36,6 +36,7 @@ public class ChatGrupo extends Chat {
 			System.out.println("ejecucion de chatGrupo");
 			miembros.addFirst(m);
 		}
+		this.idPadre = "0"; //Se sobrescribira luego con el correcto. Evitar nulos
 	}
 	
 	/**

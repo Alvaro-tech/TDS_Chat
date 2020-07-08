@@ -48,6 +48,8 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 	        		new Propiedad("ultimoMensaje", ""),
 	                new Propiedad("historial",""),
 	                new Propiedad("miembros", obtenerMiembros(grupo.getMiembros())),
+	                new Propiedad("duenyo", Integer.toString(grupo.getDuenyo().getId())),
+	                new Propiedad ("gruposHijo", ""),
 	                new Propiedad("administradores", obtenerAdministradores(grupo.getAdministradores())))
 	        		)
 	        		
@@ -104,10 +106,19 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 		String historial = servPersistencia.recuperarPropiedadEntidad(eGrupo, "historial ");
 		String miembros = servPersistencia.recuperarPropiedadEntidad(eGrupo, "miembros");
 		String administradores = servPersistencia.recuperarPropiedadEntidad(eGrupo, "administradores");
-
+		String duenyo = servPersistencia.recuperarPropiedadEntidad(eGrupo, "duenyo");
+		String gruposHijo = servPersistencia.recuperarPropiedadEntidad(eGrupo, "gruposHijo");
+		
 		System.out.println("Comienzo a intentar recuperar miembors y eso de grupos");
 		grupo.setMiembros(obtenerMiembrosDesdeId(miembros));
 		grupo.setAdministradores(obtenerAdministradoresDesdeId(administradores));
+		
+		System.out.println("recuperar al dueño");
+		Usuario u = AdaptadorUsuarioDAO.getUnicaInstancia().get(Integer.parseInt(duenyo));
+		grupo.setDuenyo(u);
+		
+		System.out.println("Recuperar los hijos");
+		grupo.setGruposHijo(obtenerGruposDesdeId(gruposHijo));
 		
 		System.out.println("Comienzo a intentar recuperar mensjes de grupos");
 		try { //Evitar null pointerExceptions
@@ -146,6 +157,7 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 		StringTokenizer tok = new StringTokenizer(miems, " ");
 		while (tok.hasMoreTokens()) {
 			String id = (String) tok.nextElement();
+			System.out.println("obtenerMiembrosDesde id: " + id);
 			ChatIndividual aux = AdaptadorChatIndividualDAO.getUnicaInstancia().get(Integer.valueOf(id));
 			miembros.add(aux);
 		}
@@ -175,6 +187,15 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 		
 		servPersistencia.eliminarPropiedadEntidad(eChat, "ultimoMensaje");
 		servPersistencia.anadirPropiedadEntidad(eChat, "ultimoMensaje", obtenerUltimoMensaje(chat.getUltimoMensaje()));
+	}
+	
+	public void updateMiembros(ChatGrupo chat) {
+		Entidad eChat = servPersistencia.recuperarEntidad(chat.getId());
+		servPersistencia.eliminarPropiedadEntidad(eChat, "miembros");
+		servPersistencia.anadirPropiedadEntidad(eChat, "miembros", obtenerMiembros(chat.getMiembros()));
+		
+		String miembros = servPersistencia.recuperarPropiedadEntidad(eChat, "miembros");
+		System.out.println("Miembros del grupo al update: "+ miembros);
 	}
 	
 //#####################################################################
@@ -230,6 +251,20 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 		servPersistencia.anadirPropiedadEntidad(eGrupo, "nombre", nuevoNombre);
 
 	}
+	
+	public void updateGruposHijos(ChatGrupo grupo) {
+		Entidad eGrupo = servPersistencia.recuperarEntidad(grupo.getId());
+		servPersistencia.eliminarPropiedadEntidad(eGrupo, "gruposHijos");
+		servPersistencia.anadirPropiedadEntidad(eGrupo, "gruposHijos", obtenerGruposHijos(grupo.getGruposHijo()));
+
+	}
+	
+	public void updateIdPadre(ChatGrupo grupo) {
+		Entidad eGrupo = servPersistencia.recuperarEntidad(grupo.getId());
+		servPersistencia.eliminarPropiedadEntidad(eGrupo, "idPadre");
+		servPersistencia.anadirPropiedadEntidad(eGrupo, "idPadre", grupo.getIdPadre());
+
+	}
 
 	// #########FUNCIONES AUXILIARES DE CHATGRUPOTOENTIDAD():############
 	/**
@@ -272,6 +307,30 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 			aux += iterador.getId() + " ";
 		}
 		return aux.trim();
+	}
+	
+	private String obtenerGruposHijos(HashSet<ChatGrupo> miembros) {
+		String aux = "";
+		for (ChatGrupo iterador : miembros) {
+			aux += iterador.getId() + " ";
+		}
+		System.out.println("obtenerGruposHijos " + aux);
+		return aux.trim();
+	}
+	
+	private HashSet<ChatGrupo> obtenerGruposDesdeId(String gruposhijos) {
+		HashSet<ChatGrupo> gruposHijosC = new HashSet<ChatGrupo>();
+
+		// Parseamos el string admins
+		// dividimos el string en array de palabras separadas por " " (id´s)
+		StringTokenizer tok = new StringTokenizer(gruposhijos, " ");
+		// Recorremos el StringTokenizer y recuperamos por id elemento a elemento.
+		while (tok.hasMoreTokens()) {
+			String id = (String) tok.nextElement();
+			ChatGrupo grupoAux = this.get(Integer.valueOf(id));
+			gruposHijosC.add(grupoAux);
+		}
+		return gruposHijosC;
 	}
 
 }
