@@ -3,7 +3,6 @@ package modelo;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -13,7 +12,6 @@ import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import controlador.ControladorUsuarios;
 
 public class PDFGenerator {
 
@@ -47,11 +45,18 @@ public class PDFGenerator {
 		// abro el documento pa escribir en él los cosos
 		document.open();
 		//añado un titulo
-		document.addHeader("Contactos\n", "Lista de tus contactos y los numeros de teléfono asociados. \n");
+		document.add(new Paragraph(new Chunk("Contactos\n Lista de tus contactos y los numeros de teléfono asociados. \n",
+				 FontFactory.getFont(FontFactory.COURIER_BOLD, 16, Font.NORMAL, BaseColor.BLACK))));
+		document.add(new Paragraph(new Chunk("\n") ));
 		// Añado un párrafo: el de los chatsIndividuales
 		document.add(new Paragraph(this.getInfoChatsIndividualesPDF(u)));
+		//salto de pagina.
+		document.newPage();
 		//añado un titulo.
-		document.addHeader("Grupos y miembros de estos\n", "Lista de grupos y miembros de estos. \n");
+		//document.addTitle("Grupos y miembros de estos\n Lista de grupos y miembros de estos. \n");
+		document.add(new Paragraph(new Chunk("Grupos y miembros de estos\n Lista de grupos y miembros de estos. \n",
+				 FontFactory.getFont(FontFactory.COURIER_BOLD, 16, Font.NORMAL, BaseColor.BLACK))));
+		document.add(new Paragraph(new Chunk("\n") ));
 		// Añado un párrafo: el de los grupos
 		document.add(new Paragraph(this.getInfoChatsGrupoPDF(u)));
 		// step 5
