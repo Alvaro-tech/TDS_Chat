@@ -17,5 +17,6 @@ public interface IAdaptadorChatGrupoDAO {
 	void updateNombre(ChatGrupo grupo, String nuevoNombre);
 	void updateGruposHijos(ChatGrupo cg1);
 	void updateMiembros(ChatGrupo cg1);
+	void updateIdPadre(ChatGrupo cg1);
 	
 }

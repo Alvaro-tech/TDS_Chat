@@ -496,6 +496,8 @@ public class ControladorUsuarios {
 		//Actualizar el idPadre
 		System.out.println("id del grupo padre: " + cg1.getId());
 		cg1.setIdPadre(Integer.toString(cg1.getId()));
+		AdaptadorChatGrupoDAO.getUnicaInstancia().updateIdPadre(cg1);
+		
 		
 		
 		//Tratamiento de los hijos en memoria

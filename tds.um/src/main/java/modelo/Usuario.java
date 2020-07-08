@@ -63,10 +63,7 @@ public class Usuario {
 		this.saludo = "Hey there, I'm using TDSchat.";
 		this.fotoPerfil = "./iconos/Defecto.PNG";
 		this.conversacionesAbiertas = "";
-		
-		ChatIndividual tu = new ChatIndividual(nombre, movil, this);
-		this.chatsInd.add(tu);
-
+	
 	}
 
 	/**
@@ -94,9 +91,7 @@ public class Usuario {
 		this.saludo = saludop;
 		this.fotoPerfil = foto;
 		this.conversacionesAbiertas = conversaciones;
-		
-		ChatIndividual tu = new ChatIndividual(nombre, movil, this);
-		this.chatsInd.add(tu);
+
 	}
 
 	// ##################### METODOS GET Y SET #######################
@@ -421,6 +416,7 @@ public class Usuario {
 			//para crear los nuevos miembros vamos a basarnos en los miembros del grupo padre.
 			
 			ChatIndividual miembroBien = this.ContactoEquivalente(c);
+			System.out.println("añadi como miembro en crearGrupoHijo a: " + miembroBien.getNombre());
 			nuevosMiembros.add(miembroBien);		
 		}
 		
@@ -489,9 +485,13 @@ public class Usuario {
 		Iterator<ChatIndividual> iterator = this.getChatsInd().iterator(); 
 		
 		ChatIndividual aux = iterator.next();
-		while (!fin && iterator.hasNext()) {
+		System.out.println("###En contacto equivalante, movil en agenda pre bucle" + aux.getMovil());
+		while (fin == false && iterator.hasNext()) {
+			System.out.println("###En contacto equivalante, movil en agenda" + aux.getMovil());
+			System.out.println("###En contacto equivalante, miembro del grupo " + m.getMovil());
 	        if (aux.getMovil() == m.getMovil()) { //si tienen el mismo movil, son el mismo. (no mismo objeto)
 	        	fin = true;
+	        	System.out.println("encontre contacto equivalente");
 	        }
 	        
 	        aux = iterator.next(); //contacto de mi lista de contactos
@@ -500,6 +500,7 @@ public class Usuario {
 		if (!fin) { //sale porque no lo ha encontrado, es un contacto desconocido.
 			//creamos un contacto "desconocido" y lo asociamos al grupo y a su lista de contactos desconocidos.
 			//contacto desconocido = tiene el nombre como su movil.
+			System.out.println("####en contacto equivaletente voy a retornar un  contacto desconcdio");
 			ChatIndividual anonimo = new ChatIndividual(m.getMovil(), m.getMovil(), m.getContacto());
 			this.chatsDesconocido.add(anonimo);
 			return anonimo;
