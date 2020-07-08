@@ -656,33 +656,14 @@ public class ControladorUsuarios {
 		
 	}
 
-	/**
-	 * Funcion que devuelve la info del usuario de sus chats individuales.
-	 * nombre + movil.
-	 * @return Chunk informacion.
-	 */
-	public Chunk getInfoChatsIndividualesPDF() {
-		return  new Chunk(this.usuarioActual.getInfoChatsIndividuales(),
-				 FontFactory.getFont(FontFactory.COURIER, 20, Font.NORMAL, new BaseColor(255, 0,0)));
-	}
-	
 	
 	public void getPDFInfo() {
 		PDFGenerator pdfG = new PDFGenerator();
 		try {
-			pdfG.createPdf("./estadisticas/algo.pdf");
+			pdfG.createPdf("./estadisticas/Informacion" + this.getNombreUsuarioActual()+".pdf", this.usuarioActual);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-	}
-	
-	/**
-	 * Funcion que devuelve la info del usuario sobre sus grupos.
-	 * @return Chunk informacion.
-	 */
-	public Chunk getInfoChatsGrupoPDF() {
-		return  new Chunk(this.usuarioActual.getInfoGrupo(),
-				 FontFactory.getFont(FontFactory.COURIER, 20, Font.NORMAL, new BaseColor(255, 0,0)));
 	}
 	
 	/**
