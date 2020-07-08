@@ -128,67 +128,43 @@ public abstract class Chat implements Comparator<Chat> {
 	 */
 	public LinkedList<Mensaje> BuscarPorFiltros(String texto, LocalDate fechaInicio, LocalDate fechaFin, ChatIndividual u) {
 		LinkedList<Mensaje> mensajes = new LinkedList<Mensaje>();
+		mensajes = this.historial;
 
 		if(fechaInicio != null && fechaFin != null) {
 			mensajes = this.BuscarPorFechas(fechaInicio, fechaFin, mensajes);
 		}
 		
-		if (u != null) {
-			ChatGrupo grupo = (ChatGrupo) this;
-			mensajes = grupo.BuscarMensajePorContactos(u);
-		}
-
 		if (texto != null) {
 			mensajes = this.BuscarPorTexto(texto, mensajes);
 		}
 
+		
+		if (u != null) {
+			ChatGrupo grupo = (ChatGrupo) this;
+			mensajes = grupo.BuscarMensajePorContactos(u, mensajes);
+		}
+		
 		return mensajes;
-	}
-
-	/**
-	 * Funcion parabuscar los mensajes que contengan parte (o todo) del texto dado
-	 * 
-	 * @param texto
-	 * @return lista de mensajes con la coincidencia
-	 */
-	public LinkedList<Mensaje> BuscarPorTexto(String texto) {
-		LinkedList<Mensaje> mensajesFiltrados = new LinkedList<Mensaje>();
-
-		this.historial.stream()
-				.filter(m -> m.getTexto().contains(texto))
-				.forEach(m -> mensajesFiltrados.add(m));
-
-		return mensajesFiltrados;
 	}
 
 	/**
 	 * Funcion para buscar mensajes que contengan texto dado. Añade los mensajes que
 	 * se han encontrado en una busqueda anterior.
 	 * 
-	 * @param texto
+	 * @param String texto, sobre el que se quiere hacer la búsqueda.
+	 * @param LinkedList<Mensaje> mensajes, mensajes ya filtrados. Busco sobre ellos.
 	 * @return lista de mensajes con ese texto
 	 */
 	public LinkedList<Mensaje> BuscarPorTexto(String texto, LinkedList<Mensaje> mensajes) {
-		LinkedList<Mensaje> mensajesFiltrados = this.BuscarPorTexto(texto);
-		mensajesFiltrados.addAll(mensajes);
-		return mensajesFiltrados;
-	}
-
-	/**
-	 * Funcion que devuelve los mensajes dada una fecha concreta
-	 * 
-	 * @param f
-	 * @return Lista de mensajes coincidentes.
-	 */
-	public LinkedList<Mensaje> BuscarPorFechas(LocalDate fi, LocalDate ffin) {
 		LinkedList<Mensaje> mensajesFiltrados = new LinkedList<Mensaje>();
-
-		this.historial.stream()
-					.filter(m -> m.esEntreFechas(fi, ffin))
-					.forEach(m -> mensajesFiltrados.add(m));
-
+		
+		mensajes.stream()
+				.filter(m -> m.getTexto().contains(texto))
+				.forEach(m -> mensajesFiltrados.add(m));
+		
 		return mensajesFiltrados;
 	}
+
 
 	/**
 	 * Funcion que devuelve los mensajes dada una fecha concreta se lo añade a una
@@ -198,12 +174,12 @@ public abstract class Chat implements Comparator<Chat> {
 	 * @return Lista de mensajes coincidentes.
 	 */
 	public LinkedList<Mensaje> BuscarPorFechas(LocalDate fi, LocalDate ffin, LinkedList<Mensaje> mensajes) {
-		LinkedList<Mensaje> mensajesFiltrados = this.BuscarPorFechas(fi, ffin);
-
+	LinkedList<Mensaje> mensajesFiltrados = new LinkedList<Mensaje>();
+		
 		mensajes.stream()
-				.filter(m -> !mensajesFiltrados.contains(m))
-				.forEach(m -> mensajesFiltrados.add(m));
-
+					.filter(m -> m.esEntreFechas(fi, ffin))
+					.forEach(m -> mensajesFiltrados.add(m));
+		
 		return mensajesFiltrados;
 	}
 

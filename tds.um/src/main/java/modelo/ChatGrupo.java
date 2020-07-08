@@ -222,29 +222,19 @@ public class ChatGrupo extends Chat {
 
 	/**
 	 * Busca los mensajes que ha enviado un miembro del grupo.
-	 * 
+	 * Sobre una lista de mensajes ya filtrados.
 	 * @param ChatIndividual m
+	 * @param LinkedList<Mensaje> mensajesFiltrados
 	 * @return mensajes asociados a un miembro del grupo
 	 */
-	public LinkedList<Mensaje> BuscarMensajePorContactos(ChatIndividual m) {
-		LinkedList<Mensaje> filtrados = new LinkedList<Mensaje>();
-		getHistorial().stream().filter(men -> men.getEmisor().equals(m.getContacto()))
-				.forEach(men -> filtrados.add(men));
-		return filtrados;
-	}
-
-	/**
-	 * Busca los mensajes que ha enviado un miembro del grupo. Se lo añade a los
-	 * mensajes de los que ya se había hecho una búsqueda por filtro.
-	 * 
-	 * @param ChatIndividual      m
-	 * @param LinkedList<Mensaje> mensajes
-	 * @return mensajes asociados a un miembro del grupo
-	 */
-	public LinkedList<Mensaje> BuscarMensajePorContactos(ChatIndividual m, LinkedList<Mensaje> mensajes) {
-		LinkedList<Mensaje> filtrados = this.BuscarMensajePorContactos(m);
-		filtrados.addAll(mensajes);
-		return filtrados;
+	public LinkedList<Mensaje> BuscarMensajePorContactos(ChatIndividual m, LinkedList<Mensaje> mensajesFiltrados) {
+		LinkedList<Mensaje> mensajes = new LinkedList<Mensaje>();
+		
+		mensajesFiltrados.stream()
+						.filter(men -> men.getEmisor().equals(m.getContacto()))
+						.forEach(men -> mensajes.add(men));
+		
+		return mensajes;
 	}
 
 	/**
