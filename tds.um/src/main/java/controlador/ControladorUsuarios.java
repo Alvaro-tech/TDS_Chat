@@ -689,6 +689,7 @@ public class ControladorUsuarios  implements MensajesListener{
 				}
 				grupo.eliminarMiembro(miembro);
 				AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(grupo);
+				AdaptadorChatGrupoDAO.getUnicaInstancia().updateAdmins(grupo);
 				miembro.getContacto().eliminarChat(grupo);
 				AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(miembro.getContacto(), grupo);
 				AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(miembro.getContacto());
@@ -711,9 +712,11 @@ public class ControladorUsuarios  implements MensajesListener{
 					ChatIndividual miembroHIjo = hijo.getDuenyo().ContactoEquivalente(miembro);
 					hijo.addMiembro(miembroHIjo);
 					AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(hijo);
+					AdaptadorChatGrupoDAO.getUnicaInstancia().updateAdmins(hijo);
 				}
 				grupo.addMiembro(miembro);
 				AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(grupo);
+				AdaptadorChatGrupoDAO.getUnicaInstancia().updateAdmins(grupo);
 				
 				//le creo el grupo al usuario y actualizo en DAO
 				//##################################################################################################################################################################################################################################################################################################################
@@ -794,11 +797,11 @@ public class ControladorUsuarios  implements MensajesListener{
 	public void modificarGrupo(ChatGrupo grupo, List<ChatIndividual> agregarlos, List<ChatIndividual> eliminarlos, 
 			String nuevoNombre) {
 		for (ChatIndividual e : eliminarlos) {
-			this.eliminarMiembroGrupo(grupo, e);
+			this.eliminarMiembroGrupo(grupo, e); //works <3
 		}
 		
 		for (ChatIndividual a : agregarlos) {
-			this.agregarMiembroGrupo(grupo, a);
+			this.agregarMiembroGrupo(grupo, a); //works <3
 		}
 		
 		grupo.cambiarNombre(nuevoNombre);
