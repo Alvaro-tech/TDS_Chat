@@ -2,9 +2,13 @@ package controlador;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
 import org.knowm.xchart.PieChart;
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.internal.chartpart.Chart;
@@ -15,16 +19,15 @@ import modelo.ChatIndividual;
 import modelo.Descuento;
 import modelo.GestorGraficas;
 import modelo.Mensaje;
+import modelo.MensajeWhatsApp;
 import modelo.PDFGenerator;
 import modelo.Usuario;
 import persistencia.AdaptadorChatGrupoDAO;
 import persistencia.AdaptadorChatIndividualDAO;
+import persistencia.AdaptadorMensajeDAO;
 import persistencia.AdaptadorUsuarioDAO;
 import persistencia.DAOException;
 import persistencia.FactoriaDAO;
-
-
-
 import CargadorMensajes.*;
 
 /**
@@ -34,7 +37,7 @@ import CargadorMensajes.*;
  * @author Álvaro y Ana.
  *
  */
-public class ControladorUsuarios {
+public class ControladorUsuarios  implements MensajesListener{
 
 	private Usuario usuarioActual;
 	private static ControladorUsuarios unicaInstancia;
@@ -754,6 +757,47 @@ public class ControladorUsuarios {
 		AdaptadorUsuarioDAO.getUnicaInstancia().updateChatsDesconocidos(this.usuarioActual);
 		AdaptadorChatIndividualDAO.getUnicaInstancia().updateNombre(desconocido);
 		return true;
+	}
+
+	
+	@Override
+	public void nuevosMensajes(EventoMensaje e) {
+		//Se llama a esto cuando
+		List<MensajeWhatsApp> mensajesCargar = e.getMensajes();
+		LinkedList<Mensaje> mensajesBien = this.parsearMensajesWhatsapp(mensajesCargar);
+		
+		for (Mensaje m : mensajesBien) {
+			AdaptadorMensajeDAO.getUnicaInstancia().create(m);
+		}
+		
+	}
+
+	private LinkedList<Mensaje> parsearMensajesWhatsapp(List<MensajeWhatsApp> mensajesCargar) {
+		//Convertimos los mensajes Whatsapp en mensajes del modelo.
+		LinkedList<Mensaje> bien = new LinkedList<Mensaje>();
+		
+		for (MensajeWhatsApp m : mensajesCargar) {
+			List<Usuario> usuarios = CatalogoUsuarios.getUnicaInstancia().getUsuarios();
+			List<String> nombres = usuarios.stream().map(u -> u.getNombre()).collect(Collectors.toList());
+			if(nombres.contains(m.getAutor())) {
+				m.getAutor();
+				m.getTexto();
+				Usuario u = null;
+				Iterator<Usuario> it = usuarios.iterator();
+				boolean fin = false;
+				while(!fin && it.hasNext()) {
+					Usuario aux = it.next();
+					if(aux.getNombre().equals(m.getAutor())) {
+						fin = true;
+						u = aux;
+					}
+				}
+				
+				Mensaje men = new Mensaje(u, m.getTexto(), m.getFecha());
+				bien.add(men);
+			}
+		}
+		return bien;
 	}
 
 }
