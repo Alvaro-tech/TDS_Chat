@@ -51,8 +51,10 @@ public final class AdaptadorMensajeDAO implements IAdaptadorMensajeDAO {
 		// ATRIBUTOS FIJOS
 		String texto = servPersistencia.recuperarPropiedadEntidad(eMensaje, "texto");
 		String fecha = servPersistencia.recuperarPropiedadEntidad(eMensaje, "fecha");
+		String emoji = servPersistencia.recuperarPropiedadEntidad(eMensaje, "emoji");
 
 		Mensaje mensaje = new Mensaje(texto, fecha);
+		mensaje.setEmoji(Boolean.getBoolean(emoji));
 		mensaje.setId(eMensaje.getId());
 		// lo introducimos en la pool
 		PoolDAO.getUnicaInstancia().addObjeto(mensaje.getId(), mensaje);
@@ -93,6 +95,7 @@ public final class AdaptadorMensajeDAO implements IAdaptadorMensajeDAO {
 				new Propiedad("emisor", obtenerIdEmisor(mensaje.getEmisor())),
 				new Propiedad("receptor", obtenerIdReceptor(mensaje.getReceptor())),
 				new Propiedad("fecha", mensaje.getFecha().toString()), 
+				new Propiedad("emoji", mensaje.isEmoji()+""),
 				new Propiedad("texto", mensaje.getTexto()))));
 		return eMensaje;
 	}

@@ -159,8 +159,7 @@ public class PanelConversacion extends JPanel {
 			
 		case "ChatGrupo":
 			ChatGrupo c2 = (ChatGrupo) chat;
-			ChatIndividual ciAux = c2.getMiembros().getFirst();
-			Mensaje m1 = ControladorUsuarios.getUnicaInstancia().crearMensaje(emisor, ciAux, textTexto.getText()); //No se le envia a alguien en concreto
+			Mensaje m1 = ControladorUsuarios.getUnicaInstancia().crearMensaje(emisor, textTexto.getText()); //No se le envia a alguien en concreto
 			//Guardamos el mensaje en persistencia, para que tenga un idPropio
 			AdaptadorMensajeDAO.getUnicaInstancia().create(m1);
 			ControladorUsuarios.getUnicaInstancia().enviarMensajeAGrupo(m1, c2);

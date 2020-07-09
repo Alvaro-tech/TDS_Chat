@@ -588,6 +588,11 @@ public class ControladorUsuarios {
 		return new Mensaje(emisor, receptor, texto);
 	}
 	
+	public Mensaje crearMensaje(Usuario emisor,  String texto) {
+		
+		return new Mensaje(emisor, texto);
+	}
+	
 	public void enviarMensajeAChatInd(Mensaje m, ChatIndividual cI) {
 		if (cI.getIdChatLigado() == 0 ) {
 			enlazarChats(cI);

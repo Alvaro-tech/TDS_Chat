@@ -17,6 +17,7 @@ public class Mensaje {
 	private int id;
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 	//Imagen emoticon;
+	private boolean emoji = false;
 	
 	/**
 	 * Constructor de la calse mensaje.
@@ -163,6 +164,14 @@ public class Mensaje {
 	 */
 	public boolean esEntreFechas(LocalDateTime fi, LocalDateTime ff) {
 		return (fi.isEqual(this.fecha) || fi.isBefore(this.fecha)) && (ff.isEqual(this.fecha) || ff.isAfter(this.fecha));
+	}
+
+	public boolean isEmoji() {
+		return emoji;
+	}
+
+	public void setEmoji(boolean emoji) {
+		this.emoji = emoji;
 	}
 
 
