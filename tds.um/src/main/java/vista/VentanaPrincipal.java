@@ -229,19 +229,30 @@ public class VentanaPrincipal extends JFrame {
 				if(chatActual.getClass().getSimpleName().equals("ChatIndividual")) {
 					ChatIndividual chat = (ChatIndividual) chatActual;
 					String nuevoNombre = JOptionPane.showInputDialog("Escribeme el nombre de contacto que quieres ponerle");
-			        JOptionPane.showMessageDialog(null, nuevoNombre);
+					if(nuevoNombre == null || nuevoNombre.equals("")) {
+						JOptionPane
+						.showMessageDialog(ventana,
+								"No has introducido ningún nombre.\n",
+								"Error", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
 					
 					if(ControladorUsuarios.getUnicaInstancia().pasarDeDesconocidoAContacto(chat, nuevoNombre)) {
 						JOptionPane
 						.showMessageDialog(ventana,
 								"Ha sido agregado el contacto sin problemas.\n",
-								"Done", JOptionPane.OK_OPTION);
+								"Done", JOptionPane.INFORMATION_MESSAGE);
+					}else {
+						JOptionPane
+						.showMessageDialog(ventana,
+								"No ha sido posible agregar a este contacto.\n",
+								"Error", JOptionPane.ERROR_MESSAGE);
 					}
 					
 				}else {
 					JOptionPane
 					.showMessageDialog(ventana,
-							"No ha sido posible agregar a este contacto.\n",
+							"No puedes seleccionar un grupo.\n",
 							"Error", JOptionPane.ERROR_MESSAGE);
 				}
 				
