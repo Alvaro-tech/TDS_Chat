@@ -50,11 +50,14 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 		String movil = servPersistencia.recuperarPropiedadEntidad(eUsuario, "movil");
 		String clave = servPersistencia.recuperarPropiedadEntidad(eUsuario, "clave");
 		String saludo = servPersistencia.recuperarPropiedadEntidad(eUsuario, "saludo");
+		String premium = servPersistencia.recuperarPropiedadEntidad(eUsuario, "premium");
 		String fotoP = servPersistencia.recuperarPropiedadEntidad(eUsuario, "fotoPerfil");
 		String conversaciones = servPersistencia.recuperarPropiedadEntidad(eUsuario, "conversacionesAbiertas");
 		//-*-*-*-*-*-*-*-*- Creo un Usuario Solo con estoss datos *-**-*-*-*-*-*-*-*-
 		Usuario Usuario = new Usuario(nombre, email, fecha, movil, clave, saludo, fotoP, conversaciones); 
 		Usuario.setId(eUsuario.getId());
+		Usuario.setPremium(Boolean.valueOf(premium));
+		
 		//-*-*-*--*-*-*-*-*-*--*Y lo guardo en Pool para que conste:
 		PoolDAO.getUnicaInstancia().addObjeto(Usuario.getId(), Usuario);
 		
@@ -89,6 +92,7 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 						new Propiedad("email", Usuario.getEmail()),
 						new Propiedad("clave", Usuario.getClave()),
 						new Propiedad("saludo", Usuario.getSaludo()),
+						new Propiedad("premium", Usuario.isPremium()+""),
 						new Propiedad("conversacionesAbiertas", Usuario.getConversacionesAbiertas()),
 						new Propiedad("chatIndividual", obtenerIdChatIndividual(Usuario.getChatsInd())),
 						new Propiedad("chatDesconocidos", obtenerIdChatIndividual(Usuario.getCHatsIndividualesYDesconocidos())),
@@ -151,6 +155,8 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 		servPersistencia.anadirPropiedadEntidad(eUsuario, "movil",Usuario.getMovil());
 		servPersistencia.eliminarPropiedadEntidad(eUsuario, "saludo");
 		servPersistencia.anadirPropiedadEntidad(eUsuario, "saludo",Usuario.getSaludo());
+		servPersistencia.eliminarPropiedadEntidad(eUsuario, "premium");
+		servPersistencia.anadirPropiedadEntidad(eUsuario, "premium", Boolean.toString(Usuario.isPremium()));
 	}
 	
 	public Usuario get(int id) { //2º 
@@ -201,9 +207,12 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 		System.out.println("en Adaptador usuario, updateo updateConversaciones");
 		servPersistencia.eliminarPropiedadEntidad(eUsuario, "conversacionesAbiertas");
 		servPersistencia.anadirPropiedadEntidad(eUsuario, "conversacionesAbiertas",usuario.getConversacionesAbiertas());
-		
-		System.out.println("updateConversaciones en adaptador :" + usuario.getConversacionesAbiertas());
-		
+	}
+	
+	public void updatePremium(Usuario usuario) {
+		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getId());
+		servPersistencia.eliminarPropiedadEntidad(eUsuario, "premium");
+		servPersistencia.anadirPropiedadEntidad(eUsuario, "premium", Boolean.toString(usuario.isPremium()));
 	}
 
 	

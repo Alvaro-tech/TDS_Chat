@@ -872,4 +872,9 @@ public class ControladorUsuarios  implements MensajesListener{
 		AdaptadorMensajeDAO.getUnicaInstancia().create(m);
 		AdaptadorMensajeDAO.getUnicaInstancia().updateEmoji(m);
 	}
+
+	public void hacerUserPremium() {
+		this.usuarioActual.setPremium(true);
+		AdaptadorUsuarioDAO.getUnicaInstancia().updatePremium(usuarioActual);
+	}
 }

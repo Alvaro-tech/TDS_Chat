@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controlador.ControladorUsuarios;
+import modelo.Usuario;
 
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -182,6 +183,9 @@ public class PanelAltaPremiun extends JDialog {
 			getContentPane().add(buttonPane, gbc_buttonPane);
 			{
 				JButton okButton = new JButton("OK");
+				if(ControladorUsuarios.getUnicaInstancia().getusuarioActual().isPremium()) {
+					okButton.setEnabled(false);
+				}
 				okButton.setActionCommand("OK");
 				okButton.addActionListener((new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -192,8 +196,13 @@ public class PanelAltaPremiun extends JDialog {
 							//consigo el pago mensual con el descuento seleccionado
 							double precio = ControladorUsuarios.getUnicaInstancia().getPrecioPremiumConDescuento(tipoDescuento);
 							if(precio != 0.0) {
-								Double p = (Double) precio;
-								textPrecio.setText(p.toString()+ "€");
+								//se convierte en usuario premium
+								ControladorUsuarios.getUnicaInstancia().hacerUserPremium();
+								JOptionPane.showMessageDialog(ventana,
+			                            "¡Enhorabuena, eres premium!",
+			                            "¡yuju!",
+			                            JOptionPane.INFORMATION_MESSAGE);
+								okButton.setEnabled(false);
 							}else {
 								JOptionPane.showMessageDialog(ventana,
 			                            "No cumples con los requisitos especificados",
