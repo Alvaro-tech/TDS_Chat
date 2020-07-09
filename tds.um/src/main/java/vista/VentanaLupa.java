@@ -88,6 +88,7 @@ public class VentanaLupa extends JDialog {
 				@Override
 				public void mouseClicked(MouseEvent arg0) {
 					userSelect = (ChatIndividual)comboBox.getSelectedItem();
+					System.out.println("MOVIL SELECCIONADO: " + userSelect.getMovil());
 				}
 			});
 			comboBox.setMaximumRowCount(15);
