@@ -805,7 +805,7 @@ public class ControladorUsuarios  implements MensajesListener{
 		AdaptadorChatGrupoDAO.getUnicaInstancia().updateNombre(grupo, nuevoNombre);
 		
 		for (ChatGrupo hijo : grupo.getGruposHijo()) {
-			AdaptadorChatGrupoDAO.getUnicaInstancia().updateNombre(grupo, nuevoNombre);
+			AdaptadorChatGrupoDAO.getUnicaInstancia().updateNombre(hijo, nuevoNombre);
 		}
 		
 	}

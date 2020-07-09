@@ -33,7 +33,7 @@ import controlador.ControladorUsuarios;
 import modelo.CatalogoUsuarios;
 
 
-public class VentanaLogin {
+public class VentanaLogin extends JFrame{
 
 	private JFrame frame;
 	private JTextField relleno;
@@ -96,7 +96,7 @@ public class VentanaLogin {
 		JPanel panel_1 = new JPanel();
 		frame.getContentPane().add(panel_1, BorderLayout.SOUTH);
 		
-		JButton btnAceptar = new JButton("Aceptar");              //TODO: Hacer todo el proceso de login
+		JButton btnAceptar = new JButton("Aceptar");             
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
@@ -109,8 +109,8 @@ public class VentanaLogin {
 				//Cambio de panel
 				if (ControlUser) {
 				System.out.println(ControladorUsuarios.getUnicaInstancia().getusuarioActual().getMovil());
-			//	VentanaPrincipal framePrincipal = new VentanaPrincipal(ControladorUsuarios.getUnicaInstancia().getusuarioActual()); //TODO: Preguntar esto
-				VentanaPrincipal framePrincipal = new VentanaPrincipal(frame); //TODO: Preguntar esto
+			//	VentanaPrincipal framePrincipal = new VentanaPrincipal(ControladorUsuarios.getUnicaInstancia().getusuarioActual()); 
+				VentanaPrincipal framePrincipal = new VentanaPrincipal(frame); 
 				framePrincipal.setVisible(true);
 				frame.dispose();
 				} else {

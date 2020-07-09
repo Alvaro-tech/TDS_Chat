@@ -173,6 +173,13 @@ public class VentanaPrincipal extends JFrame {
 
 		// TODO: Implementar esta función
 		JMenuItem mntmCerrarSesion = new JMenuItem("Cerrar Sesión");
+		mntmCerrarSesion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				VentanaLogin framePrincipal = new VentanaLogin(); 
+				framePrincipal.setVisible(true);
+				frame.dispose();
+			}
+		});
 		mnMenu.add(mntmCerrarSesion);
 
 		JMenuItem mntmExportarContactos = new JMenuItem("Exportar Info. Contactos");
