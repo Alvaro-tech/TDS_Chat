@@ -23,6 +23,10 @@ import persistencia.AdaptadorUsuarioDAO;
 import persistencia.DAOException;
 import persistencia.FactoriaDAO;
 
+
+
+import CargadorMensajes.*;
+
 /**
  * Clase Controlador del sistema. Separa la vista de la lógica del dominio y la
  * persistencia.
