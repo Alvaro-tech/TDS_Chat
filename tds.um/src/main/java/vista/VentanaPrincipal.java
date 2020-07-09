@@ -38,6 +38,7 @@ public class VentanaPrincipal extends JFrame {
 	private JFrame ventana;
 
 	private PanelChatsRecientes pChatRec;
+	private JPanel pExtra;
 	private PanelShowCont panelShowCont;
 	private PanelConversacion panelConver;
 	private VentanaPrincipal venPrinAc;
@@ -52,8 +53,10 @@ public class VentanaPrincipal extends JFrame {
 		// La vista solo debe hablar con el controlador, esto es bastante una herejía
 		// bebe
 
+		frame.setResizable(false);
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(300, 40, 850, 600);
+		setBounds(0, 0, 1350, 700); //850 - 600
 		panelVentanaPrincipal = new JPanel();
 		panelVentanaPrincipal.setBorder(new EmptyBorder(5, 5, 5, 5));
 		panelVentanaPrincipal.setLayout(new BorderLayout(0, 0));
@@ -69,15 +72,15 @@ public class VentanaPrincipal extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 
 				PanelMenuFoto nuevo = new PanelMenuFoto(usuario);
-				panelDividido.remove(panellzq);
-				panellzq = nuevo;
+				panelDividido.remove(pExtra);
+				pExtra = nuevo;
 
-				GridBagConstraints gbc_panelzq = new GridBagConstraints();
-				gbc_panelzq.insets = new Insets(0, 0, 5, 0);
-				gbc_panelzq.fill = GridBagConstraints.BOTH;
-				gbc_panelzq.gridx = 1;
-				gbc_panelzq.gridy = 0;
-				panelDividido.add(nuevo, gbc_panelzq);
+				GridBagConstraints gbc_pExtra = new GridBagConstraints();
+				gbc_pExtra.insets = new Insets(0, 0, 5, 0);
+				gbc_pExtra.fill = GridBagConstraints.BOTH;
+				gbc_pExtra.gridx = 2;
+				gbc_pExtra.gridy = 0;
+				panelDividido.add(pExtra, gbc_pExtra);
 
 				panelDividido.revalidate();
 				panelDividido.repaint();
@@ -193,7 +196,7 @@ public class VentanaPrincipal extends JFrame {
 		});
 		menuBar.add(btnCuenta);
 
-		Component horizontalStrut_1 = Box.createHorizontalStrut(254);
+		Component horizontalStrut_1 = Box.createHorizontalStrut(860);
 		menuBar.add(horizontalStrut_1);
 
 		JMenu mnOpciones2 = new JMenu("Opciones2");
@@ -304,9 +307,9 @@ public class VentanaPrincipal extends JFrame {
 		// JPanel panelDividido = new JPanel();
 		panelVentanaPrincipal.add(panelDividido, BorderLayout.CENTER);
 		GridBagLayout gbl_panelDividido = new GridBagLayout();
-		gbl_panelDividido.columnWidths = new int[] { 251, 473, 0 };
+		gbl_panelDividido.columnWidths = new int[] { 251, 742, 226, 0 };
 		gbl_panelDividido.rowHeights = new int[] { 488, 0, 0 };
-		gbl_panelDividido.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
+		gbl_panelDividido.columnWeights = new double[] { 0.0, 1.0, 1.0, Double.MIN_VALUE };
 		gbl_panelDividido.rowWeights = new double[] { 1.0, 0.0, Double.MIN_VALUE };
 		panelDividido.setLayout(gbl_panelDividido);
 
@@ -329,12 +332,21 @@ public class VentanaPrincipal extends JFrame {
 
 		// JPanel panellzq = new JPanel();
 		GridBagConstraints gbc_panelzq = new GridBagConstraints();
-		gbc_panelzq.insets = new Insets(0, 0, 5, 0);
+		gbc_panelzq.insets = new Insets(0, 0, 5, 5);
 		gbc_panelzq.fill = GridBagConstraints.BOTH;
 		gbc_panelzq.gridx = 1;
 		gbc_panelzq.gridy = 0;
 		panellzq.setBackground(new Color(135, 206, 250));
 		panelDividido.add(panellzq, gbc_panelzq);
+		
+		pExtra = new JPanel();
+		pExtra.setBackground(new Color(176, 196, 222));
+		GridBagConstraints gbc_pExtra = new GridBagConstraints();
+		gbc_pExtra.insets = new Insets(0, 0, 5, 0);
+		gbc_pExtra.fill = GridBagConstraints.BOTH;
+		gbc_pExtra.gridx = 2;
+		gbc_pExtra.gridy = 0;
+		panelDividido.add(pExtra, gbc_pExtra);
 
 	}
 
