@@ -53,7 +53,9 @@ public class ChatRenderer  extends JLabel implements ListCellRenderer<Chat> {
 		   
 		   if (chat.getUltimoMensaje() != null) {
 			   Mensaje m = chat.getUltimoMensaje();
-			   texto =  m.getTexto();
+			   
+			   if(m.isEmoji()) { texto = "Emoji -> " + m.getTexto() + "º";} else {texto =  m.getTexto(); }
+			   
 			   fecha = m.getFechaEnString();
 			   
 		   }

@@ -78,7 +78,7 @@ public class PanelConversacion extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					crearBurbujaMensaje(); //Crear una burbuja para tu mensaje
-					enviarMensaje();
+					enviarMensaje(false);
 					textTexto.setText("");
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -119,10 +119,37 @@ public class PanelConversacion extends JPanel {
 		
 	}
 	
+	private void crearBurbujaEmoji(int nEmoji) {
+		BubbleText burbuja;
+		Usuario emisor = ControladorUsuarios.getUnicaInstancia().getusuarioActual();
+		
+		burbuja = new BubbleText(panelMensajes, nEmoji , Color.GREEN, emisor.getNombre(), BubbleText.SENT, 18);
+		panelMensajes.add(burbuja);
+		
+		panelMensajes.revalidate();
+		panelMensajes.repaint();
+	}
+	
+	
+	public void peticionDeEmoji(int nEmoji) {
+		crearBurbujaEmoji(nEmoji);
+		textTexto.setText( "" + nEmoji);
+		enviarMensaje(true);
+		textTexto.setText("");
+		
+		
+	}
+	
 	private void burbujaMensajeRecibida(Mensaje m) {
 		BubbleText burbuja;
 		Usuario emisor = m.getEmisor();
-		burbuja = new BubbleText(panelMensajes, m.getTexto(), Color.CYAN, emisor.getNombre(), BubbleText.RECEIVED, 18);
+		
+		if(m.isEmoji()) {
+			burbuja = new BubbleText(panelMensajes, Integer.parseInt(m.getTexto()), Color.CYAN, emisor.getNombre(), BubbleText.RECEIVED, 18);
+		}else {
+			burbuja = new BubbleText(panelMensajes, m.getTexto(), Color.CYAN, emisor.getNombre(), BubbleText.RECEIVED, 18);
+		}
+
 		panelMensajes.add(burbuja);
 		burbuja.setVisible(true);
 			
@@ -133,24 +160,35 @@ public class PanelConversacion extends JPanel {
 		Usuario emisor = m.getEmisor();
 		System.out.println(".-.-.-crearBurBuMensaje: " + m.getTexto());
 		System.out.println(".-.-.-crearBurBuMensaje: " + emisor.getNombre());
-		burbuja = new BubbleText(panelMensajes, m.getTexto(), Color.GREEN, emisor.getNombre(), BubbleText.SENT, 18);
+		
+		if(m.isEmoji()) {
+			burbuja = new BubbleText(panelMensajes, Integer.parseInt(m.getTexto()), Color.GREEN, emisor.getNombre(), BubbleText.SENT, 18);
+		}else {
+			burbuja = new BubbleText(panelMensajes, m.getTexto(), Color.GREEN, emisor.getNombre(), BubbleText.SENT, 18);
+		}
+		
 		panelMensajes.add(burbuja);
 		burbuja.setVisible(true);
 		
 		
 			
 	}
+		
+		
 	
-	
-	private void enviarMensaje() {
+	private void enviarMensaje(boolean emoji) {
 		Usuario emisor = ControladorUsuarios.getUnicaInstancia().getusuarioActual();
 				
 		switch (chat.getClass().getSimpleName()) {
 		case "ChatIndividual":
 			ChatIndividual c1 = (ChatIndividual) chat;
 			Mensaje m = ControladorUsuarios.getUnicaInstancia().crearMensaje(emisor, c1, textTexto.getText());
+			
+			if(emoji) {m.setEmoji(true);}
+			
 			//Guardamos el mensaje en persistencia, para que tenga un idPropio
 			AdaptadorMensajeDAO.getUnicaInstancia().create(m);
+			AdaptadorMensajeDAO.getUnicaInstancia().updateEmoji(m);
 			System.out.println("Controlador | enviarMensaje, id del mensaje: " + m.getId());
 
 			//From me (usuarioAcutal) to un chatIndv con un texto
@@ -160,8 +198,14 @@ public class PanelConversacion extends JPanel {
 		case "ChatGrupo":
 			ChatGrupo c2 = (ChatGrupo) chat;
 			Mensaje m1 = ControladorUsuarios.getUnicaInstancia().crearMensaje(emisor, c2.getMiembros().getFirst(), textTexto.getText()); //No se le envia a alguien en concreto
+			
+			if(emoji) {m1.setEmoji(true);}
+			
 			//Guardamos el mensaje en persistencia, para que tenga un idPropio
 			AdaptadorMensajeDAO.getUnicaInstancia().create(m1);
+			AdaptadorMensajeDAO.getUnicaInstancia().updateEmoji(m1);
+
+			
 			ControladorUsuarios.getUnicaInstancia().enviarMensajeAGrupo(m1, c2);
 			
 			break;

@@ -414,5 +414,10 @@ public class VentanaPrincipal extends JFrame {
 		panelDividido.repaint();
 		
 	}
+	
+	public void mandarEmoji(int nEmoji) {
+		panelConver.peticionDeEmoji(nEmoji);
+		
+	}
 
 }
