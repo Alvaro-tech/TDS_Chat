@@ -3,7 +3,6 @@ package modelo;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.List;
-
 import org.knowm.xchart.BitmapEncoder;
 import org.knowm.xchart.PieChart;
 import org.knowm.xchart.PieChartBuilder;
@@ -12,7 +11,6 @@ import org.knowm.xchart.XYChartBuilder;
 import org.knowm.xchart.XYSeries;
 import org.knowm.xchart.BitmapEncoder.BitmapFormat;
 import org.knowm.xchart.style.markers.SeriesMarkers;
-
 import controlador.ControladorUsuarios;
 
 //mostrando el número de mensajes enviados por el usuario en cada mes del año en curso y un diagrama de tarta
