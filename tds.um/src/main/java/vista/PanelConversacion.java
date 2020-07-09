@@ -94,7 +94,7 @@ public class PanelConversacion extends JPanel {
 		panelMensajes.setBackground(new Color(135, 206, 250));
 		panelPrincipal.add(panelMensajes, BorderLayout.CENTER);
 		panelMensajes.setLayout(new BoxLayout(panelMensajes, BoxLayout.Y_AXIS));
-		panelMensajes.setSize(new Dimension(400, 400));
+		panelMensajes.setSize(new Dimension(800, 800));
 		scrollPane = new JScrollPane(panelMensajes);
 		panelPrincipal.add(scrollPane, BorderLayout.CENTER);
 		

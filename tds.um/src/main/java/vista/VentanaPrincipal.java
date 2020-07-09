@@ -51,6 +51,8 @@ public class VentanaPrincipal extends JFrame {
 	private PanelShowCont panelShowCont;
 	private PanelConversacion panelConver;
 	private VentanaPrincipal venPrinAc;
+	
+	private JPanel panelExtra;
 
 	/**
 	 * Create the frame.
@@ -80,15 +82,14 @@ public class VentanaPrincipal extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 
 				PanelMenuFoto nuevo = new PanelMenuFoto(usuario);
-				panelDividido.remove(panellzq);
-				panellzq = nuevo;
-
-				GridBagConstraints gbc_panelzq = new GridBagConstraints();
-				gbc_panelzq.insets = new Insets(0, 0, 5, 0);
-				gbc_panelzq.fill = GridBagConstraints.BOTH;
-				gbc_panelzq.gridx = 1;
-				gbc_panelzq.gridy = 0;
-				panelDividido.add(nuevo, gbc_panelzq);
+				panelDividido.remove(panelExtra);
+				panelExtra = nuevo;
+				GridBagConstraints gbc_panelExtra = new GridBagConstraints();
+				gbc_panelExtra.insets = new Insets(0, 0, 5, 0);
+				gbc_panelExtra.fill = GridBagConstraints.BOTH;
+				gbc_panelExtra.gridx = 2;
+				gbc_panelExtra.gridy = 0;
+				panelDividido.add(panelExtra, gbc_panelExtra);
 
 				panelDividido.revalidate();
 				panelDividido.repaint();
@@ -131,16 +132,16 @@ public class VentanaPrincipal extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 
 				panelShowCont = new PanelShowCont(usuario, frame, venPrinAc);
-				panelDividido.remove(panellzq);
-				panellzq = panelShowCont;
+				panelDividido.remove(panelExtra);
+				panelExtra = panelShowCont;
 
-				GridBagConstraints gbc_panelzq = new GridBagConstraints();
-				gbc_panelzq.insets = new Insets(0, 0, 5, 0);
-				gbc_panelzq.fill = GridBagConstraints.BOTH;
-				gbc_panelzq.gridx = 1;
-				gbc_panelzq.gridy = 0;
-				panelDividido.add(panelShowCont, gbc_panelzq);
-
+				GridBagConstraints gbc_panelExtra = new GridBagConstraints();
+				gbc_panelExtra.insets = new Insets(0, 0, 5, 0);
+				gbc_panelExtra.fill = GridBagConstraints.BOTH;
+				gbc_panelExtra.gridx = 2;
+				gbc_panelExtra.gridy = 0;
+				panelDividido.add(panelExtra, gbc_panelExtra);
+				
 				panelDividido.revalidate();
 				panelDividido.repaint();
 			};
@@ -315,9 +316,9 @@ public class VentanaPrincipal extends JFrame {
 		// JPanel panelDividido = new JPanel();
 		panelVentanaPrincipal.add(panelDividido, BorderLayout.CENTER);
 		GridBagLayout gbl_panelDividido = new GridBagLayout();
-		gbl_panelDividido.columnWidths = new int[] { 251, 717, 197, 0 };
+		gbl_panelDividido.columnWidths = new int[] { 251, 1039, 250, 0 };
 		gbl_panelDividido.rowHeights = new int[] { 488, 0, 0 };
-		gbl_panelDividido.columnWeights = new double[] { 0.0, 1.0, 1.0, Double.MIN_VALUE };
+		gbl_panelDividido.columnWeights = new double[] { 0.0, 1.0, 0.0, Double.MIN_VALUE };
 		gbl_panelDividido.rowWeights = new double[] { 1.0, 0.0, Double.MIN_VALUE };
 		panelDividido.setLayout(gbl_panelDividido);
 
@@ -347,14 +348,14 @@ public class VentanaPrincipal extends JFrame {
 		panellzq.setBackground(new Color(135, 206, 250));
 		panelDividido.add(panellzq, gbc_panelzq);
 		
-		JPanel panel = new JPanel();
-		panel.setBackground(new Color(176, 196, 222));
-		GridBagConstraints gbc_panel = new GridBagConstraints();
-		gbc_panel.insets = new Insets(0, 0, 5, 0);
-		gbc_panel.fill = GridBagConstraints.BOTH;
-		gbc_panel.gridx = 2;
-		gbc_panel.gridy = 0;
-		panelDividido.add(panel, gbc_panel);
+		panelExtra = new JPanel();
+		panelExtra.setBackground(new Color(176, 196, 222));
+		GridBagConstraints gbc_panelExtra = new GridBagConstraints();
+		gbc_panelExtra.insets = new Insets(0, 0, 5, 0);
+		gbc_panelExtra.fill = GridBagConstraints.BOTH;
+		gbc_panelExtra.gridx = 2;
+		gbc_panelExtra.gridy = 0;
+		panelDividido.add(panelExtra, gbc_panelExtra);
 
 	}
 
