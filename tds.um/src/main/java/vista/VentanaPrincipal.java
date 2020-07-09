@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import complementosGUI.PanelEmojis;
 import controlador.ControladorUsuarios;
 import modelo.Chat;
 import modelo.ChatGrupo;
@@ -51,6 +52,7 @@ public class VentanaPrincipal extends JFrame {
 	private PanelShowCont panelShowCont;
 	private PanelConversacion panelConver;
 	private VentanaPrincipal venPrinAc;
+	private PanelEmojis panelEmojis;
 	
 	private JPanel panelExtra;
 
@@ -394,6 +396,23 @@ public class VentanaPrincipal extends JFrame {
 		panelDividido.revalidate();
 		panelDividido.repaint();
 
+	}
+	
+	public void mostrarListadoEmojis() {
+		panelEmojis = new PanelEmojis(venPrinAc);
+		panelDividido.remove(panelExtra);
+		panelExtra = panelEmojis;
+
+		GridBagConstraints gbc_panelExtra = new GridBagConstraints();
+		gbc_panelExtra.insets = new Insets(0, 0, 5, 0);
+		gbc_panelExtra.fill = GridBagConstraints.BOTH;
+		gbc_panelExtra.gridx = 2;
+		gbc_panelExtra.gridy = 0;
+		panelDividido.add(panelExtra, gbc_panelExtra);
+		
+		panelDividido.revalidate();
+		panelDividido.repaint();
+		
 	}
 
 }

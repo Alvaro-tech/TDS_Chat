@@ -64,7 +64,7 @@ public class PanelConversacion extends JPanel {
 		lblEmoji.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				
+				padre.mostrarListadoEmojis();
 			}
 		});
 		panelEscritura.add(lblEmoji);

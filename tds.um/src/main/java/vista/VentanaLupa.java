@@ -84,9 +84,8 @@ public class VentanaLupa extends JDialog {
 		getContentPane().add(usuariosPanel, gbc_usuariosPanel);
 		{
 			JComboBox<ChatIndividual> comboBox = new JComboBox<ChatIndividual>();
-			comboBox.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent arg0) {
+			comboBox.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
 					userSelect = (ChatIndividual)comboBox.getSelectedItem();
 					System.out.println("MOVIL SELECCIONADO: " + userSelect.getMovil());
 				}
