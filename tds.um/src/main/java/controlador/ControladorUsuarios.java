@@ -379,15 +379,10 @@ public class ControladorUsuarios {
 
 	// TODO
 	public void cargarMensajes() {
-
+		
 	}
 
-	// TODOs
-	public void exportarMensajes() {
 
-	}
-
-	// TODO
 	public Chart<?, ?> crearEstadisticas(String tipo) {
 		
 		switch (tipo) {
