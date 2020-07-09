@@ -468,7 +468,7 @@ public class Usuario {
 	 * @param desconocido
 	 * @param nombre
 	 */
-	public void pasarDesconocidoAContacto(ChatIndividual desconocido, String nombre) {
+	public ChatIndividual pasarDesconocidoAContacto(ChatIndividual desconocido, String nombre) {
 		Iterator<ChatIndividual> it = this.chatsDesconocido.iterator();
 		boolean fin = false;
 		
@@ -479,7 +479,7 @@ public class Usuario {
 				desconocido.setNombre(nombre);
 				this.chatsInd.add(desconocido);
 			}
-		}
+		} return desconocido;
 	}
 	
 	/**
@@ -625,6 +625,10 @@ public class Usuario {
 			
 		}
 		
+	}
+	
+	public boolean isDesconocido(ChatIndividual c) {
+		return this.chatsDesconocido.contains(c);
 	}
 
 }

@@ -225,7 +225,7 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 		
 	}
 	
-	public void updateChatsDesconocidos(Usuario usuario, Chat newChat) {
+	public void updateChatsDesconocidos(Usuario usuario) {
 		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getId());
 			   servPersistencia.eliminarPropiedadEntidad(eUsuario, "chatDesconocidos");
 			   servPersistencia.anadirPropiedadEntidad(eUsuario,"chatDesconocidos", obtenerIdChatIndividual(usuario.getChatsDesconocido()));

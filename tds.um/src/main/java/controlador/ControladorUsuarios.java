@@ -22,7 +22,6 @@ import persistencia.AdaptadorChatIndividualDAO;
 import persistencia.AdaptadorUsuarioDAO;
 import persistencia.DAOException;
 import persistencia.FactoriaDAO;
-import vista.PanelChatsRecientes;
 
 /**
  * Clase Controlador del sistema. Separa la vista de la lógica del dominio y la
@@ -515,7 +514,7 @@ public class ControladorUsuarios {
 						ChatIndividual chatAux = userAux.addChatDesconocido(cgAux2.getMovil(), cgAux2.getContacto()); 
 						//Lo guardo en persistencia 
 						AdaptadorChatIndividualDAO.getUnicaInstancia().create(chatAux);          
-						AdaptadorUsuarioDAO.getUnicaInstancia().updateChatsDesconocidos(userAux, chatAux);	
+						AdaptadorUsuarioDAO.getUnicaInstancia().updateChatsDesconocidos(userAux);	
 						cgAux0 = userAux.CrearGrupoHijo(cg1);
 					}	
 					
@@ -627,7 +626,7 @@ public class ControladorUsuarios {
 			//Si el bucle termino, es porque no te tiene añadido como user, se te crea como desconocido
 			chatEspejo = receptor.addChatDesconocido(usuarioActual.getMovil(), usuarioActual);
 			AdaptadorChatIndividualDAO.getUnicaInstancia().create(chatEspejo);
-			AdaptadorUsuarioDAO.getUnicaInstancia().updateChatsDesconocidos(receptor, chatEspejo); 
+			AdaptadorUsuarioDAO.getUnicaInstancia().updateChatsDesconocidos(receptor); 
 			
 		}
 		
@@ -738,6 +737,19 @@ public class ControladorUsuarios {
 			break;
 			
 		}
+	}
+	
+	
+	public boolean pasarDeDesconocidoAContacto(ChatIndividual desconocido, String nuevoNombre) {
+		if(! (this.usuarioActual.isDesconocido(desconocido))) {
+			return false;
+		}
+		//el deconocido pasa a ser contacto normal
+		desconocido = this.usuarioActual.pasarDesconocidoAContacto(desconocido, nuevoNombre);
+		AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(this.usuarioActual, desconocido);
+		AdaptadorUsuarioDAO.getUnicaInstancia().updateChatsDesconocidos(this.usuarioActual);
+		AdaptadorChatIndividualDAO.getUnicaInstancia().updateNombre(desconocido);
+		return true;
 	}
 
 }

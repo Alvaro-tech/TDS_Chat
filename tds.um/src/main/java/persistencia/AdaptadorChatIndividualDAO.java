@@ -229,6 +229,12 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 		}
 		return mensajes;
 	}
+
+	public void updateNombre(ChatIndividual desconocido) {
+		Entidad eChat = servPersistencia.recuperarEntidad(desconocido.getId());
+		servPersistencia.eliminarPropiedadEntidad(eChat, "nombre");
+		servPersistencia.anadirPropiedadEntidad(eChat, "nombre", desconocido.getNombre());
+	}
 	
 	
 	
