@@ -54,7 +54,7 @@ public final class AdaptadorMensajeDAO implements IAdaptadorMensajeDAO {
 		String emoji = servPersistencia.recuperarPropiedadEntidad(eMensaje, "emoji");
 
 		Mensaje mensaje = new Mensaje(texto, fecha);
-		mensaje.setEmoji(Boolean.getBoolean(emoji));
+		mensaje.setEmoji(Boolean.valueOf(emoji));
 		System.out.println("el emoji atrubto esta escrito asi: " + emoji);
 		System.out.println("#######  conviete bien? " + Boolean.getBoolean(emoji));
 		System.out.println("-.-.-.-ññññññññ Recuepere un mensaje, es emoji? -> " + mensaje.isEmoji());

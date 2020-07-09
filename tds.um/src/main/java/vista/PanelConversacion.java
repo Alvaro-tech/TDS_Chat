@@ -187,8 +187,7 @@ public class PanelConversacion extends JPanel {
 			if(emoji) {m.setEmoji(true);}
 			
 			//Guardamos el mensaje en persistencia, para que tenga un idPropio
-			AdaptadorMensajeDAO.getUnicaInstancia().create(m);
-			AdaptadorMensajeDAO.getUnicaInstancia().updateEmoji(m);
+			ControladorUsuarios.getUnicaInstancia().guardarEmojiEnPersistencia(m);
 			System.out.println("Controlador | enviarMensaje, id del mensaje: " + m.getId());
 
 			//From me (usuarioAcutal) to un chatIndv con un texto
@@ -202,8 +201,7 @@ public class PanelConversacion extends JPanel {
 			if(emoji) {m1.setEmoji(true);}
 			
 			//Guardamos el mensaje en persistencia, para que tenga un idPropio
-			AdaptadorMensajeDAO.getUnicaInstancia().create(m1);
-			AdaptadorMensajeDAO.getUnicaInstancia().updateEmoji(m1);
+			ControladorUsuarios.getUnicaInstancia().guardarEmojiEnPersistencia(m1);
 
 			
 			ControladorUsuarios.getUnicaInstancia().enviarMensajeAGrupo(m1, c2);

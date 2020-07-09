@@ -862,4 +862,9 @@ public class ControladorUsuarios  implements MensajesListener{
 		return bien;
 	}
 
+	public void guardarEmojiEnPersistencia(Mensaje m) {
+
+		AdaptadorMensajeDAO.getUnicaInstancia().create(m);
+		AdaptadorMensajeDAO.getUnicaInstancia().updateEmoji(m);
+	}
 }
