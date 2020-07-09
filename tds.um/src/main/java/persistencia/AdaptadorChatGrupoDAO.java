@@ -271,6 +271,13 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 
 	}
 	
+	@Override
+	public void updateAdmins(ChatGrupo grupo) {
+		Entidad eGrupo = servPersistencia.recuperarEntidad(grupo.getId());
+		servPersistencia.eliminarPropiedadEntidad(eGrupo, "administradores");
+		servPersistencia.anadirPropiedadEntidad(eGrupo, "administradores", obtenerAdministradores(grupo.getAdministradores()));
+	}
+	
 	public void updateIdPadre(ChatGrupo grupo) {
 		Entidad eGrupo = servPersistencia.recuperarEntidad(grupo.getId());
 		servPersistencia.eliminarPropiedadEntidad(eGrupo, "idPadre");
@@ -356,5 +363,6 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 		}
 		return gruposHijosC;
 	}
+
 
 }

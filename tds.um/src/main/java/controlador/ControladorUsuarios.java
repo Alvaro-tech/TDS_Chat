@@ -484,6 +484,7 @@ public class ControladorUsuarios  implements MensajesListener{
 		AdaptadorChatGrupoDAO.getUnicaInstancia().create(cg1);
 		AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(usuarioActual, cg1);
 		AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(cg1);
+		AdaptadorChatGrupoDAO.getUnicaInstancia().updateAdmins(cg1);
 		
 		//Actualizar el idPadre
 		System.out.println("id del grupo padre: " + cg1.getId());
@@ -535,6 +536,7 @@ public class ControladorUsuarios  implements MensajesListener{
 				//Actualizar al usuario en persistencia
 				AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(userAux, cgAux);
 				AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(cgAux);
+				AdaptadorChatGrupoDAO.getUnicaInstancia().updateAdmins(cgAux);
 				userAux.addConversacion(cgAux.getId());
 				AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(userAux);
 				
@@ -687,7 +689,7 @@ public class ControladorUsuarios  implements MensajesListener{
 				}
 				grupo.eliminarMiembro(miembro);
 				AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(grupo);
-				miembro.getContacto().eliminarContacto(grupo);
+				miembro.getContacto().eliminarChat(grupo);
 				AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(miembro.getContacto(), grupo);
 				AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(miembro.getContacto());
 			}else{//si no es el padre, se busca al padre para que llame a esta funcion.
@@ -764,11 +766,11 @@ public class ControladorUsuarios  implements MensajesListener{
 		
 	}
 
-	//TODO: cambiar el nombre a eliminarChat
-	public void eliminarUsuario(Chat chatActual) {
+	
+	public void eliminarChatActual(Chat chatActual) {
 		switch (chatActual.getClass().getSimpleName()) {
 		case "ChatIndividual":
-			usuarioActual.eliminarContacto(chatActual);
+			usuarioActual.eliminarChat(chatActual);
 			
 			AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(usuarioActual);
 			AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(usuarioActual, chatActual); //Solo para indicar que actualice chats indviduales
@@ -777,9 +779,9 @@ public class ControladorUsuarios  implements MensajesListener{
 			ChatGrupo g = (ChatGrupo) chatActual;
 			//si eres admin lo borras por completo.
 			if(g.getAdministradores().contains(this.usuarioActual)) { //es admin
-				List<Usuario> miems=  g.getMiembros().stream().map(m -> m.getContacto()).collect(Collectors.toList());
+				List<Usuario> miems =  g.getMiembros().stream().map(m -> m.getContacto()).collect(Collectors.toList());
 				for (Usuario u : miems) {
-					u.eliminarContacto(g);
+					u.eliminarChat(g);
 					AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(u, g);
 					AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(u);
 				}

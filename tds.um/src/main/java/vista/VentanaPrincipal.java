@@ -266,11 +266,11 @@ public class VentanaPrincipal extends JFrame {
 		mnMenu.add(mntmAgregarDesconodico);
 
 		// TODO: Solo mostrar cuando estes dentro de un chat
-		JMenuItem mntmEliminarUsuario = new JMenuItem("Eliminar  Usuario");
+		JMenuItem mntmEliminarUsuario = new JMenuItem("Eliminar Chat Seleccionado");
 		mntmEliminarUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (chatActual != null) {
-					ControladorUsuarios.getUnicaInstancia().eliminarUsuario(chatActual);
+					ControladorUsuarios.getUnicaInstancia().eliminarChatActual(chatActual);
 					pChatRec.deleteChatReciente(chatActual);
 
 					// TODO: COmo volver a tener un panel vacio
