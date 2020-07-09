@@ -27,15 +27,18 @@ public class GestorGraficas {
 		// mensajes enviados por ese usuario supone.
 
 		// Create Chart
-		PieChart chart = new PieChartBuilder().width(800).height(600).title("Chats totales").build();
+		PieChart chart = new PieChartBuilder().width(800).height(600).title("Informacion de uso de Grupos").build();
 
 		// Customize Chart
 		Color[] sliceColors = new Color[] { new Color(224, 68, 14), new Color(230, 105, 62), new Color(243, 180, 159) };
 		chart.getStyler().setSeriesColors(sliceColors);
 
 		List<ChatGrupo> sixTopGrups = ControladorUsuarios.getUnicaInstancia().get6GruposTop();
-		sixTopGrups.stream().forEach(g -> chart.addSeries(g.getNombre(), g.porcentajeDelTotal(ControladorUsuarios.getUnicaInstancia().getusuarioActual())));
-
+		for (int i = 0; i < sixTopGrups.size(); i++) {
+			ChatGrupo g = sixTopGrups.get(i);
+			chart.addSeries(g.getNombre(), g.porcentajeDelTotal(ControladorUsuarios.getUnicaInstancia().getusuarioActual()));
+		}
+		
 		return chart;
 	}
 

@@ -40,7 +40,6 @@ public class Usuario {
 	HashSet<ChatGrupo> chatsGroup = new HashSet<ChatGrupo>();
 	// lista de chats abiertos de ppl que no tienes agregada
 	HashSet<ChatIndividual> chatsDesconocido = new HashSet<ChatIndividual>();
-	
 
 	/**
 	 * Constructor de la clase Usuario.
@@ -63,7 +62,7 @@ public class Usuario {
 		this.saludo = "Hey there, I'm using TDSchat.";
 		this.fotoPerfil = "./iconos/Defecto.PNG";
 		this.conversacionesAbiertas = "";
-	
+
 	}
 
 	/**
@@ -168,8 +167,6 @@ public class Usuario {
 		return saludo;
 	}
 
-	
-	
 	public HashSet<ChatIndividual> getChatsDesconocido() {
 		return chatsDesconocido;
 	}
@@ -195,12 +192,13 @@ public class Usuario {
 	public HashSet<ChatGrupo> getChatsGroup() {
 		return chatsGroup;
 	}
-	
+
 	/**
 	 * Método get de Usuario.
+	 * 
 	 * @return chats individuales y desconocidos unificado.
 	 */
-	public HashSet<ChatIndividual> getCHatsIndividualesYDesconocidos(){
+	public HashSet<ChatIndividual> getCHatsIndividualesYDesconocidos() {
 		HashSet<ChatIndividual> chats = new HashSet<ChatIndividual>();
 		chats.addAll(chatsDesconocido);
 		chats.addAll(chatsInd);
@@ -322,7 +320,6 @@ public class Usuario {
 	public void addConversacion(int idChat) {
 		this.conversacionesAbiertas = conversacionesAbiertas + idChat + " ";
 	}
-	
 
 	/**
 	 * Funcion para agregar un chat individual a la lista de chats
@@ -341,8 +338,6 @@ public class Usuario {
 	public void agregarChatGrupo(ChatGrupo chat) {
 		chatsGroup.add(chat);
 	}
-	
-	
 
 	// ##################### FUNCIONALIDAD #######################
 
@@ -356,7 +351,7 @@ public class Usuario {
 		todos.addAll(this.getTodosLosChats());
 		LinkedList<Chat> recientes = new LinkedList<Chat>();
 		String idChat = "";
-		
+
 		for (Chat chat : todos) {
 			idChat = chat.getId() + ""; // De esta manera el constains no da por true el 1 en un 12, asegura buscar
 										// numeros independientes
@@ -369,148 +364,157 @@ public class Usuario {
 		return recientes;
 
 	}
-	
+
 	/**
-	 * Funcion que crea un grupoPadre. Crea los grupo hijo en los respectivos miembros de este.
+	 * Funcion que crea un grupoPadre. Crea los grupo hijo en los respectivos
+	 * miembros de este.
+	 * 
 	 * @param nombreGrupo
-	 * @param contactos, argumento variable de tipo ChatIndividual.
+	 * @param contactos,  argumento variable de tipo ChatIndividual.
 	 */
 	public ChatGrupo crearGrupoNuevo(String nombreGrupo, ChatIndividual... contactos) {
-		//primera vez que se crea un grupo (es decir, es el grupo padre)
+		// primera vez que se crea un grupo (es decir, es el grupo padre)
 		ChatGrupo grupoPadre = new ChatGrupo(nombreGrupo, contactos);
 		grupoPadre.addAdmin(this);
 		grupoPadre.setDuenyo(this);
-		
-		//añado mi propio contacto al chatIndividual
+
+		// añado mi propio contacto al chatIndividual
 		this.anyadirmeAGrupo(grupoPadre);
 		this.chatsGroup.add(grupoPadre);
-		
+
 		return grupoPadre;
 		/*
-		grupoPadre.getMiembros().stream()
-								.forEach(m -> m.getContacto().CrearGrupoHijo(grupoPadre));
-		
-		//TODO Lo he añadido para poder retornar el grupo y que aparezca en chats recientes (Parche)
-		return grupoPadre;*/
+		 * grupoPadre.getMiembros().stream() .forEach(m ->
+		 * m.getContacto().CrearGrupoHijo(grupoPadre));
+		 * 
+		 * //TODO Lo he añadido para poder retornar el grupo y que aparezca en chats
+		 * recientes (Parche) return grupoPadre;
+		 */
 	}
 
 	/**
-	 * Función que recorre la lista de contactos del usuario actual para añadirse a sí mismo.
+	 * Función que recorre la lista de contactos del usuario actual para añadirse a
+	 * sí mismo.
+	 * 
 	 * @param ChatGrupo grupo
 	 */
 	private void anyadirmeAGrupo(ChatGrupo grupo) {
-		Iterator<ChatIndividual> iterator = this.getChatsInd().iterator(); 
+		Iterator<ChatIndividual> iterator = this.getChatsInd().iterator();
 		boolean fin = false;
 		while (!fin && iterator.hasNext()) {
 			ChatIndividual aux = iterator.next();
-			if(aux.getContacto().equals(this)) {
+			if (aux.getContacto().equals(this)) {
 				grupo.addMiembro(aux);
 				System.out.println("anyadirmeAGrupo, me añadi (movil): " + aux.getMovil());
 			}
-	    }
+		}
 	}
 
-	
-	
-	
 	/**
-	 * Funcion que permite crear un chat de grupo "hijo" a partir de un "padre" dado.
+	 * Funcion que permite crear un chat de grupo "hijo" a partir de un "padre"
+	 * dado.
+	 * 
 	 * @param ChatGrupo grupoPadre
 	 */
 	public Chat CrearGrupoHijo(ChatGrupo grupoPadre) {
 		// Vamos a crear un grupo hijo.
-		//recorremos toda la lista de grupoPadre de miembros
+		// recorremos toda la lista de grupoPadre de miembros
 		LinkedList<ChatIndividual> nuevosMiembros = new LinkedList<ChatIndividual>();
-		
+
 		for (ChatIndividual c : grupoPadre.getMiembros()) {
-			//para crear los nuevos miembros vamos a basarnos en los miembros del grupo padre.
-			
+			// para crear los nuevos miembros vamos a basarnos en los miembros del grupo
+			// padre.
+
 			ChatIndividual miembroBien = this.ContactoEquivalente(c);
-			if(miembroBien == null) {
+			if (miembroBien == null) {
 				return c;
 			}
 			System.out.println("añadi como miembro en crearGrupoHijo a: " + miembroBien.getNombre());
-			nuevosMiembros.add(miembroBien);		
+			nuevosMiembros.add(miembroBien);
 		}
-		
+
 		return this.tratarChatGrupoHijo(grupoPadre, nuevosMiembros);
-		
+
 	}
-	
+
 	public ChatGrupo tratarChatGrupoHijo(ChatGrupo grupoPadre, LinkedList<ChatIndividual> nuevosMiembros) {
 		ChatGrupo grupoHijo = new ChatGrupo(grupoPadre.getNombre(), nuevosMiembros);
-		//idPadre del hijo == id del padre.
+		// idPadre del hijo == id del padre.
 		grupoHijo.setIdPadre(grupoPadre.getIdPadre());
-		//pongo al usuario como su dueño
-		grupoHijo.setDuenyo(this); 
-		
-		//TODO: Puede no haber mensajes aun y eso daría un error, sigo sin corregir persistencia
-		//Pero el objeto per se está creado, no debería dar null nunca...
-		
+		// pongo al usuario como su dueño
+		grupoHijo.setDuenyo(this);
+
+		// TODO: Puede no haber mensajes aun y eso daría un error, sigo sin corregir
+		// persistencia
+		// Pero el objeto per se está creado, no debería dar null nunca...
+
 		try {
 			grupoHijo.setHistorial(grupoPadre.getHistorial());
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		
-		//le pongo los mismo administradores
+
+		// le pongo los mismo administradores
 		grupoHijo.setAdministradores(grupoPadre.getAdministradores());
-		//Por ultimo, lo añado a la lista de los grupo hijo del padre. y a la lista de chat de grupo del usuario.
+		// Por ultimo, lo añado a la lista de los grupo hijo del padre. y a la lista de
+		// chat de grupo del usuario.
 		grupoPadre.addGrupoHijo(grupoHijo);
 		this.chatsGroup.add(grupoHijo);
 		return grupoHijo;
 	}
-	
-	
+
 	/**
-	 * Funcion que permite añadir un contacto desconocido. Todo se mantendrá igual excepto el nombre y que ahora
-	 * estará en tu lista de contactos.
+	 * Funcion que permite añadir un contacto desconocido. Todo se mantendrá igual
+	 * excepto el nombre y que ahora estará en tu lista de contactos.
+	 * 
 	 * @param desconocido
 	 * @param nombre
 	 */
 	public ChatIndividual pasarDesconocidoAContacto(ChatIndividual desconocido, String nombre) {
 		Iterator<ChatIndividual> it = this.chatsDesconocido.iterator();
 		boolean fin = false;
-		
-		while(!fin && it.hasNext()) {
-			if(it.next().equals(desconocido)) {
+
+		while (!fin && it.hasNext()) {
+			if (it.next().equals(desconocido)) {
 				fin = true;
 				it.remove();
 				desconocido.setNombre(nombre);
 				this.chatsInd.add(desconocido);
 			}
-		} return desconocido;
+		}
+		return desconocido;
 	}
-	
+
 	/**
-	 * Funcion que recorre la lista de contactos y devuelve el equivalente.
-	 * En caso de no tener el contacto devuelve uno "desconocido" que guardará.
+	 * Funcion que recorre la lista de contactos y devuelve el equivalente. En caso
+	 * de no tener el contacto devuelve uno "desconocido" que guardará.
+	 * 
 	 * @param ChatIndividual m
 	 * @return ChatIndividual contactoEquivalente.
 	 */
-	
+
 	public ChatIndividual ContactoEquivalente(ChatIndividual m) {
 		LinkedList<ChatIndividual> chats = new LinkedList<ChatIndividual>();
 		chats.addAll(chatsInd);
 		chats.addAll(chatsDesconocido);
 
-		//Comprueba si esta tanto en la agenda como en los chat desconocidos
-		Iterator<ChatIndividual> iterator = chats.iterator(); 
-		
-			ChatIndividual aux = null;
-			while (iterator.hasNext()) {
+		// Comprueba si esta tanto en la agenda como en los chat desconocidos
+		Iterator<ChatIndividual> iterator = chats.iterator();
+
+		ChatIndividual aux = null;
+		while (iterator.hasNext()) {
 			aux = iterator.next();
 			System.out.println("###En contacto equivalante, movil en agenda" + aux.getMovil());
 			System.out.println("###En contacto equivalante, miembro del grupo " + m.getMovil());
-	        if (aux.getMovil().equals(m.getMovil())) { //si tienen el mismo movil, son el mismo. (no mismo objeto)
-	        	System.out.println("encontre contacto equivalente");
-	        	return aux; //Se encontro el chat equivalente de la otra persona
-	        }
-	        
+			if (aux.getMovil().equals(m.getMovil())) { // si tienen el mismo movil, son el mismo. (no mismo objeto)
+				System.out.println("encontre contacto equivalente");
+				return aux; // Se encontro el chat equivalente de la otra persona
+			}
+
 		}
-		return null;	
+		return null;
 	}
-	
+
 	/**
 	 * Funcion que retorna el numero de mensajes totales enviados por el usuario en
 	 * este mes.
@@ -520,13 +524,14 @@ public class Usuario {
 	public int getNumeroDeMensajesDelMes() {
 		return (int) this.getMensajesDelMes().count();
 	}
-	
-	
+
 	/**
-	 * Funcion que devuelve un stream de los mensajes que se envian en el mes actual.
+	 * Funcion que devuelve un stream de los mensajes que se envian en el mes
+	 * actual.
+	 * 
 	 * @return Stream<Mensaje> mensajes del mes.
 	 */
-	private Stream<Mensaje> getMensajesDelMes(){
+	private Stream<Mensaje> getMensajesDelMes() {
 		LinkedList<Chat> todos = new LinkedList<Chat>();
 		todos.addAll(this.getTodosLosChats());
 
@@ -539,29 +544,37 @@ public class Usuario {
 				mensas.stream().flatMap(List::stream).collect(Collectors.toList());
 
 		// hago la busqueda de los mensajes y los cuento.
-		return  mensajes.stream().filter(m -> m.getEmisor().equals(this))
+		return mensajes.stream().filter(m -> m.getEmisor().equals(this))
 				.filter(m -> m.getFecha().getMonth().equals(LocalDate.now().getMonth())); // Equals sobre enumerado
 	}
 
-	
 	/**
 	 * Funcion que devuelve los seis grupos con más mensajes enviados.
-	 * @return List<ChatGrupo>  top6Grupos
+	 * 
+	 * @return List<ChatGrupo> top6Grupos
 	 */
 	public List<ChatGrupo> get6GruposTop() {
 		ArrayList<ChatGrupo> grupos = new ArrayList<ChatGrupo>(6);
-		
-		for (ChatGrupo g : chatsGroup) {
-			int aux = g.getMensajesTotales();
-			//vemos si lo añadimos
-			int i = 1;
-			boolean fin = false;
-			while(!fin && i< grupos.size()) {
-				if (aux > grupos.get(i).getMensajesTotales()) {
-					grupos.add(i, g);
-					fin=true;
+
+		for (ChatGrupo g : chatsGroup) { // recorro todos los grupos a los que pertenece el usuario
+			int aux = g.getMensajesTotales(); // aux = mensajes totales del grupo
+			// vemos si lo añadimos
+			
+			
+			if(grupos.isEmpty()) {
+				grupos.add(0,g); //lo añado en la primera posicion.
+			}else {
+				int i = 0;
+				boolean fin = false;
+				while(!fin && i < 6) {
+					int aux1 = grupos.get(i).getMensajesTotales();
+					if(aux > aux1) {
+						grupos.remove(i);
+						grupos.add(i, g);
+						fin = true;
+					}
+					i++;
 				}
-				i++;
 			}
 		}
 		return grupos;
@@ -569,6 +582,7 @@ public class Usuario {
 
 	/**
 	 * Funcion que devuelve los mensajes enviados por el usuario en el mes concreto.
+	 * 
 	 * @param i
 	 * @return
 	 */
@@ -577,7 +591,7 @@ public class Usuario {
 		for (Chat c : getTodosLosChats()) {
 			totales += c.getMensajesEnviadosEsteMes(i, this);
 		}
-		
+
 		return totales;
 	}
 
@@ -586,7 +600,7 @@ public class Usuario {
 		for (ChatIndividual c : this.getCHatsIndividualesYDesconocidos()) {
 			infoTot += c.getInfo();
 		}
-		
+
 		return infoTot;
 	}
 
@@ -595,13 +609,14 @@ public class Usuario {
 		for (ChatGrupo c : this.chatsGroup) {
 			infoTot += c.getInfo();
 		}
-		
+
 		return infoTot;
 	}
-	
+
 	/**
 	 * Funcion que crea un chatDesconocido y lo añade al usuario.
-	 * @param movil del nuevo contacto, será su nombre también.
+	 * 
+	 * @param movil   del nuevo contacto, será su nombre también.
 	 * @param Usuario u, usuario desconocido.
 	 * @return ChatIndividual desconocido.
 	 */
@@ -616,17 +631,17 @@ public class Usuario {
 		case "ChatIndividual":
 			ChatIndividual c1 = (ChatIndividual) chatActual;
 			this.getChatsInd().remove(c1);
-			String idC = c1.getId() +"";
+			String idC = c1.getId() + "";
 			this.conversacionesAbiertas.replace(idC, "");
 			break;
 		case "ChatGrupo":
-			
+
 			break;
-			
+
 		}
-		
+
 	}
-	
+
 	public boolean isDesconocido(ChatIndividual c) {
 		return this.chatsDesconocido.contains(c);
 	}
