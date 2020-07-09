@@ -115,6 +115,11 @@ public abstract class Chat implements Comparator<Chat> {
 		this.setUltimoMensaje(m);
 	}
 	
+	public void vaciarChat() {
+		historial = new LinkedList<Mensaje>();
+		ultimoMensaje=null;
+	}
+	
 	
 	// ##################### FUNCIONALIDAD #######################
 	

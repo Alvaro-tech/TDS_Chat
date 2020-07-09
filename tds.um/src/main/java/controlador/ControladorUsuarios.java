@@ -22,6 +22,7 @@ import persistencia.AdaptadorChatIndividualDAO;
 import persistencia.AdaptadorUsuarioDAO;
 import persistencia.DAOException;
 import persistencia.FactoriaDAO;
+import vista.PanelChatsRecientes;
 
 /**
  * Clase Controlador del sistema. Separa la vista de la lógica del dominio y la
@@ -174,17 +175,6 @@ public class ControladorUsuarios {
 		
 		return true;
 	}
-
-	/*
-	 * public boolean borrarUsuario(Usuario Usuario) { if
-	 * (!esUsuarioRegistrado(Usuario.getMovil())) return false;
-	 * 
-	 * AdaptadorUsuarioDAO UsuarioDAO = (AdaptadorUsuarioDAO)
-	 * factoria.getUsuarioDAO(); /*Adaptador DAO para borrar el Usuario de la BD
-	 * UsuarioDAO.delete(Usuario);
-	 * 
-	 * CatalogoUsuarios.getUnicaInstancia().removeUsuario(Usuario); return true; }
-	 */
 
 	/**
 	 * Funcion que llama al servicio de persistencia para actualizar el saludo del
@@ -714,6 +704,39 @@ public class ControladorUsuarios {
 		}else{//si no es el padre, se busca al padre para que llame a esta funcion.
 			ChatGrupo grupoPadre = AdaptadorChatGrupoDAO.getUnicaInstancia().get( (int) Integer.valueOf(grupo.getIdPadre()));
 			this.actualizarNombreGrupo(grupoPadre, nombre);
+		}
+	}
+
+	public void vaciarChat(Chat chatActual) {
+		chatActual.vaciarChat();
+		
+		switch (chatActual.getClass().getSimpleName()) {
+		case "ChatIndividual":
+			ChatIndividual c1 = (ChatIndividual) chatActual;
+			AdaptadorChatIndividualDAO.getUnicaInstancia().vaciarHistorial(c1);
+			break;
+		case "ChatGrupo":
+			ChatGrupo c2 = (ChatGrupo) chatActual;
+			AdaptadorChatGrupoDAO.getUnicaInstancia().vaciarHistorial(c2);
+			break;
+			
+		}
+		
+	}
+
+	//TODO: falta para grupos
+	public void eliminarUsuario(Chat chatActual) {
+		switch (chatActual.getClass().getSimpleName()) {
+		case "ChatIndividual":
+			usuarioActual.eliminarContacto(chatActual);
+			
+			AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(usuarioActual);
+			AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(usuarioActual, chatActual); //Solo para indicar que actualice chats indviduales
+			break;
+		case "ChatGrupo":
+			
+			break;
+			
 		}
 	}
 

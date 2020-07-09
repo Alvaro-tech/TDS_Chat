@@ -94,7 +94,9 @@ public class PanelCrearGrupo extends JDialog {
 					listCont.setModel(modeloCont);
 					HashSet<ChatIndividual> aux =(ControladorUsuarios.getUnicaInstancia().getusuarioActual().getChatsInd());
 					for(ChatIndividual i : aux) {
-						modeloCont.addElement(i); //i.getNombre()
+						if(!i.getContacto().equals(ControladorUsuarios.getUnicaInstancia().getusuarioActual())){
+							modeloCont.addElement(i); //i.getNombre()
+						}
 					}
 					}
 				}
@@ -163,8 +165,10 @@ public class PanelCrearGrupo extends JDialog {
 				public void actionPerformed(ActionEvent arg0) {	
 					try {
 						ChatIndividual contacto = (ChatIndividual) listCont.getSelectedValue();
-						modeloMim.addElement(contacto);
-						miembrosPotenciales.addLast(contacto);
+						if(!modeloMim.contains(contacto)) {
+							modeloMim.addElement(contacto);
+							miembrosPotenciales.addLast(contacto);
+						}
 					} catch (Exception e) {
 					}
 				}

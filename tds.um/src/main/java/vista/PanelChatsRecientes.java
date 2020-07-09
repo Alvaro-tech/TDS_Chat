@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import complementosGUI.ChatRenderer;
 import modelo.Chat;
 
 public class PanelChatsRecientes extends JPanel {
@@ -69,6 +70,10 @@ public class PanelChatsRecientes extends JPanel {
 	public void updateChatsRecientes(Chat chat) {
 		listModel.addElement(chat);
 		System.out.println("termine el updateChatsRecientes de panelChatsRecientes");
+	}
+	
+	public void deleteChatReciente(Chat chat) {
+		listModel.removeElement(chat);
 	}
 
 }

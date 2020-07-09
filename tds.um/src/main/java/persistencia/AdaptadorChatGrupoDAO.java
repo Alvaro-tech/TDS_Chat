@@ -277,6 +277,16 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 		servPersistencia.anadirPropiedadEntidad(eGrupo, "idPadre", grupo.getIdPadre());
 
 	}
+	
+	public void vaciarHistorial(ChatGrupo chat) {
+		Entidad eChat = servPersistencia.recuperarEntidad(chat.getId());
+		servPersistencia.eliminarPropiedadEntidad(eChat, "historial");
+		servPersistencia.anadirPropiedadEntidad(eChat, "historial", "");
+		
+		servPersistencia.eliminarPropiedadEntidad(eChat, "ultimoMensaje");
+		servPersistencia.anadirPropiedadEntidad(eChat, "ultimoMensaje", "");
+	}
+	
 
 	// #########FUNCIONES AUXILIARES DE CHATGRUPOTOENTIDAD():############
 	/**

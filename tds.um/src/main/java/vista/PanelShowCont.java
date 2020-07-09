@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 
+import complementosGUI.ContactoRenderer;
 import modelo.Chat;
 import modelo.ChatIndividual;
 import modelo.Usuario;

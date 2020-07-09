@@ -91,7 +91,7 @@ public class PanelAltaPremiun extends JDialog {
 					rdbtnSinDescuento.setHorizontalAlignment(SwingConstants.LEFT);
 					rdbtnSinDescuento.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
-							
+							textPrecio.setText(ControladorUsuarios.getUnicaInstancia().getPrecioPremiumMes() + "€");
 						}
 					});
 					rdbtnSinDescuento.setActionCommand("Descuento para Jovenes");
@@ -225,6 +225,8 @@ public class PanelAltaPremiun extends JDialog {
 		if(precio != 0.0) {
 			Double p = (Double) precio;
 			textPrecio.setText(p.toString()+ "€");
+		} else {
+			textPrecio.setText("N/A");
 		}
 	}
 }

@@ -15,7 +15,7 @@ public class Mensaje {
 	private String texto;
 	private LocalDateTime fecha; //fecha en la que se crea el mensaje
 	private int id;
-	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
+	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 	//Imagen emoticon;
 	
 	/**

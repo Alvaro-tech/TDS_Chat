@@ -611,4 +611,20 @@ public class Usuario {
 		return desconocido;
 	}
 
+	public void eliminarContacto(Chat chatActual) {
+		switch (chatActual.getClass().getSimpleName()) {
+		case "ChatIndividual":
+			ChatIndividual c1 = (ChatIndividual) chatActual;
+			this.getChatsInd().remove(c1);
+			String idC = c1.getId() +"";
+			this.conversacionesAbiertas.replace(idC, "");
+			break;
+		case "ChatGrupo":
+			
+			break;
+			
+		}
+		
+	}
+
 }

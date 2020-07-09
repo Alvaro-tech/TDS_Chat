@@ -17,17 +17,21 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.event.ActionListener;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.Scrollable;
 
 import controlador.ControladorUsuarios;
 
 import javax.swing.BoxLayout;
 import java.awt.Scrollbar;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class PanelConversacion extends JPanel {
 	private JTextField textTexto;
@@ -46,6 +50,7 @@ public class PanelConversacion extends JPanel {
 		this.padre = padre;
 		setLayout(new BorderLayout(0, 0));
 		
+		
 		panelPrincipal = new JPanel();
 		panelPrincipal.setBackground(new Color(173, 216, 230));
 		add(panelPrincipal);
@@ -56,6 +61,12 @@ public class PanelConversacion extends JPanel {
 		panelPrincipal.add(panelEscritura, BorderLayout.SOUTH);
 		
 		JLabel lblEmoji = new JLabel("Emoji");
+		lblEmoji.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				
+			}
+		});
 		panelEscritura.add(lblEmoji);
 		
 		textTexto = new JTextField();
@@ -65,9 +76,16 @@ public class PanelConversacion extends JPanel {
 		JButton btnEnviar = new JButton("Enviar");
 		btnEnviar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				crearBurbujaMensaje(); //Crear una burbuja para tu mensaje
-				enviarMensaje();
-				textTexto.setText("");
+				try {
+					crearBurbujaMensaje(); //Crear una burbuja para tu mensaje
+					enviarMensaje();
+					textTexto.setText("");
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+					
+				
+				
 			}
 		});
 		panelEscritura.add(btnEnviar);
@@ -170,6 +188,7 @@ public class PanelConversacion extends JPanel {
 			panelMensajes.repaint();
 		}
 	}
+
 		
 
 }

@@ -164,6 +164,15 @@ public final class AdaptadorChatIndividualDAO implements IAdaptadorChatIndividua
 		servPersistencia.eliminarPropiedadEntidad(eChat, "ultimoMensaje");
 		servPersistencia.anadirPropiedadEntidad(eChat, "ultimoMensaje", obtenerIdUltimoMensaje(chat.getUltimoMensaje()));
 	}
+	
+	public void vaciarHistorial(ChatIndividual chat) {
+		Entidad eChat = servPersistencia.recuperarEntidad(chat.getId());
+		servPersistencia.eliminarPropiedadEntidad(eChat, "historial");
+		servPersistencia.anadirPropiedadEntidad(eChat, "historial", "");
+		
+		servPersistencia.eliminarPropiedadEntidad(eChat, "ultimoMensaje");
+		servPersistencia.anadirPropiedadEntidad(eChat, "ultimoMensaje", "");
+	}
 
 	@Override
 	public ChatIndividual get(int id) {

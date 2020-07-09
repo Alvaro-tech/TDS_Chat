@@ -1,4 +1,4 @@
-package vista;
+package complementosGUI;
 
 import java.awt.Component;
 import java.awt.Image;
