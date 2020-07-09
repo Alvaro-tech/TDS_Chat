@@ -626,6 +626,7 @@ public class Usuario {
 		return desconocido;
 	}
 
+	//TODO: eliminarChat no contacto.
 	public void eliminarContacto(Chat chatActual) {
 		switch (chatActual.getClass().getSimpleName()) {
 		case "ChatIndividual":
@@ -635,7 +636,10 @@ public class Usuario {
 			this.conversacionesAbiertas.replace(idC, "");
 			break;
 		case "ChatGrupo":
-
+			ChatGrupo grupo = (ChatGrupo)chatActual;
+			this.eliminarGrupoEquivalente(grupo);
+			String id = grupo.getId() + "";
+			this.conversacionesAbiertas.replace(id, "");
 			break;
 
 		}
@@ -644,6 +648,19 @@ public class Usuario {
 
 	public boolean isDesconocido(ChatIndividual c) {
 		return this.chatsDesconocido.contains(c);
+	}
+
+	public void eliminarGrupoEquivalente(ChatGrupo grupo) {
+		boolean fin = false;
+		Iterator<ChatGrupo> it = this.chatsGroup.iterator();
+		
+		while(!fin && it.hasNext()) {
+			ChatGrupo g = it.next();
+			if(g.getIdPadre().equals(Integer.valueOf(grupo.getId()).toString())) {
+				it.remove();
+				fin = true;
+			}
+		}
 	}
 
 }

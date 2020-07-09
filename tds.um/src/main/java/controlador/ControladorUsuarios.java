@@ -384,12 +384,6 @@ public class ControladorUsuarios  implements MensajesListener{
 		
 	}
 
-	// TODO
-	public void cargarMensajes() {
-		
-	}
-
-
 	public Chart<?, ?> crearEstadisticas(String tipo) {
 		
 		switch (tipo) {
@@ -500,41 +494,7 @@ public class ControladorUsuarios  implements MensajesListener{
 		
 		//Tratamiento de los hijos en memoria
 		for (ChatIndividual ci : cg1.getMiembros()) {
-			
-			if(ci.getContacto().equals(cg1.getDuenyo())) {  //Si eres el dueño del grupo, no ncesitas que se te cree un nodo hijo
-				
-			} else {
-				Usuario userAux = ci.getContacto();
-				Chat cgAux0 = userAux.CrearGrupoHijo(cg1); //crea el grupo hijo en memoria.
-				
-				if (cgAux0.getClass().getSimpleName().equals("ChatIndividual")) {
-					//Tengo que ejecutar estos pasos para todos los miembros desonocidos, hasta que cgAux0 deje de retornar un chatIndividual
-					
-					while(cgAux0.getClass().getSimpleName().equals("ChatIndividual")){
-						//Le paso al usuario el chat que no tenia equivalente para lo cree como un desconocido
-						ChatIndividual cgAux2 = (ChatIndividual) cgAux0;
-						ChatIndividual chatAux = userAux.addChatDesconocido(cgAux2.getMovil(), cgAux2.getContacto()); 
-						//Lo guardo en persistencia 
-						AdaptadorChatIndividualDAO.getUnicaInstancia().create(chatAux);          
-						AdaptadorUsuarioDAO.getUnicaInstancia().updateChatsDesconocidos(userAux);	
-						cgAux0 = userAux.CrearGrupoHijo(cg1);
-					}	
-					
-				   }
-					ChatGrupo cgAux = (ChatGrupo) cgAux0;
-					//Crear el grupo en persistencia
-					AdaptadorChatGrupoDAO.getUnicaInstancia().create(cgAux);
-					System.out.println("+++++++++++Soy un Grupo hijo creado de: " + cgAux.getDuenyo().getNombre() + " con un id: " + cgAux.getId());
-					userAux.addConversacion(cgAux.getId());
-					//Actualizar al usuario en persistencia
-					AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(userAux, cgAux);
-					AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(cgAux);
-					userAux.addConversacion(cgAux.getId());
-					AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(userAux);
-					
-				
-			} //Fin else
-				
+			this.crearGrupoHijo(cg1, ci);
 		} //Fin for
 		
 		//Actualizar todos los hijos que se añadieron en el bucle
@@ -544,6 +504,42 @@ public class ControladorUsuarios  implements MensajesListener{
 		
 		return cg1; 
 		
+	}
+							//padre			//miembro
+	private void crearGrupoHijo(ChatGrupo  cg1, ChatIndividual  ci) {
+		if(ci.getContacto().equals(cg1.getDuenyo())) {  //Si eres el dueño del grupo, no ncesitas que se te cree un nodo hijo
+			
+		} else {
+			Usuario userAux = ci.getContacto();
+			Chat cgAux0 = userAux.CrearGrupoHijo(cg1); //crea el grupo hijo en memoria.
+			
+			if (cgAux0.getClass().getSimpleName().equals("ChatIndividual")) {
+				//Tengo que ejecutar estos pasos para todos los miembros desonocidos, hasta que cgAux0 deje de retornar un chatIndividual
+				
+				while(cgAux0.getClass().getSimpleName().equals("ChatIndividual")){
+					//Le paso al usuario el chat que no tenia equivalente para lo cree como un desconocido
+					ChatIndividual cgAux2 = (ChatIndividual) cgAux0;
+					ChatIndividual chatAux = userAux.addChatDesconocido(cgAux2.getMovil(), cgAux2.getContacto()); 
+					//Lo guardo en persistencia 
+					AdaptadorChatIndividualDAO.getUnicaInstancia().create(chatAux);          
+					AdaptadorUsuarioDAO.getUnicaInstancia().updateChatsDesconocidos(userAux);	
+					cgAux0 = userAux.CrearGrupoHijo(cg1);
+				}	
+				
+			   }
+				ChatGrupo cgAux = (ChatGrupo) cgAux0;
+				//Crear el grupo en persistencia
+				AdaptadorChatGrupoDAO.getUnicaInstancia().create(cgAux);
+				System.out.println("+++++++++++Soy un Grupo hijo creado de: " + cgAux.getDuenyo().getNombre() + " con un id: " + cgAux.getId());
+				userAux.addConversacion(cgAux.getId());
+				//Actualizar al usuario en persistencia
+				AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(userAux, cgAux);
+				AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(cgAux);
+				userAux.addConversacion(cgAux.getId());
+				AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(userAux);
+				
+			
+		} //Fin else
 	}
 
 
@@ -682,13 +678,51 @@ public class ControladorUsuarios  implements MensajesListener{
 		if(grupo.getAdministradores().contains(this.usuarioActual)) {
 			//el usuario es admin, puede hacerlo.
 			//veo si es el grupo padre
-			if(Integer.valueOf(grupo.getId()).toString() == grupo.getIdPadre()) {
+			if(Integer.valueOf(grupo.getId()).toString().equals(grupo.getIdPadre())) {
 				//si es el padre procedemos.
+				for (ChatGrupo hijo : grupo.getGruposHijo()) {
+					ChatIndividual miembroHIjo = hijo.getDuenyo().ContactoEquivalente(miembro);
+					hijo.eliminarMiembro(miembroHIjo);
+					AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(hijo);
+				}
 				grupo.eliminarMiembro(miembro);
+				AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(grupo);
+				miembro.getContacto().eliminarContacto(grupo);
+				AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(miembro.getContacto(), grupo);
+				AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(miembro.getContacto());
 			}else{//si no es el padre, se busca al padre para que llame a esta funcion.
 				ChatGrupo grupoPadre = AdaptadorChatGrupoDAO.getUnicaInstancia().get( (int) Integer.valueOf(grupo.getIdPadre()));
 				ChatIndividual miembroPadre = grupoPadre.getDuenyo().ContactoEquivalente(miembro);
 				this.eliminarMiembroGrupo(grupoPadre, miembroPadre);
+			}
+		} //si no, no puede, que le den.
+	}
+	
+	public void agregarMiembroGrupo(ChatGrupo grupo, ChatIndividual miembro) {
+		//comprobar si el usuario actual es admin y proceder si lo es.
+		if(grupo.getAdministradores().contains(this.usuarioActual)) {
+			//el usuario es admin, puede hacerlo.
+			//veo si es el grupo padre
+			if(Integer.valueOf(grupo.getId()).toString().equals(grupo.getIdPadre())) {
+				//si es el padre procedemos.
+				for (ChatGrupo hijo : grupo.getGruposHijo()) {
+					ChatIndividual miembroHIjo = hijo.getDuenyo().ContactoEquivalente(miembro);
+					hijo.addMiembro(miembroHIjo);
+					AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(hijo);
+				}
+				grupo.addMiembro(miembro);
+				AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(grupo);
+				
+				//le creo el grupo al usuario y actualizo en DAO
+				//##################################################################################################################################################################################################################################################################################################################
+				//miembro.getContacto().agregarContacto(grupo);
+				this.crearGrupoHijo(grupo, miembro);
+				AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(miembro.getContacto(), grupo);
+				AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(miembro.getContacto());
+			}else{//si no es el padre, se busca al padre para que llame a esta funcion.
+				ChatGrupo grupoPadre = AdaptadorChatGrupoDAO.getUnicaInstancia().get( (int) Integer.valueOf(grupo.getIdPadre()));
+				ChatIndividual miembroPadre = grupoPadre.getDuenyo().ContactoEquivalente(miembro);
+				this.agregarMiembroGrupo(grupoPadre, miembroPadre);
 			}
 		} //si no, no puede, que le den.
 	}
@@ -730,7 +764,7 @@ public class ControladorUsuarios  implements MensajesListener{
 		
 	}
 
-	//TODO: falta para grupos
+	//TODO: cambiar el nombre a eliminarChat
 	public void eliminarUsuario(Chat chatActual) {
 		switch (chatActual.getClass().getSimpleName()) {
 		case "ChatIndividual":
@@ -740,10 +774,38 @@ public class ControladorUsuarios  implements MensajesListener{
 			AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(usuarioActual, chatActual); //Solo para indicar que actualice chats indviduales
 			break;
 		case "ChatGrupo":
-			
+			ChatGrupo g = (ChatGrupo) chatActual;
+			//si eres admin lo borras por completo.
+			if(g.getAdministradores().contains(this.usuarioActual)) { //es admin
+				List<Usuario> miems=  g.getMiembros().stream().map(m -> m.getContacto()).collect(Collectors.toList());
+				for (Usuario u : miems) {
+					u.eliminarContacto(g);
+					AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(u, g);
+					AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(u);
+				}
+			}
 			break;
 			
 		}
+	}
+	
+	public void modificarGrupo(ChatGrupo grupo, List<ChatIndividual> agregarlos, List<ChatIndividual> eliminarlos, 
+			String nuevoNombre) {
+		for (ChatIndividual e : eliminarlos) {
+			this.eliminarMiembroGrupo(grupo, e);
+		}
+		
+		for (ChatIndividual a : agregarlos) {
+			this.agregarMiembroGrupo(grupo, a);
+		}
+		
+		grupo.cambiarNombre(nuevoNombre);
+		AdaptadorChatGrupoDAO.getUnicaInstancia().updateNombre(grupo, nuevoNombre);
+		
+		for (ChatGrupo hijo : grupo.getGruposHijo()) {
+			AdaptadorChatGrupoDAO.getUnicaInstancia().updateNombre(grupo, nuevoNombre);
+		}
+		
 	}
 	
 	
