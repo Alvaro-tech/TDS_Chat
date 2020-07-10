@@ -26,6 +26,8 @@ import javax.swing.ImageIcon;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.awt.event.ActionEvent;
 
 @SuppressWarnings("serial")
@@ -119,21 +121,35 @@ public class VentanaPrincipal extends JFrame {
 		mntmModificarGrupo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				ChatGrupo[] gruposAux = new ChatGrupo[ControladorUsuarios.getUnicaInstancia().getusuarioActual().getChatsGroup().size()];
-				ControladorUsuarios.getUnicaInstancia().getusuarioActual().getChatsGroup().toArray(gruposAux);
+				//ChatGrupo[] gruposAux = new ChatGrupo[ControladorUsuarios.getUnicaInstancia().getusuarioActual().getChatsGroup().size()];
+				//solo los grupos en los que seas admin.
+				List<ChatGrupo> gruposQueNecesito = ControladorUsuarios.getUnicaInstancia().getusuarioActual().getChatsGroup().stream()
+													.filter(g -> g.getAdministradores().contains(ControladorUsuarios.getUnicaInstancia().getusuarioActual()))
+													.collect(Collectors.toList());
+				
+				ChatGrupo[] gruposAux = new ChatGrupo[gruposQueNecesito.size()];
+				gruposQueNecesito.toArray(gruposAux);
+				
+				if(gruposQueNecesito.size() != 0) {
+					for (ChatGrupo chatGrupo : gruposAux) {
+						System.out.println(chatGrupo.getNombre());
+					}
 
-				for (ChatGrupo chatGrupo : gruposAux) {
-					System.out.println(chatGrupo.getNombre());
+					Object seleccion = JOptionPane.showInputDialog(ventana, "Seleccione el grupo en cuestión",
+							"Selector de grupos", JOptionPane.QUESTION_MESSAGE, null, // null para icono defecto
+							gruposAux, gruposAux[0]);
+
+					ChatGrupo c = (ChatGrupo) seleccion;
+					System.out.println("###" + c.getNombre());
+					PanelCrearGrupo nuevo = new PanelCrearGrupo(venPrinAc, true, ventana, c);
+					nuevo.setVisible(true);
+				}else {
+					JOptionPane
+					.showMessageDialog(ventana,
+							"No puedes modificar ningun grupo, no eres administrador de ninguno. \n",
+							"Sorry.", JOptionPane.ERROR_MESSAGE);
 				}
-
-				Object seleccion = JOptionPane.showInputDialog(ventana, "Seleccione el grupo en cuestión",
-						"Selector de grupos", JOptionPane.QUESTION_MESSAGE, null, // null para icono defecto
-						gruposAux, gruposAux[0]);
-
-				ChatGrupo c = (ChatGrupo) seleccion;
-				System.out.println("###" + c.getNombre());
-				PanelCrearGrupo nuevo = new PanelCrearGrupo(venPrinAc, true, ventana, c);
-				nuevo.setVisible(true);
+				
 			}
 		});
 		mnMenu.add(mntmModificarGrupo);
