@@ -1,27 +1,21 @@
 package vista;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import controlador.ControladorUsuarios;
 import modelo.ChatGrupo;
 import modelo.ChatIndividual;
 import modelo.Usuario;
-
-import javax.swing.JSplitPane;
 import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.DefaultListModel;
-import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.GridBagLayout;
@@ -29,6 +23,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JTextField;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Font;
@@ -140,7 +135,7 @@ public class GestionAdmins extends JDialog {
 				txtMiembrosAQuitar.setColumns(10);
 			}
 			{
-				JList listNA = new JList();
+				JList<Object> listNA = new JList<Object>();
 				listNA.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent arg0) {
@@ -161,7 +156,7 @@ public class GestionAdmins extends JDialog {
 				panelMiembros.add(listNA, gbc_listNA);
 			}
 			{
-				JList listADDB = new JList();
+				JList<Object> listADDB = new JList<Object>();
 				listADDB.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
@@ -189,7 +184,7 @@ public class GestionAdmins extends JDialog {
 				panelMiembros.add(horizontalStrut, gbc_horizontalStrut);
 			}
 			{
-				JList listAD = new JList();
+				JList<Object> listAD = new JList<Object>();
 				listAD.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
@@ -209,7 +204,7 @@ public class GestionAdmins extends JDialog {
 				panelMiembros.add(listAD, gbc_listAD);
 			}
 			{
-				JList listQuitarB = new JList();
+				JList<Object> listQuitarB = new JList<Object>();
 				listQuitarB.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
@@ -231,8 +226,17 @@ public class GestionAdmins extends JDialog {
 				JButton btnAgregar = new JButton("Agregar");
 				btnAgregar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						ControladorUsuarios.getUnicaInstancia().agregarAdmins(cg, listAdd);
-						
+						if(ControladorUsuarios.getUnicaInstancia().agregarAdmins(cg, listAdd)) {
+							JOptionPane
+							.showMessageDialog(ventana,
+									"Se han agregado correctamente los/el admin/s. \n",
+									"Success", JOptionPane.INFORMATION_MESSAGE);
+						}else {
+							JOptionPane
+							.showMessageDialog(ventana,
+									"Se ha producido un error, no se han podido agregar.\n",
+									"Error", JOptionPane.ERROR_MESSAGE);
+						}
 					}
 				});
 				GridBagConstraints gbc_btnAgregar = new GridBagConstraints();
@@ -245,7 +249,17 @@ public class GestionAdmins extends JDialog {
 				JButton btnQuitar = new JButton("Quitar");
 				btnQuitar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						ControladorUsuarios.getUnicaInstancia().eliminarAdmins(cg, listQuitar);
+						if(ControladorUsuarios.getUnicaInstancia().eliminarAdmins(cg, listQuitar)) {
+							JOptionPane
+							.showMessageDialog(ventana,
+									"Se han eliminado correctamente los/el admin/s. \n",
+									"Success", JOptionPane.INFORMATION_MESSAGE);
+						}else {
+							JOptionPane
+							.showMessageDialog(ventana,
+									"Se ha producido un error, no se han podido eliminar.\n",
+									"Error", JOptionPane.ERROR_MESSAGE);
+						}
 					}
 				});
 				GridBagConstraints gbc_btnQuitar = new GridBagConstraints();

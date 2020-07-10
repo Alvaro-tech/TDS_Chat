@@ -12,6 +12,8 @@ import modelo.ChatGrupo;
 import modelo.ChatIndividual;
 import modelo.Usuario;
 import java.awt.GridBagLayout;
+import java.awt.Image;
+
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import java.awt.GridBagConstraints;
@@ -22,6 +24,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JMenuBar;
 import java.awt.Component;
 import javax.swing.Box;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import java.awt.Color;
 import java.awt.event.ActionListener;
@@ -69,7 +72,9 @@ public class VentanaPrincipal extends JFrame {
 
 		// ############## MENU FOTO ##########
 		JButton btnFoto = new JButton("");
-		btnFoto.setIcon(new ImageIcon("./iconos/35x35.png"));
+		ImageIcon imagen = new ImageIcon(ControladorUsuarios.getUnicaInstancia().getusuarioActual().getFotoPerfil());
+		Icon icono = new ImageIcon (imagen.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT));
+		btnFoto.setIcon(icono);
 		btnFoto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
@@ -194,6 +199,10 @@ public class VentanaPrincipal extends JFrame {
 		mntmExportarContactos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ControladorUsuarios.getUnicaInstancia().getPDFInfo();
+				JOptionPane
+				.showMessageDialog(ventana,
+						"Se ha exportado el PDF con exito en la carpeta de estadisticas. \n",
+						"Success", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		
@@ -233,6 +242,9 @@ public class VentanaPrincipal extends JFrame {
 
 		// ############### MENU CUENTA ######################
 		JButton btnCuenta = new JButton("Cuenta");
+		ImageIcon imagen2 = new ImageIcon("./interfaz/Emoji.png");
+		Icon icono2 = new ImageIcon (imagen2.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT));
+		btnCuenta.setIcon(icono2);
 		btnCuenta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
@@ -242,6 +254,11 @@ public class VentanaPrincipal extends JFrame {
 						Usuario uAux = cAux.getContacto();
 						VentanaCuentaC frame = new VentanaCuentaC(uAux);
 						frame.setVisible(true);
+					}else {
+						JOptionPane
+						.showMessageDialog(ventana,
+								"Tienes que seleccionar un contacto individual para ver su info. \n",
+								"Error", JOptionPane.ERROR_MESSAGE);
 					}
 				} catch (Exception e) {
 					JOptionPane
