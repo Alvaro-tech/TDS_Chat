@@ -209,7 +209,7 @@ public class VentanaPrincipal extends JFrame {
 		});
 		mnMenu.add(mntmCerrarSesion);
 
-		JMenuItem mntmExportarContactos = new JMenuItem("Exportar Info. Contactos");
+		JMenuItem mntmExportarContactos = new JMenuItem("Exportar Info. Contactos a PDF");
 		mntmExportarContactos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ControladorUsuarios.getUnicaInstancia().getPDFInfo();
