@@ -345,9 +345,12 @@ public class VentanaPrincipal extends JFrame {
 		});
 		mnOpciones2.add(mntmEliminarUsuario);
 		
+		//####### Gestionar Administradores #########
 		JMenuItem mntmGadmin = new JMenuItem("Gestionar Administradores");
 		mntmGadmin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				//TODO no entrar si el chat actual es nulo, un chatIndividual o tu no eres admin del chat selccionado
 				ChatGrupo c = (ChatGrupo) chatActual;
 				GestionAdmins aux = new GestionAdmins(ventana, c);
 				aux.setVisible(true);

@@ -427,7 +427,7 @@ public class Usuario {
 		// idPadre del hijo == id del padre.
 		grupoHijo.setIdPadre(grupoPadre.getIdPadre());
 		// pongo al usuario como su dueño
-		grupoHijo.setDuenyo(this);
+		grupoHijo.setDuenyo(grupoPadre.getDuenyo());
 
 		try {
 			grupoHijo.setHistorial(grupoPadre.getHistorial());
@@ -652,6 +652,11 @@ public class Usuario {
 				fin = true;
 			}
 		}
+	}
+
+	@Override
+	public String toString() {
+		return nombre;
 	}
 
 }
