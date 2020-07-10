@@ -62,6 +62,9 @@ public class PanelChatsRecientes extends JPanel {
 	}
 	
 	public void updateChatsRecientes(Chat chat) {
+		if (listModel.contains(chat)) {
+			return;
+		}
 		listModel.addElement(chat);
 	}
 	

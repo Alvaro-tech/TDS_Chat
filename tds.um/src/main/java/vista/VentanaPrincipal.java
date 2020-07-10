@@ -48,6 +48,8 @@ public class VentanaPrincipal extends JFrame {
 	private JPanel panelVentanaPrincipal;
 	private JFrame ventana;
 
+	private JButton btnFoto;
+	private JButton btnCuenta;
 	private PanelChatsRecientes pChatRec;
 	private PanelShowCont panelShowCont;
 	private PanelConversacion panelConver;
@@ -75,14 +77,14 @@ public class VentanaPrincipal extends JFrame {
 		panelVentanaPrincipal.add(menuBar, BorderLayout.NORTH);
 
 		// ############## MENU FOTO ##########
-		JButton btnFoto = new JButton("");
+		btnFoto = new JButton("");
 		ImageIcon imagen = new ImageIcon(ControladorUsuarios.getUnicaInstancia().getusuarioActual().getFotoPerfil());
 		Icon icono = new ImageIcon (imagen.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT));
 		btnFoto.setIcon(icono);
 		btnFoto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				PanelMenuFoto nuevo = new PanelMenuFoto(ControladorUsuarios.getUnicaInstancia().getusuarioActual());
+				PanelMenuFoto nuevo = new PanelMenuFoto(ControladorUsuarios.getUnicaInstancia().getusuarioActual(), venPrinAc, ventana);
 				panelDividido.remove(panelExtra);
 				panelExtra = nuevo;
 				GridBagConstraints gbc_panelExtra = new GridBagConstraints();
@@ -189,7 +191,7 @@ public class VentanaPrincipal extends JFrame {
 		}
 		mntmMostrarEstadis.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				VentanaEstadisticas frame = new VentanaEstadisticas();
+				VentanaEstadisticas frame = new VentanaEstadisticas(ventana);
 				frame.setVisible(true);
 			}
 		});
@@ -245,7 +247,7 @@ public class VentanaPrincipal extends JFrame {
 
 
 		// ############### MENU CUENTA ######################
-		JButton btnCuenta = new JButton("Cuenta");
+		btnCuenta = new JButton("Cuenta");
 		ImageIcon imagen2 = new ImageIcon("./interfaz/Emoji.png");
 		Icon icono2 = new ImageIcon (imagen2.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT));
 		btnCuenta.setIcon(icono2);
@@ -394,7 +396,7 @@ public class VentanaPrincipal extends JFrame {
 			}
 		});
 		mnOpciones2.add(mntmGadmin);
-		
+		//######## importar Mensajes txt ######
 		JMenuItem mntmImportaM = new JMenuItem("Importar Mensajes de un txt");
 		mntmImportaM.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -503,6 +505,13 @@ public class VentanaPrincipal extends JFrame {
 		chatActual = c;
 		// CUando seleccionas uno es para hablar con el		
 
+		if (c.getClass().getSimpleName().equals("ChatIndividual")) {
+			ChatIndividual j = (ChatIndividual) c;
+			ImageIcon imagen2 = new ImageIcon(j.getContacto().getFotoPerfil());
+			Icon icono2 = new ImageIcon (imagen2.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT));
+			btnCuenta.setIcon(icono2);
+		}
+		
 		panelConver = new PanelConversacion(chatActual, ventana, venPrinAc);
 		panelDividido.remove(panellzq);
 		panellzq = panelConver;
@@ -546,6 +555,14 @@ public class VentanaPrincipal extends JFrame {
 	public void refrescarVentana() {
 		this.revalidate();
 		this.repaint();
+	}
+	
+	public void cambiarFoto() {
+		ImageIcon imagen = new ImageIcon(ControladorUsuarios.getUnicaInstancia().getusuarioActual().getFotoPerfil());
+		Icon icono = new ImageIcon (imagen.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT));
+		btnFoto.setIcon(icono);
+		
+		refrescarVentana();
 	}
 	
 

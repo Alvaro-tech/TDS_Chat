@@ -12,8 +12,11 @@ import java.awt.Insets;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.awt.event.ActionEvent;
@@ -35,7 +38,7 @@ public class PanelMenuFoto extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public PanelMenuFoto(Usuario usuariop) {
+	public PanelMenuFoto(Usuario usuariop, VentanaPrincipal ven, JFrame ventana) {
 		this.usuario = usuariop;
 		
 		setLayout(new BorderLayout(0, 0));
@@ -105,6 +108,8 @@ public class PanelMenuFoto extends JPanel {
 						
 						//------Actualizar datos------
 						ControladorUsuarios.getUnicaInstancia().updateFoto(usuario, foto);
+						ven.cambiarFoto();
+						
 					}
 				
 				}
@@ -119,6 +124,10 @@ public class PanelMenuFoto extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				String nuevoSaludo = textSaludoField.getText();
 				ControladorUsuarios.getUnicaInstancia().updateSaludo(usuario, nuevoSaludo);
+				JOptionPane
+				.showMessageDialog(ventana,
+						"Se ha cambiado el saludo con éxito",
+						"Success", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		
