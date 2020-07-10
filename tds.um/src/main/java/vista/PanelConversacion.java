@@ -21,6 +21,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import controlador.ControladorUsuarios;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -54,7 +56,10 @@ public class PanelConversacion extends JPanel {
 		panelEscritura.setBackground(new Color(100, 149, 237));
 		panelPrincipal.add(panelEscritura, BorderLayout.SOUTH);
 		
-		JLabel lblEmoji = new JLabel("Emoji");
+		JLabel lblEmoji = new JLabel();
+		ImageIcon imgEmoji = new ImageIcon("./interfaz/Emoji.PNG");
+		lblEmoji.setIcon(imgEmoji);
+		
 		lblEmoji.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {

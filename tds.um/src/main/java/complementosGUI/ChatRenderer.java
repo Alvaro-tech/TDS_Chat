@@ -40,7 +40,7 @@ public class ChatRenderer  extends JLabel implements ListCellRenderer<Chat> {
 		   
 		   case "ChatGrupo" :
 			   //FOTO
-			   ImageIcon imageIcon1 = new ImageIcon("./iconos/grupo.PNG");
+			   ImageIcon imageIcon1 = new ImageIcon("./iconos/Grupos.PNG");
 			   imageIcon2 = new ImageIcon(imageIcon1.getImage().getScaledInstance(60, 60, Image.SCALE_DEFAULT));
 		      break; // break es opcional
 		}
