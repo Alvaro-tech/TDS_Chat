@@ -70,7 +70,7 @@ public final class AdaptadorMensajeDAO implements IAdaptadorMensajeDAO {
 		mensaje.setEmisor(obtenerEmisorById(emisor));
 		mensaje.setReceptor(obtenerReceptorById(receptor));
 		return mensaje;
-	}
+		}
 
 //#####################################################################
 	private Usuario obtenerEmisorById(String emisor) {

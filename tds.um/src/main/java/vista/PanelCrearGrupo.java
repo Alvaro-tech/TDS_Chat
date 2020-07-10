@@ -5,10 +5,13 @@ import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
+
 import java.awt.event.ActionListener;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -29,6 +32,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.UIManager;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingUtilities;
 
 public class PanelCrearGrupo extends JDialog {
 
@@ -39,18 +43,24 @@ public class PanelCrearGrupo extends JDialog {
 	private DefaultListModel<Object> modeloMim = new DefaultListModel<Object>(); //los añades al grupo
 	//llevar cuenta de los que pasan de un lado a otro.
 	private LinkedList<ChatIndividual> miembrosPotenciales = new LinkedList<ChatIndividual>();
+	private LinkedList<ChatIndividual> miembrosEliminados = new LinkedList<ChatIndividual>();
 	
 	private VentanaPrincipal padre;
+	private boolean editando;
+	private JFrame ventana;
+	private ChatGrupo chatCargado;
 
 
 	/**
 	 * Create the dialog.
 	 */
-	public PanelCrearGrupo(VentanaPrincipal v) {
+	public PanelCrearGrupo(VentanaPrincipal v, boolean editando, JFrame ventana, ChatGrupo chatCargado) {
 		final JList<Object> listCont = new JList<Object>();
 		final JList <Object> listMim = new JList<Object>();
 		this.padre = v;
-		
+		this.editando = editando;
+		this.ventana = ventana;
+		this.chatCargado = chatCargado;
 		
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
@@ -92,12 +102,22 @@ public class PanelCrearGrupo extends JDialog {
 					listCont.setBackground(SystemColor.controlHighlight);
 					listCont.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Contactos", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 120, 215)));
 					listCont.setModel(modeloCont);
-					HashSet<ChatIndividual> aux =(ControladorUsuarios.getUnicaInstancia().getusuarioActual().getChatsInd());
-					for(ChatIndividual i : aux) {
-						if(!i.getContacto().equals(ControladorUsuarios.getUnicaInstancia().getusuarioActual())){
-							modeloCont.addElement(i); //i.getNombre()
+					
+					if(editando) { //Cargar lo que ya es Miembro
+						LinkedList<ChatIndividual> aux = chatCargado.getMiembros();
+						for(ChatIndividual i : aux) {
+							if(!i.getContacto().equals(ControladorUsuarios.getUnicaInstancia().getusuarioActual())){
+								modeloMim.addElement(i); //i.getNombre()
+							}
 						}
-					}
+					} //Fin id editandto
+						HashSet<ChatIndividual> aux =(ControladorUsuarios.getUnicaInstancia().getusuarioActual().getChatsInd());
+						for(ChatIndividual i : aux) {
+							if(!i.getContacto().equals(ControladorUsuarios.getUnicaInstancia().getusuarioActual())){
+								modeloCont.addElement(i); //i.getNombre()
+							}
+						}
+					
 					}
 				}
 			}
@@ -151,7 +171,11 @@ public class PanelCrearGrupo extends JDialog {
 			}
 			{
 				textGroupName = new JTextField();
-				textGroupName.setText("Nombre del Grupo");
+				
+				if (editando) { textGroupName.setText(chatCargado.getNombre()); } 
+				else {textGroupName.setText("Nombre del Grupo");}
+				
+				
 				GridBagConstraints gbc_textGroupName = new GridBagConstraints();
 				gbc_textGroupName.fill = GridBagConstraints.HORIZONTAL;
 				gbc_textGroupName.insets = new Insets(0, 0, 5, 5);
@@ -194,6 +218,14 @@ public class PanelCrearGrupo extends JDialog {
 					public void actionPerformed(ActionEvent arg0) {
 						try {
 							int aux = listMim.getSelectedIndex();
+							if(editando) {
+								ChatIndividual contacto = (ChatIndividual)listMim.getSelectedValue();
+								if( (!miembrosEliminados.contains(contacto)) && (chatCargado.getMiembros().contains(contacto))  ) {
+									miembrosEliminados.add(contacto);
+								}
+								
+							}
+							
 							modeloMim.remove(aux);
 							miembrosPotenciales.remove(aux); //guardo el chat, aunque se muestre solo el nombre
 						} catch (Exception e) {
@@ -250,11 +282,33 @@ public class PanelCrearGrupo extends JDialog {
 					public void actionPerformed(ActionEvent arg0) {
 						//Cada persona al crearse el usuario lo primero que debe tener es a sí mismo de contacto.
 						//creamos el grupo. LLamamos directamente al controlador xd lo haga todo como debe ser.
-						ChatIndividual[] auxG = miembrosPotenciales.toArray(new ChatIndividual[miembrosPotenciales.size()]);
-						ChatGrupo cg1 = ControladorUsuarios.getUnicaInstancia().crearGrupo(textGroupName.getText(), auxG);
-						padre.addChatsRecientes(cg1);
-						ControladorUsuarios.getUnicaInstancia().addChatRecienteToUser(cg1, ControladorUsuarios.getUnicaInstancia().getusuarioActual()); //Un grupo sin mensajes ya se guarda
-					} 
+						
+						
+						if(editando) {
+							//Miembros potenciales me sirve para agregar, como antes elimina no hay problema, se volverian a añadir
+							//Miembors eliminados, los que pasaron con <-- una vez y pertenecen a los miembros del grupo
+							
+							ControladorUsuarios.getUnicaInstancia().modificarGrupo(chatCargado, miembrosPotenciales, miembrosEliminados, textGroupName.getText());
+							JOptionPane
+							.showMessageDialog(ventana,
+									"Grupo editado satisfactoriamente",
+									"¡Bingo!", JOptionPane.INFORMATION_MESSAGE);
+							
+							
+						} else {
+							ChatIndividual[] auxG = miembrosPotenciales.toArray(new ChatIndividual[miembrosPotenciales.size()]);
+							ChatGrupo cg1 = ControladorUsuarios.getUnicaInstancia().crearGrupo(textGroupName.getText(), auxG);
+							padre.addChatsRecientes(cg1);
+							ControladorUsuarios.getUnicaInstancia().addChatRecienteToUser(cg1, ControladorUsuarios.getUnicaInstancia().getusuarioActual()); //Un grupo sin mensajes ya se guarda
+							
+							JOptionPane
+							.showMessageDialog(ventana,
+									"Grupo creado con éxito :)",
+									"¡Bingo!", JOptionPane.INFORMATION_MESSAGE);
+						}
+					}
+						
+						 
 				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);

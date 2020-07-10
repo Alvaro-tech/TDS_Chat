@@ -17,6 +17,7 @@ import modelo.Usuario;
 import javax.swing.JToolBar;
 import java.awt.GridBagLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 
 import java.awt.GridBagConstraints;
@@ -118,14 +119,39 @@ public class VentanaPrincipal extends JFrame {
 		JMenuItem mntmCrearGrupo = new JMenuItem("Crear Nuevo Grupo");
 		mntmCrearGrupo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				PanelCrearGrupo nuevo = new PanelCrearGrupo(venPrinAc);
+				PanelCrearGrupo nuevo = new PanelCrearGrupo(venPrinAc, false, ventana, null);
 				nuevo.setVisible(true);
 			}
 		});
 		mnMenu.add(mntmCrearGrupo);
 
-		// TODO: Modificar Contacto
+		//####### MODIFICA GRUPO #########
 		JMenuItem mntmModificarGrupo = new JMenuItem("Modificar Grupo");
+		mntmModificarGrupo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				ChatGrupo[] gruposAux = new ChatGrupo[usuario.getChatsGroup().size()];
+			     usuario.getChatsGroup().toArray(gruposAux);
+			     
+			     for (ChatGrupo chatGrupo : gruposAux) {
+					System.out.println(chatGrupo.getNombre());
+				}
+				
+				Object seleccion = JOptionPane.showInputDialog(
+						   ventana,
+						   "Seleccione el grupo en cuestión",
+						   "Selector de grupos",
+						   JOptionPane.QUESTION_MESSAGE,
+						   null,  // null para icono defecto
+						   gruposAux, gruposAux[1]
+						   );
+				
+				ChatGrupo c = (ChatGrupo) seleccion;
+				System.out.println("###" + c.getNombre());
+				PanelCrearGrupo nuevo = new PanelCrearGrupo(venPrinAc, true, ventana, c);
+				nuevo.setVisible(true);
+			}
+		});
 		mnMenu.add(mntmModificarGrupo);
 
 		// ---------- Menu MOSTRAR CONTACTOS --------
@@ -155,7 +181,7 @@ public class VentanaPrincipal extends JFrame {
 		JMenuItem mntmPremium = new JMenuItem("Premium");
 		mntmPremium.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PanelAltaPremiun nuevo = new PanelAltaPremiun(ventana);
+				PanelAltaPremiun nuevo = new PanelAltaPremiun(ventana, venPrinAc);
 				nuevo.setVisible(true);
 			}
 		});
@@ -282,6 +308,7 @@ public class VentanaPrincipal extends JFrame {
 
 					// TODO: COmo volver a tener un panel vacio
 					JPanel panelAux = new JPanel();
+					panelAux.setBackground(new Color(135, 206, 250));
 					panelDividido.remove(panellzq);
 					panellzq = panelAux;
 
@@ -425,6 +452,11 @@ public class VentanaPrincipal extends JFrame {
 	public void mandarEmoji(int nEmoji) {
 		panelConver.peticionDeEmoji(nEmoji);
 		
+	}
+	
+	public void refrescarVentana() {
+		this.revalidate();
+		this.repaint();
 	}
 
 }

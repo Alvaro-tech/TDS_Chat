@@ -37,13 +37,16 @@ public class PanelAltaPremiun extends JDialog {
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JTextField textPrecio;
 	private JFrame ventana;
+	private VentanaPrincipal padre;
 
 	
 	/**
 	 * Create the dialog.
 	 */
-	public PanelAltaPremiun(JFrame ventana) {
+	public PanelAltaPremiun(JFrame ventana, VentanaPrincipal padre) {
 		this.ventana = ventana;
+		this.padre  = padre;
+		
 		setBounds(80, 80, 500, 320);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{434, 0};
@@ -162,7 +165,7 @@ public class PanelAltaPremiun extends JDialog {
 			{
 				textPrecio = new JTextField();
 				textPrecio.setFont(new Font("Tahoma", Font.BOLD, 14));
-				textPrecio.setText(ControladorUsuarios.getUnicaInstancia().getPrecioPremiumMes());//texto donde aparece el precio.
+				textPrecio.setText("???");//texto donde aparece el precio.
 				textPrecio.setEditable(false);
 				GridBagConstraints gbc_textPrecio = new GridBagConstraints();
 				gbc_textPrecio.fill = GridBagConstraints.BOTH;
@@ -203,6 +206,7 @@ public class PanelAltaPremiun extends JDialog {
 			                            "¡yuju!",
 			                            JOptionPane.INFORMATION_MESSAGE);
 								okButton.setEnabled(false);
+								padre.refrescarVentana();
 							}else {
 								JOptionPane.showMessageDialog(ventana,
 			                            "No cumples con los requisitos especificados",
@@ -212,11 +216,6 @@ public class PanelAltaPremiun extends JDialog {
 						}	
 					}
 				}));
-				
-				{
-					JButton btnAnular = new JButton("Anular\r\n");
-					buttonPane.add(btnAnular);
-				}
 				
 			
 				buttonPane.add(okButton);
