@@ -5,8 +5,6 @@ import org.junit.Test;
 
 import controlador.ControladorUsuarios;
 //java -jar ServidorPersistencia.jar
-//ANA-->   C:\Users\pc\Downloads\PersistenciaH2\H2>java -jar ServidorPersistencia.jar
-import junit.*;
 
 
 public class TestRegistro {
