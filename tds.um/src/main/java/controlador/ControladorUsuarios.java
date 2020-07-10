@@ -542,13 +542,11 @@ public class ControladorUsuarios  implements MensajesListener{
 		return cg1; 
 	}
 	
-	public boolean agregarAdmins(ChatGrupo grupo, List<ChatIndividual> admins) {
+	public boolean agregarAdmins(ChatGrupo grupo, List<Usuario> admins) {
 		if(grupo.getAdministradores().contains(this.usuarioActual)) {//eres administrador, puedes.
 			if(grupo.getId() == Integer.valueOf(grupo.getIdPadre())) { //llama el padre a esta funcion
 				
-				List<Usuario> adminis = admins.stream().map(c -> c.getContacto()).collect(Collectors.toList());
-				
-				for (Usuario u : adminis) {  //los ha añadido en memoria.
+				for (Usuario u : admins) {  //los ha añadido en memoria.
 					grupo.getGruposHijo().stream()
 						.forEach(h -> h.addAdmin(u));//lo añade en memoria
 				
@@ -570,13 +568,11 @@ public class ControladorUsuarios  implements MensajesListener{
 		return false;
 	}
 	
-	public boolean eliminarAdmins(ChatGrupo grupo, List<ChatIndividual> admins) {
+	public boolean eliminarAdmins(ChatGrupo grupo, List<Usuario> admins) {
 		if(grupo.getAdministradores().contains(this.usuarioActual)) {//eres administrador, puedes.
 			if(grupo.getId() == Integer.valueOf(grupo.getIdPadre())) { //llama el padre a esta funcion
 				
-				List<Usuario> adminis = admins.stream().map(c -> c.getContacto()).collect(Collectors.toList());
-				
-				for (Usuario u : adminis) {  //los ha añadido en memoria.
+				for (Usuario u : admins) {  //los ha añadido en memoria.
 					grupo.getGruposHijo().stream()
 						.forEach(h -> h.removeAdmin(u));//lo añade en memoria
 				
@@ -592,7 +588,7 @@ public class ControladorUsuarios  implements MensajesListener{
 				
 			}else { //no eres el grupo padre, lo consigo.
 				ChatGrupo padre = AdaptadorChatGrupoDAO.getUnicaInstancia().get((int) Integer.valueOf(grupo.getIdPadre()));
-				this.agregarAdmins(padre, admins);
+				this.eliminarAdmins(padre, admins);
 			}
 		}//no eres, no puedes
 		return false;

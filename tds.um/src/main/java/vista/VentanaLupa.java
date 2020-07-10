@@ -4,7 +4,6 @@ import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
@@ -43,8 +42,8 @@ public class VentanaLupa extends JDialog {
 	@SuppressWarnings("unused")
 	private JFrame ventana;
 	private ChatIndividual userSelect;
-	private JPanel panelSuperior;
-	private JPanel panelPenUlti;
+	private JPanelBackground panelSuperior;
+	private JPanelBackground panelPenUlti;
 	/**
 	 * Launch the application.
 	 */
@@ -63,7 +62,8 @@ public class VentanaLupa extends JDialog {
 		gridBagLayout.rowWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
 		getContentPane().setLayout(gridBagLayout);
 		{
-			panelSuperior = new JPanel();
+			panelSuperior = new JPanelBackground();
+			panelSuperior.setBackground("./interfaz/Busqueda-title.png");
 			GridBagConstraints gbc_panelSuperior = new GridBagConstraints();
 			gbc_panelSuperior.insets = new Insets(0, 0, 5, 0);
 			gbc_panelSuperior.fill = GridBagConstraints.BOTH;
@@ -73,6 +73,7 @@ public class VentanaLupa extends JDialog {
 		}
 		
 		usuariosPanel.setLayout(new FlowLayout());
+		usuariosPanel.setBackground("./interfaz/Busqueda-confusion.png");
 		usuariosPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		GridBagConstraints gbc_usuariosPanel = new GridBagConstraints();
 		gbc_usuariosPanel.fill = GridBagConstraints.BOTH;
@@ -114,7 +115,8 @@ public class VentanaLupa extends JDialog {
 			getContentPane().add(textTextoBuscar, gbc_textTextoBuscar);
 		}
 		{
-			JPanel panelFechas = new JPanel();
+			JPanelBackground panelFechas = new JPanelBackground();
+			panelFechas.setBackground("./interfaz/Busqueda-calendarios.png");
 			GridBagConstraints gbc_panelFechas = new GridBagConstraints();
 			gbc_panelFechas.insets = new Insets(0, 0, 5, 0);
 			gbc_panelFechas.fill = GridBagConstraints.BOTH;
@@ -146,7 +148,7 @@ public class VentanaLupa extends JDialog {
 			}
 		}
 		{
-			panelPenUlti = new JPanel();
+			panelPenUlti = new JPanelBackground();
 			GridBagConstraints gbc_panelPenUlti = new GridBagConstraints();
 			gbc_panelPenUlti.insets = new Insets(0, 0, 5, 0);
 			gbc_panelPenUlti.fill = GridBagConstraints.BOTH;
@@ -155,7 +157,8 @@ public class VentanaLupa extends JDialog {
 			getContentPane().add(panelPenUlti, gbc_panelPenUlti);
 		}
 		{
-			JPanel buttonPane = new JPanel();
+			JPanelBackground buttonPane = new JPanelBackground();
+			buttonPane.setBackground("./interfaz/Busqueda-flechas.png");
 			buttonPane.setLayout(new FlowLayout(FlowLayout.CENTER));
 			GridBagConstraints gbc_buttonPane = new GridBagConstraints();
 			gbc_buttonPane.anchor = GridBagConstraints.NORTH;
