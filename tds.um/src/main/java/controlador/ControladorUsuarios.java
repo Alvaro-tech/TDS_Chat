@@ -913,13 +913,7 @@ public class ControladorUsuarios  implements MensajesListener{
 	 * @param plataforma
 	 */
 	public void setFichero(String fileS, String plataforma) {
-		CargadorMensajes c = new CargadorMensajes();
-		c.addObserver(this);
-		if(plataforma.equals("IOS")) {
-			c.setFichero(fileS, Plataforma.IOS);
-		}else {
-			c.setFichero(fileS, Plataforma.ANDROID);
-		}
+		//No nos da tiempo a terminar el componente.
 	}
 	
 	/**
