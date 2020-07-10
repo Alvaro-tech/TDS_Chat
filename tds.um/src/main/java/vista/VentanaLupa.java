@@ -17,6 +17,8 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JTextPane;
 import com.toedter.calendar.JDateChooser;
+
+import complementosGUI.JPanelBackground;
 import complementosGUI.MostrarBusquedas;
 import controlador.ControladorUsuarios;
 import modelo.Chat;
@@ -29,7 +31,7 @@ import javax.swing.DefaultComboBoxModel;
 @SuppressWarnings("serial")
 public class VentanaLupa extends JDialog {
 
-	private final JPanel usuariosPanel = new JPanel();
+	private final JPanelBackground usuariosPanel = new JPanelBackground();
 	private JTextPane textTextoBuscar;
 	//no he usado estas
 	private JTextField textFinicial;
@@ -156,7 +158,6 @@ public class VentanaLupa extends JDialog {
 					        fFin = LocalDateTime.parse(fechaDeFin, DateTimeFormatter.ofPattern("dd/MM/yyyy H:mm:ss"));
 						}
 						String textoABuscar = textTextoBuscar.getText();
-						//TODO: lo del usuario, por ahora lo pongo a null cuando llamas al controlador.
 						LinkedList<Mensaje> listMenEnc = ControladorUsuarios.getUnicaInstancia().BuscarPorFiltro(chatCargado, textoABuscar, fIni, fFin, userSelect);
 						String mostrar = "";
 						for (Mensaje mensaje : listMenEnc) {
