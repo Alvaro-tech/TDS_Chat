@@ -6,9 +6,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-
 import org.knowm.xchart.PieChart;
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.internal.chartpart.Chart;
@@ -129,8 +127,7 @@ public class ControladorUsuarios  implements MensajesListener{
 		return CatalogoUsuarios.getUnicaInstancia().getUsuario(movil) != null;
 	}
 
-	// ##################### FUNCIONALIDAD DE LA PERSISTENCIA
-	// #######################
+	// ##################### FUNCIONALIDAD DE LA PERSISTENCIA  #######################
 
 	/**
 	 * Funcion para el Login del usuario en el sistema.
@@ -210,13 +207,14 @@ public class ControladorUsuarios  implements MensajesListener{
 		UsuarioDAO.updateFoto(usuario);
 
 	}
+	
+	// ##################### FUNCIONALIDAD DE LOS CHATS  #######################
 
 	/**
 	 * Funcion que añade al usuario actual de la sesión a un chat concreto.
 	 * 
 	 * @param newChat, chat al que se va a añadir.
 	 */
-	// TODO: REUTILIZAR ESTA FUNCION CON TODOS LOS MIEMBROS.
 	public void addChatToUser(Chat newChat) {
 		// Te llegan grupos o chats individuales, la cosa es saber que es con el
 		// getClass,getSimpleNam y guardarlo en todas partes segun sea needed
@@ -251,11 +249,182 @@ public class ControladorUsuarios  implements MensajesListener{
 	public void addChatToUser(String nombre, String telefono) {
 		// busca el contacto con el que quiere iniciar la conversacion
 		Usuario contacto = CatalogoUsuarios.getUnicaInstancia().getUsuario(telefono);
-		// TODO: pasar funcion add y crear. al usuario no lo haga el controlador.
 		Chat chatAux = new ChatIndividual(nombre, telefono, contacto);
 		addChatToUser(chatAux);
 	}
+	
+	/**
+	 * Funcion que devuelve una lista ordenada de los chats del usuario, de más a
+	 * menos recientes.
+	 * 
+	 * @return Lista de chats ordenada de mas a menos reciente.
+	 */
+	public LinkedList<Chat> getChatsRecientes() {
+		LinkedList<Chat> chatsRecientes = this.usuarioActual.getChatRecientes();
+		return chatsRecientes;
+	}
 
+	/**
+	 * Añadir a los chat recientes del usuario la nueva conversación que se ha
+	 * inicidado se utiliza cuando se envía un mensaje
+	 * 
+	 * @param tipo, tipo de descuento que se aplica, si se aplica uno.
+	 * @return precio a pagar de la cuenta premium.
+	 */
+	public void addChatRecienteToUser(Chat Chat, Usuario user) {
+		// añade la conversacion en su lista
+		usuarioActual.addConversacion(Chat.getId());
+		// actualiza las conversaciones
+		AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(user);
+	}
+	
+	
+	//TODO: VER SI PODEMOS EVITAR VIOLAR EL CREADOR.
+		/**
+		 * Funcion que crea un mensaje que se quiere enviar.
+		 * @param emisor
+		 * @param receptor
+		 * @param texto
+		 * @return
+		 */
+		public Mensaje crearMensaje(Usuario emisor, ChatIndividual receptor, String texto) {
+			return new Mensaje(emisor, receptor, texto);
+		}
+		
+		
+		/**
+		 * Funcion que envia un mensaje a un ChatIndividual.
+		 * @param Mensaje m
+		 * @param ChatIndividual cI
+		 */
+		public void enviarMensajeAChatInd(Mensaje m, ChatIndividual cI) {
+			if (cI.getIdChatLigado() == 0 ) {
+				enlazarChats(cI);
+			}
+			
+			//Para este punto ya estas enlazado correctamente y eres una conversacion reciente para el otro
+			//Actualizamos los historiales
+		
+			cI.addMensajeHistorial(m);
+			ChatIndividual extremo = AdaptadorChatIndividualDAO.getUnicaInstancia().get(cI.getIdChatLigado());
+			extremo.addMensajeHistorial(m);
+			AdaptadorChatIndividualDAO.getUnicaInstancia().updateHistorial(extremo);
+			AdaptadorChatIndividualDAO.getUnicaInstancia().updateHistorial(cI);
+			
+		}
+		
+		
+		/**
+		 * Funcion que recorre los chat Individuales de la otra persona y enlaza ambos chats.
+		 * @param ChatIndividual cI
+		 */
+		private void enlazarChats(ChatIndividual cI) { 
+			Usuario receptor = cI.getContacto(); 
+			ChatIndividual chatEspejo = null;
+			
+			boolean asignado = false;
+			for (ChatIndividual i : receptor.getChatsInd()) {
+				if(i.getMovil().equals(usuarioActual.getMovil())) { //Si encuentras tu movil, es que te tiene en la agenda
+					chatEspejo = i;
+					asignado = true;
+					break;
+				}
+			}
+			if (!asignado) {
+				//Si el bucle termino, es porque no te tiene añadido como user, se te crea como desconocido
+				chatEspejo = receptor.addChatDesconocido(usuarioActual.getMovil(), usuarioActual);
+				AdaptadorChatIndividualDAO.getUnicaInstancia().create(chatEspejo);
+				AdaptadorUsuarioDAO.getUnicaInstancia().updateChatsDesconocidos(receptor); 
+				
+			}
+			
+			//Asociación de IdLigadas e indicar que es una conversacion reciente.
+			cI.setIdChatLigado(chatEspejo.getId());
+			chatEspejo.setIdChatLigado(cI.getId());
+			
+			receptor.addConversacion(chatEspejo.getId());
+			usuarioActual.addConversacion(cI.getId());
+			
+			//Actualizo persistencia para ambos usuarios
+			AdaptadorChatIndividualDAO.getUnicaInstancia().updateChatLigado(cI);
+			AdaptadorChatIndividualDAO.getUnicaInstancia().updateChatLigado(chatEspejo);
+			
+			AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(usuarioActual);
+			AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(receptor);
+			
+		}
+		
+		
+		/**
+		 * Funcion que vacía un chat concreto.
+		 * @param Chat chatActual
+		 */
+		public void vaciarChat(Chat chatActual) {
+			chatActual.vaciarChat();
+			
+			switch (chatActual.getClass().getSimpleName()) {
+			case "ChatIndividual":
+				ChatIndividual c1 = (ChatIndividual) chatActual;
+				AdaptadorChatIndividualDAO.getUnicaInstancia().vaciarHistorial(c1);
+				break;
+			case "ChatGrupo":
+				ChatGrupo c2 = (ChatGrupo) chatActual;
+				AdaptadorChatGrupoDAO.getUnicaInstancia().vaciarHistorial(c2);
+				break;
+				
+			}
+			
+		}
+
+		/**
+		 * Funcion que elimina un chat seleccionado.
+		 * @param Chat chatActual
+		 */
+		public void eliminarChatActual(Chat chatActual) {
+			switch (chatActual.getClass().getSimpleName()) {
+			case "ChatIndividual":
+				usuarioActual.eliminarChat(chatActual);
+				
+				AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(usuarioActual);
+				AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(usuarioActual, chatActual); //Solo para indicar que actualice chats indviduales
+				break;
+			case "ChatGrupo":
+				ChatGrupo g = (ChatGrupo) chatActual;
+				//si eres admin lo borras por completo.
+				if(g.getAdministradores().contains(this.usuarioActual)) { //es admin
+					List<Usuario> miems =  g.getMiembros().stream().map(m -> m.getContacto()).collect(Collectors.toList());
+					for (Usuario u : miems) {
+						u.eliminarChat(g);
+						AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(u, g);
+						AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(u);
+					}
+				}
+				break;
+				
+			}
+		}
+		
+		
+		
+		/**
+		 * Funcion que pasa un contacto de desconocido a su lista de contactos en un usuario.
+		 * @param ChatIndividual desconocido
+		 * @param String nuevoNombre
+		 * @return booleano, true si lo guarda, false si el usuario no era desconocido.
+		 */
+		public boolean pasarDeDesconocidoAContacto(ChatIndividual desconocido, String nuevoNombre) {
+			if(! (this.usuarioActual.isDesconocido(desconocido))) {
+				return false;
+			}
+			//el deconocido pasa a ser contacto normal
+			desconocido = this.usuarioActual.pasarDesconocidoAContacto(desconocido, nuevoNombre);
+			AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(this.usuarioActual, desconocido);
+			AdaptadorUsuarioDAO.getUnicaInstancia().updateChatsDesconocidos(this.usuarioActual);
+			AdaptadorChatIndividualDAO.getUnicaInstancia().updateNombre(desconocido);
+			return true;
+		}
+	
+	// ##################### FUNCIONALIDAD DE LA BUSQUEDA DE MENSAJES  #######################
 	
 	/**
 	 * Funcion que realiza una busqueda de mensajes a través de un chat dado que
@@ -288,18 +457,8 @@ public class ControladorUsuarios  implements MensajesListener{
 			return mensajes;
 	}
 
-	// tiene que devolver una lista de chats, cuyos dinamicos sean ek
-	// correspondiente, con los mas recientes.
-	/**
-	 * Funcion que devuelve una lista ordenada de los chats del usuario, de más a
-	 * menos recientes.
-	 * 
-	 * @return Lista de chats ordenada de mas a menos reciente.
-	 */
-	public LinkedList<Chat> getChatsRecientes() {
-		LinkedList<Chat> chatsRecientes = this.usuarioActual.getChatRecientes();
-		return chatsRecientes;
-	}
+
+	// ##################### FUNCIONALIDAD DE PREMIUM (DESCUENTOS)  #######################
 
 	/**
 	 * Funcion que calcula el precio para pagar una cuenta premium en un mes.
@@ -323,32 +482,11 @@ public class ControladorUsuarios  implements MensajesListener{
 		return PRECIOPREMIUM / 12;
 	}
 
-	/**
-	 * Añadir a los chat recientes del usuario la nueva conversación que se ha
-	 * inicidado se utiliza cuando se envía un mensaje
-	 * 
-	 * @param tipo, tipo de descuento que se aplica, si se aplica uno.
-	 * @return precio a pagar de la cuenta premium.
-	 */
-	public void addChatRecienteToUser(Chat Chat, Usuario user) {
-		// añade la conversacion en su lista
-		usuarioActual.addConversacion(Chat.getId());
-		// actualiza las conversaciones
-		AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(user);
-		// TODO: buscar el usuario del chat (el contacto) y hacer lo inverso;
-		// para que aparezca el chat a los dos. Ver si no te tienes gusradado.
-		// hacer un if else comprobando con instanceof para que valga para grupo.
-	}
+	
 
-	// TODO: añadir admin al grupo.
-	public void anyiadirAdmin(ChatGrupo grupo, Usuario u) {
-		grupo.addAdmin(u);
-	}
 
-	public void anyiadirAdmin(ChatGrupo grupo, ChatIndividual contacto) {
-		grupo.addAdmin(contacto.getContacto());
-	}
-
+	// ##################### FUNCIONALIDAD DE GRUPOS  #######################
+	
 	/**
 	 * Envia un mensaje a un grupo. (y a sus hijos)
 	 * @param Mensaje m, cuyo emisor es el usuario que ha creado el mensaje
@@ -383,7 +521,201 @@ public class ControladorUsuarios  implements MensajesListener{
 		}
 		
 	}
+	
+	/**
+	 * Funcion que crea un nuevo grupo. Grupo padre.
+	 * @param nombreGrupo
+	 * @param contactos
+	 */
+	public ChatGrupo crearGrupo(String nombreGrupo, ChatIndividual... contactos) {
+		//es la primera vez que se crea un grupo.
+		ChatGrupo cg1 = this.usuarioActual.crearGrupoNuevo(nombreGrupo, contactos);
+		AdaptadorChatGrupoDAO.getUnicaInstancia().create(cg1);
+		AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(usuarioActual, cg1);
+		AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(cg1);
+		AdaptadorChatGrupoDAO.getUnicaInstancia().updateAdmins(cg1);
+		
+		//Actualizar el idPadre
+		System.out.println("id del grupo padre: " + cg1.getId());
+		cg1.setIdPadre(Integer.toString(cg1.getId()));
+		AdaptadorChatGrupoDAO.getUnicaInstancia().updateIdPadre(cg1);
+		
+		
+		
+		//Tratamiento de los hijos en memoria
+		for (ChatIndividual ci : cg1.getMiembros()) {
+			this.crearGrupoHijo(cg1, ci);
+		} //Fin for
+		
+		//Actualizar todos los hijos que se añadieron en el bucle
+		AdaptadorChatGrupoDAO.getUnicaInstancia().updateGruposHijos(cg1);
+		AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(usuarioActual, cg1);
+		AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(cg1);
+		
+		return cg1; 
+		
+	}
+			
+	/**
+	 * Funcion que crea un grupo hijo a partir de un padre dado.
+	 * @param cg1
+	 * @param ci
+	 */
+	private void crearGrupoHijo(ChatGrupo  cg1, ChatIndividual  ci) {
+								//padre			//miembro
+		if(ci.getContacto().equals(cg1.getDuenyo())) {  //Si eres el dueño del grupo, no ncesitas que se te cree un nodo hijo
+			
+		} else {
+			Usuario userAux = ci.getContacto();
+			Chat cgAux0 = userAux.CrearGrupoHijo(cg1); //crea el grupo hijo en memoria.
+			
+			if (cgAux0.getClass().getSimpleName().equals("ChatIndividual")) {
+				//Tengo que ejecutar estos pasos para todos los miembros desonocidos, hasta que cgAux0 deje de retornar un chatIndividual
+				
+				while(cgAux0.getClass().getSimpleName().equals("ChatIndividual")){
+					//Le paso al usuario el chat que no tenia equivalente para lo cree como un desconocido
+					ChatIndividual cgAux2 = (ChatIndividual) cgAux0;
+					ChatIndividual chatAux = userAux.addChatDesconocido(cgAux2.getMovil(), cgAux2.getContacto()); 
+					//Lo guardo en persistencia 
+					AdaptadorChatIndividualDAO.getUnicaInstancia().create(chatAux);          
+					AdaptadorUsuarioDAO.getUnicaInstancia().updateChatsDesconocidos(userAux);	
+					cgAux0 = userAux.CrearGrupoHijo(cg1);
+				}	
+				
+			   }
+				ChatGrupo cgAux = (ChatGrupo) cgAux0;
+				//Crear el grupo en persistencia
+				AdaptadorChatGrupoDAO.getUnicaInstancia().create(cgAux);
+				userAux.addConversacion(cgAux.getId());
+				//Actualizar al usuario en persistencia
+				AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(userAux, cgAux);
+				AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(cgAux);
+				AdaptadorChatGrupoDAO.getUnicaInstancia().updateAdmins(cgAux);
+				userAux.addConversacion(cgAux.getId());
+				AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(userAux);
+				
+		} //Fin else
+	}
 
+	/**
+	 * Funcion que elimina el miembro de un grupo. En el padre y los hijos.
+	 * @param ChatGrupo grupo
+	 * @param ChatIndividual miembro
+	 */
+	public void eliminarMiembroGrupo(ChatGrupo grupo, ChatIndividual miembro) {
+		//comprobar si el usuario actual es admin y proceder si lo es.
+		if(grupo.getAdministradores().contains(this.usuarioActual)) {
+			//el usuario es admin, puede hacerlo.
+			//veo si es el grupo padre
+			if(Integer.valueOf(grupo.getId()).toString().equals(grupo.getIdPadre())) {
+				//si es el padre procedemos.
+				for (ChatGrupo hijo : grupo.getGruposHijo()) {
+					ChatIndividual miembroHIjo = hijo.getDuenyo().ContactoEquivalente(miembro);
+					hijo.eliminarMiembro(miembroHIjo);
+					AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(hijo);
+				}
+				grupo.eliminarMiembro(miembro);
+				AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(grupo);
+				AdaptadorChatGrupoDAO.getUnicaInstancia().updateAdmins(grupo);
+				miembro.getContacto().eliminarChat(grupo);
+				AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(miembro.getContacto(), grupo);
+				AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(miembro.getContacto());
+			}else{//si no es el padre, se busca al padre para que llame a esta funcion.
+				ChatGrupo grupoPadre = AdaptadorChatGrupoDAO.getUnicaInstancia().get( (int) Integer.valueOf(grupo.getIdPadre()));
+				ChatIndividual miembroPadre = grupoPadre.getDuenyo().ContactoEquivalente(miembro);
+				this.eliminarMiembroGrupo(grupoPadre, miembroPadre);
+			}
+		} //si no, no puede, que le den.
+	}
+	
+	/**
+	 * Funcion en la que se agrega un miembro a un grupo ya existente.
+	 * @param ChatGrupo grupo
+	 * @param ChatIndividual miembro
+	 */
+	public void agregarMiembroGrupo(ChatGrupo grupo, ChatIndividual miembro) {
+		//comprobar si el usuario actual es admin y proceder si lo es.
+		if(grupo.getAdministradores().contains(this.usuarioActual)) {
+			//el usuario es admin, puede hacerlo.
+			//veo si es el grupo padre
+			if(Integer.valueOf(grupo.getId()).toString().equals(grupo.getIdPadre())) {
+				//si es el padre procedemos.
+				for (ChatGrupo hijo : grupo.getGruposHijo()) {
+					ChatIndividual miembroHIjo = hijo.getDuenyo().ContactoEquivalente(miembro);
+					hijo.addMiembro(miembroHIjo);
+					AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(hijo);
+					AdaptadorChatGrupoDAO.getUnicaInstancia().updateAdmins(hijo);
+				}
+				grupo.addMiembro(miembro);
+				AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(grupo);
+				AdaptadorChatGrupoDAO.getUnicaInstancia().updateAdmins(grupo);
+				
+				//le creo el grupo al usuario y actualizo en DAO
+				this.crearGrupoHijo(grupo, miembro);
+				AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(miembro.getContacto(), grupo);
+				AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(miembro.getContacto());
+			}else{//si no es el padre, se busca al padre para que llame a esta funcion.
+				ChatGrupo grupoPadre = AdaptadorChatGrupoDAO.getUnicaInstancia().get( (int) Integer.valueOf(grupo.getIdPadre()));
+				ChatIndividual miembroPadre = grupoPadre.getDuenyo().ContactoEquivalente(miembro);
+				this.agregarMiembroGrupo(grupoPadre, miembroPadre);
+			}
+		} //si no, no puede, que le den.
+	}
+	
+	/**
+	 * Funcion que actualiza el nombre del grupo en el padre y los hijos.
+	 * @param ChatGrupo grupo
+	 * @param String nombre
+	 */
+	public void actualizarNombreGrupo(ChatGrupo grupo, String nombre) {
+		//Puede hacerlo cualquier miembro del grupo
+		if(Integer.valueOf(grupo.getId()).toString() == grupo.getIdPadre()) {
+			//si es el padre procedemos.
+			grupo.cambiarNombre(nombre); //cambia su nombre y el de sus hijos.
+			//actualizamos los grupos en persistencia
+			AdaptadorChatGrupoDAO.getUnicaInstancia().updateNombre(grupo, nombre); //lo cambio tambien en persistencia
+			//lo cambiamos en sus hijos en su persistencia.
+			grupo.getGruposHijo().stream().forEach(g -> AdaptadorChatGrupoDAO.getUnicaInstancia().updateNombre(g, nombre));
+		}else{//si no es el padre, se busca al padre para que llame a esta funcion.
+			ChatGrupo grupoPadre = AdaptadorChatGrupoDAO.getUnicaInstancia().get( (int) Integer.valueOf(grupo.getIdPadre()));
+			this.actualizarNombreGrupo(grupoPadre, nombre);
+		}
+	}
+
+	
+	/**
+	 * Funcion para modificar un grupo.
+	 * @param ChatGrupo grupo a modificar
+	 * @param List<ChatIndividual> agregarlos, miembros a agregar del grupo.
+	 * @param List<ChatIndividual> eliminarlos, miembros a eliminar del grupo.
+	 * @param String nuevoNombre, nuevo nombre del grupo.
+	 */
+	public void modificarGrupo(ChatGrupo grupo, List<ChatIndividual> agregarlos, List<ChatIndividual> eliminarlos, 
+			String nuevoNombre) {
+		for (ChatIndividual e : eliminarlos) {
+			this.eliminarMiembroGrupo(grupo, e); //works <3
+		}
+		
+		for (ChatIndividual a : agregarlos) {
+			this.agregarMiembroGrupo(grupo, a); //works <3
+		}
+		
+		grupo.cambiarNombre(nuevoNombre);
+		AdaptadorChatGrupoDAO.getUnicaInstancia().updateNombre(grupo, nuevoNombre);
+		
+		for (ChatGrupo hijo : grupo.getGruposHijo()) {
+			AdaptadorChatGrupoDAO.getUnicaInstancia().updateNombre(hijo, nuevoNombre);
+		}
+		
+	}
+
+	// ##################### FUNCIONALIDAD DE ESTADISTICAS  #######################
+	
+	/**
+	 * Funcion que se utiliza para crear las estadísticas
+	 * @param String tipo
+	 * @return Chart, dependiendo del tipo será uno u otro.
+	 */
 	public Chart<?, ?> crearEstadisticas(String tipo) {
 		
 		switch (tipo) {
@@ -403,6 +735,11 @@ public class ControladorUsuarios  implements MensajesListener{
 
 	}
 	
+	/**
+	 * Funcion que sirve para imprimir las graficas.
+	 * @param tipo
+	 * @param chart
+	 */
 	public void imprimirChart(String tipo, Chart<?, ?> chart) {
 		GestorGraficas gg= new GestorGraficas();
 		switch(chart.getClass().getSimpleName()) {
@@ -418,7 +755,45 @@ public class ControladorUsuarios  implements MensajesListener{
 		}
 		
 	}
+	
+	/**
+	 * Consigue una grafica tarta
+	 * @return PieChart
+	 */
+	public PieChart getGraficaTart() {
+		return GestorGraficas.getPieChart();
+	}
+	
+	/**
+	 * Consigue la grafica XY
+	 * @return XYChart 
+	 */
+	public XYChart getGraficaUso() {
+		return GestorGraficas.getXYChart();
+	}
 
+
+	/**
+	 * Funcion que devuelve los 6 grupos (o menos si no tiene 6) con más mensajes
+	 * del usuario.
+	 * @return List<ChatGrupo> 6GroupsTop
+	 */
+	public List<ChatGrupo> get6GruposTop() {
+		return this.usuarioActual.get6GruposTop();
+	}
+
+	/**
+	 * Funcion que devuelve los mensajes enviados por el usuario en un mes "i"
+	 * Siento 1= enero y 12 = diciembre.
+	 * @param i, mes. 1= enero y 12 = diciembre.
+	 * @return double numero de mensajes totales.
+	 */
+	public double getMensajesTotalesDelMes(int i) {
+		return this.usuarioActual.getMensajesEnviadosEsteMes(i);
+	}
+
+	// ##################### FUNCIONALIDAD AUXILIAR  #######################
+	
 	/**
 	 * Funcion para parsear las fechas horribles de JDateChooser a algo en lo que
 	 * puedo convertirlo en LocalDate. No tendría que haberlo hecho pero me daba
@@ -473,77 +848,7 @@ public class ControladorUsuarios  implements MensajesListener{
 		return fechaBien;
 	}
 
-	/**
-	 * Funcion que crea un nuevo grupo. Grupo padre.
-	 * @param nombreGrupo
-	 * @param contactos
-	 */
-	public ChatGrupo crearGrupo(String nombreGrupo, ChatIndividual... contactos) {
-		//es la primera vez que se crea un grupo.
-		ChatGrupo cg1 = this.usuarioActual.crearGrupoNuevo(nombreGrupo, contactos);
-		AdaptadorChatGrupoDAO.getUnicaInstancia().create(cg1);
-		AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(usuarioActual, cg1);
-		AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(cg1);
-		AdaptadorChatGrupoDAO.getUnicaInstancia().updateAdmins(cg1);
-		
-		//Actualizar el idPadre
-		System.out.println("id del grupo padre: " + cg1.getId());
-		cg1.setIdPadre(Integer.toString(cg1.getId()));
-		AdaptadorChatGrupoDAO.getUnicaInstancia().updateIdPadre(cg1);
-		
-		
-		
-		//Tratamiento de los hijos en memoria
-		for (ChatIndividual ci : cg1.getMiembros()) {
-			this.crearGrupoHijo(cg1, ci);
-		} //Fin for
-		
-		//Actualizar todos los hijos que se añadieron en el bucle
-		AdaptadorChatGrupoDAO.getUnicaInstancia().updateGruposHijos(cg1);
-		AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(usuarioActual, cg1);
-		AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(cg1);
-		
-		return cg1; 
-		
-	}
-							//padre			//miembro
-	private void crearGrupoHijo(ChatGrupo  cg1, ChatIndividual  ci) {
-		if(ci.getContacto().equals(cg1.getDuenyo())) {  //Si eres el dueño del grupo, no ncesitas que se te cree un nodo hijo
-			
-		} else {
-			Usuario userAux = ci.getContacto();
-			Chat cgAux0 = userAux.CrearGrupoHijo(cg1); //crea el grupo hijo en memoria.
-			
-			if (cgAux0.getClass().getSimpleName().equals("ChatIndividual")) {
-				//Tengo que ejecutar estos pasos para todos los miembros desonocidos, hasta que cgAux0 deje de retornar un chatIndividual
-				
-				while(cgAux0.getClass().getSimpleName().equals("ChatIndividual")){
-					//Le paso al usuario el chat que no tenia equivalente para lo cree como un desconocido
-					ChatIndividual cgAux2 = (ChatIndividual) cgAux0;
-					ChatIndividual chatAux = userAux.addChatDesconocido(cgAux2.getMovil(), cgAux2.getContacto()); 
-					//Lo guardo en persistencia 
-					AdaptadorChatIndividualDAO.getUnicaInstancia().create(chatAux);          
-					AdaptadorUsuarioDAO.getUnicaInstancia().updateChatsDesconocidos(userAux);	
-					cgAux0 = userAux.CrearGrupoHijo(cg1);
-				}	
-				
-			   }
-				ChatGrupo cgAux = (ChatGrupo) cgAux0;
-				//Crear el grupo en persistencia
-				AdaptadorChatGrupoDAO.getUnicaInstancia().create(cgAux);
-				System.out.println("+++++++++++Soy un Grupo hijo creado de: " + cgAux.getDuenyo().getNombre() + " con un id: " + cgAux.getId());
-				userAux.addConversacion(cgAux.getId());
-				//Actualizar al usuario en persistencia
-				AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(userAux, cgAux);
-				AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(cgAux);
-				AdaptadorChatGrupoDAO.getUnicaInstancia().updateAdmins(cgAux);
-				userAux.addConversacion(cgAux.getId());
-				AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(userAux);
-				
-			
-		} //Fin else
-	}
-
+	
 
 	/**
 	 * Funcion que te dice cuantos dias tiene el mes actual en concreto.
@@ -553,280 +858,25 @@ public class ControladorUsuarios  implements MensajesListener{
 		return LocalDate.now().getMonth().maxLength();
 	}
 	
-	/**
-	 * COnsigue una grafica tarta
-	 * @return PieChart
-	 */
-	public PieChart getGraficaTart() {
-		return GestorGraficas.getPieChart();
-	}
-	
-	/**
-	 * Consigue la grafica XY
-	 * @return XYChart 
-	 */
-	public XYChart getGraficaUso() {
-		return GestorGraficas.getXYChart();
-	}
 
-	public List<ChatGrupo> get6GruposTop() {
-		return this.usuarioActual.get6GruposTop();
-	}
 
 	/**
-	 * Funcion que devuelve los mensajes enviados por el usuario en un mes "i"
-	 * Siento 1= enero y 12 = diciembre.
-	 * @param i, mes. 1= enero y 12 = diciembre.
-	 * @return double numero de mensajes totales.
+	 * Funcion que genera un PDF con la informacion del usuario.
 	 */
-	public double getMensajesTotalesDelMes(int i) {
-		return this.usuarioActual.getMensajesEnviadosEsteMes(i);
-	}
-	
-	public Mensaje crearMensaje(Usuario emisor, ChatIndividual receptor, String texto) {
-		
-		return new Mensaje(emisor, receptor, texto);
-	}
-	
-	public Mensaje crearMensaje(Usuario emisor,  String texto) {
-		
-		return new Mensaje(emisor, texto);
-	}
-	
-	public void enviarMensajeAChatInd(Mensaje m, ChatIndividual cI) {
-		if (cI.getIdChatLigado() == 0 ) {
-			enlazarChats(cI);
-		}
-		
-		//Para este punto ya estas enlazado correctamente y eres una conversacion reciente para el otro
-		//Actualizamos los historiales
-		
-		System.out.println("#####3enviar mensaje " + m.getTexto());
-		
-		cI.addMensajeHistorial(m);
-		ChatIndividual extremo = AdaptadorChatIndividualDAO.getUnicaInstancia().get(cI.getIdChatLigado());
-		extremo.addMensajeHistorial(m);
-		
-		AdaptadorChatIndividualDAO.getUnicaInstancia().updateHistorial(extremo);
-		AdaptadorChatIndividualDAO.getUnicaInstancia().updateHistorial(cI);
-		
-	}
-	
-	//Recorrer los chat indviduales de la otra persona y enlazarnos
-	private void enlazarChats(ChatIndividual cI) { //mi chat de ana
-		Usuario receptor = cI.getContacto(); //ana
-		ChatIndividual chatEspejo = null;
-		
-		boolean asignado = false;
-		for (ChatIndividual i : receptor.getChatsInd()) {
-			if(i.getMovil().equals(usuarioActual.getMovil())) { //Si encuentras tu movil, es que te tiene en la agenda
-				//System.out.println("#####movil que itera " + i + "movil que busco" + usuarioActual.getMovil() );
-				chatEspejo = i;
-				asignado = true;
-				System.out.println("enlazarChats / controlador -> Encontre el movil");
-				break;
-			}
-		}
-		if (!asignado) {
-			//Si el bucle termino, es porque no te tiene añadido como user, se te crea como desconocido
-			chatEspejo = receptor.addChatDesconocido(usuarioActual.getMovil(), usuarioActual);
-			AdaptadorChatIndividualDAO.getUnicaInstancia().create(chatEspejo);
-			AdaptadorUsuarioDAO.getUnicaInstancia().updateChatsDesconocidos(receptor); 
-			
-		}
-		
-		//Asociación de IdLigadas e indicar que es una conversacion reciente.
-		cI.setIdChatLigado(chatEspejo.getId());
-		chatEspejo.setIdChatLigado(cI.getId());
-		
-		//System.out.println("id ligado a: " + cI.getIdChatLigado());
-		//System.out.println("id ligado b: " + chatEspejo.getIdChatLigado());
-		
-		receptor.addConversacion(chatEspejo.getId());
-		
-		//System.out.println("enlazar chats | Soy el receptor: " + receptor.getNombre() + " y me enlace con: " + chatEspejo.getContacto().getNombre());
-		usuarioActual.addConversacion(cI.getId());
-		
-		//Actualizo persistencia para ambos usuarios
-		AdaptadorChatIndividualDAO.getUnicaInstancia().updateChatLigado(cI);
-		AdaptadorChatIndividualDAO.getUnicaInstancia().updateChatLigado(chatEspejo);
-		
-		//System.out.println("enlazarChats / controlador: se updateron los chatLigados");
-		
-		AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(usuarioActual);
-		AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(receptor);
-		
-		//System.out.println("se updateron las conversaciones");
-		
-	}
-
-	
 	public void getPDFInfo() {
 		PDFGenerator pdfG = new PDFGenerator();
 		try {
 			pdfG.createPdf("./estadisticas/Informacion" + this.getNombreUsuarioActual()+".pdf", this.usuarioActual);
 		} catch (Exception e) {
-			// TODO: handle exception
 		}
 	}
+
+
 	
 	/**
-	 * Funcion que elimina el miembro de un grupo. En el padre y los hijos.
-	 * @param ChatGrupo grupo
-	 * @param ChatIndividual miembro
+	 * Funcion "ActionPerformed" de EventoMensaje.
+	 * El controlador es un listener.
 	 */
-	public void eliminarMiembroGrupo(ChatGrupo grupo, ChatIndividual miembro) {
-		//comprobar si el usuario actual es admin y proceder si lo es.
-		if(grupo.getAdministradores().contains(this.usuarioActual)) {
-			//el usuario es admin, puede hacerlo.
-			//veo si es el grupo padre
-			if(Integer.valueOf(grupo.getId()).toString().equals(grupo.getIdPadre())) {
-				//si es el padre procedemos.
-				for (ChatGrupo hijo : grupo.getGruposHijo()) {
-					ChatIndividual miembroHIjo = hijo.getDuenyo().ContactoEquivalente(miembro);
-					hijo.eliminarMiembro(miembroHIjo);
-					AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(hijo);
-				}
-				grupo.eliminarMiembro(miembro);
-				AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(grupo);
-				AdaptadorChatGrupoDAO.getUnicaInstancia().updateAdmins(grupo);
-				miembro.getContacto().eliminarChat(grupo);
-				AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(miembro.getContacto(), grupo);
-				AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(miembro.getContacto());
-			}else{//si no es el padre, se busca al padre para que llame a esta funcion.
-				ChatGrupo grupoPadre = AdaptadorChatGrupoDAO.getUnicaInstancia().get( (int) Integer.valueOf(grupo.getIdPadre()));
-				ChatIndividual miembroPadre = grupoPadre.getDuenyo().ContactoEquivalente(miembro);
-				this.eliminarMiembroGrupo(grupoPadre, miembroPadre);
-			}
-		} //si no, no puede, que le den.
-	}
-	
-	public void agregarMiembroGrupo(ChatGrupo grupo, ChatIndividual miembro) {
-		//comprobar si el usuario actual es admin y proceder si lo es.
-		if(grupo.getAdministradores().contains(this.usuarioActual)) {
-			//el usuario es admin, puede hacerlo.
-			//veo si es el grupo padre
-			if(Integer.valueOf(grupo.getId()).toString().equals(grupo.getIdPadre())) {
-				//si es el padre procedemos.
-				for (ChatGrupo hijo : grupo.getGruposHijo()) {
-					ChatIndividual miembroHIjo = hijo.getDuenyo().ContactoEquivalente(miembro);
-					hijo.addMiembro(miembroHIjo);
-					AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(hijo);
-					AdaptadorChatGrupoDAO.getUnicaInstancia().updateAdmins(hijo);
-				}
-				grupo.addMiembro(miembro);
-				AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(grupo);
-				AdaptadorChatGrupoDAO.getUnicaInstancia().updateAdmins(grupo);
-				
-				//le creo el grupo al usuario y actualizo en DAO
-				//##################################################################################################################################################################################################################################################################################################################
-				//miembro.getContacto().agregarContacto(grupo);
-				this.crearGrupoHijo(grupo, miembro);
-				AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(miembro.getContacto(), grupo);
-				AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(miembro.getContacto());
-			}else{//si no es el padre, se busca al padre para que llame a esta funcion.
-				ChatGrupo grupoPadre = AdaptadorChatGrupoDAO.getUnicaInstancia().get( (int) Integer.valueOf(grupo.getIdPadre()));
-				ChatIndividual miembroPadre = grupoPadre.getDuenyo().ContactoEquivalente(miembro);
-				this.agregarMiembroGrupo(grupoPadre, miembroPadre);
-			}
-		} //si no, no puede, que le den.
-	}
-	
-	/**
-	 * Funcion que actualiza el nombre del grupo en el padre y los hijos.
-	 * @param ChatGrupo grupo
-	 * @param String nombre
-	 */
-	public void actualizarNombreGrupo(ChatGrupo grupo, String nombre) {
-		//Puede hacerlo cualquier miembro del grupo
-		if(Integer.valueOf(grupo.getId()).toString() == grupo.getIdPadre()) {
-			//si es el padre procedemos.
-			grupo.cambiarNombre(nombre); //cambia su nombre y el de sus hijos.
-			//actualizamos los grupos en persistencia
-			AdaptadorChatGrupoDAO.getUnicaInstancia().updateNombre(grupo, nombre); //lo cambio tambien en persistencia
-			//lo cambiamos en sus hijos en su persistencia.
-			grupo.getGruposHijo().stream().forEach(g -> AdaptadorChatGrupoDAO.getUnicaInstancia().updateNombre(g, nombre));
-		}else{//si no es el padre, se busca al padre para que llame a esta funcion.
-			ChatGrupo grupoPadre = AdaptadorChatGrupoDAO.getUnicaInstancia().get( (int) Integer.valueOf(grupo.getIdPadre()));
-			this.actualizarNombreGrupo(grupoPadre, nombre);
-		}
-	}
-
-	public void vaciarChat(Chat chatActual) {
-		chatActual.vaciarChat();
-		
-		switch (chatActual.getClass().getSimpleName()) {
-		case "ChatIndividual":
-			ChatIndividual c1 = (ChatIndividual) chatActual;
-			AdaptadorChatIndividualDAO.getUnicaInstancia().vaciarHistorial(c1);
-			break;
-		case "ChatGrupo":
-			ChatGrupo c2 = (ChatGrupo) chatActual;
-			AdaptadorChatGrupoDAO.getUnicaInstancia().vaciarHistorial(c2);
-			break;
-			
-		}
-		
-	}
-
-	
-	public void eliminarChatActual(Chat chatActual) {
-		switch (chatActual.getClass().getSimpleName()) {
-		case "ChatIndividual":
-			usuarioActual.eliminarChat(chatActual);
-			
-			AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(usuarioActual);
-			AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(usuarioActual, chatActual); //Solo para indicar que actualice chats indviduales
-			break;
-		case "ChatGrupo":
-			ChatGrupo g = (ChatGrupo) chatActual;
-			//si eres admin lo borras por completo.
-			if(g.getAdministradores().contains(this.usuarioActual)) { //es admin
-				List<Usuario> miems =  g.getMiembros().stream().map(m -> m.getContacto()).collect(Collectors.toList());
-				for (Usuario u : miems) {
-					u.eliminarChat(g);
-					AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(u, g);
-					AdaptadorUsuarioDAO.getUnicaInstancia().updateConversaciones(u);
-				}
-			}
-			break;
-			
-		}
-	}
-	
-	public void modificarGrupo(ChatGrupo grupo, List<ChatIndividual> agregarlos, List<ChatIndividual> eliminarlos, 
-			String nuevoNombre) {
-		for (ChatIndividual e : eliminarlos) {
-			this.eliminarMiembroGrupo(grupo, e); //works <3
-		}
-		
-		for (ChatIndividual a : agregarlos) {
-			this.agregarMiembroGrupo(grupo, a); //works <3
-		}
-		
-		grupo.cambiarNombre(nuevoNombre);
-		AdaptadorChatGrupoDAO.getUnicaInstancia().updateNombre(grupo, nuevoNombre);
-		
-		for (ChatGrupo hijo : grupo.getGruposHijo()) {
-			AdaptadorChatGrupoDAO.getUnicaInstancia().updateNombre(hijo, nuevoNombre);
-		}
-		
-	}
-	
-	
-	public boolean pasarDeDesconocidoAContacto(ChatIndividual desconocido, String nuevoNombre) {
-		if(! (this.usuarioActual.isDesconocido(desconocido))) {
-			return false;
-		}
-		//el deconocido pasa a ser contacto normal
-		desconocido = this.usuarioActual.pasarDesconocidoAContacto(desconocido, nuevoNombre);
-		AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(this.usuarioActual, desconocido);
-		AdaptadorUsuarioDAO.getUnicaInstancia().updateChatsDesconocidos(this.usuarioActual);
-		AdaptadorChatIndividualDAO.getUnicaInstancia().updateNombre(desconocido);
-		return true;
-	}
-
-	
 	@Override
 	public void nuevosMensajes(EventoMensaje e) {
 		//Se llama a esto cuando
@@ -839,6 +889,11 @@ public class ControladorUsuarios  implements MensajesListener{
 		
 	}
 
+	/**
+	 * Pasa de mensajes Whatssap (componente cargador) a Mensajes del modelo.
+	 * @param List<MensajeWhatsApp> mensajesCargar
+	 * @return LinkedList<Mensaje> bien
+	 */
 	private LinkedList<Mensaje> parsearMensajesWhatsapp(List<MensajeWhatsApp> mensajesCargar) {
 		//Convertimos los mensajes Whatsapp en mensajes del modelo.
 		LinkedList<Mensaje> bien = new LinkedList<Mensaje>();
@@ -867,12 +922,19 @@ public class ControladorUsuarios  implements MensajesListener{
 		return bien;
 	}
 
+	/**
+	 * Funcion que guarda un mensaje "Emoji" en persistencia.
+	 * @param Mensaje m, emoji.
+	 */
 	public void guardarEmojiEnPersistencia(Mensaje m) {
 
 		AdaptadorMensajeDAO.getUnicaInstancia().create(m);
 		AdaptadorMensajeDAO.getUnicaInstancia().updateEmoji(m);
 	}
 
+	/**
+	 * Funcion que sirve para hacer que un usuario se convierta en premium.
+	 */
 	public void hacerUserPremium() {
 		this.usuarioActual.setPremium(true);
 		AdaptadorUsuarioDAO.getUnicaInstancia().updatePremium(usuarioActual);
