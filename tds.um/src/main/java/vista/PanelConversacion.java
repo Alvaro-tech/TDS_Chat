@@ -80,7 +80,6 @@ public class PanelConversacion extends JPanel {
 					enviarMensaje(false);
 					textTexto.setText("");
 				} catch (Exception e) {
-					// TODO: handle exception
 				}
 					
 				
