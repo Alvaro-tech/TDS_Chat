@@ -39,38 +39,37 @@ public class PanelCrearGrupo extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textGroupName;
 	private JTextField textTitulo;
-	private DefaultListModel<Object> modeloCont = new DefaultListModel<Object>(); //contactos disponibles
-	private DefaultListModel<Object> modeloMim = new DefaultListModel<Object>(); //los añades al grupo
-	//llevar cuenta de los que pasan de un lado a otro.
+	private DefaultListModel<Object> modeloCont = new DefaultListModel<Object>(); // contactos disponibles
+	private DefaultListModel<Object> modeloMim = new DefaultListModel<Object>(); // los añades al grupo
+	// llevar cuenta de los que pasan de un lado a otro.
 	private LinkedList<ChatIndividual> miembrosPotenciales = new LinkedList<ChatIndividual>();
 	private LinkedList<ChatIndividual> miembrosEliminados = new LinkedList<ChatIndividual>();
-	
+
 	private VentanaPrincipal padre;
 	private boolean editando;
 	private JFrame ventana;
 	private ChatGrupo chatCargado;
-
 
 	/**
 	 * Create the dialog.
 	 */
 	public PanelCrearGrupo(VentanaPrincipal v, boolean editando, JFrame ventana, ChatGrupo chatCargado) {
 		final JList<Object> listCont = new JList<Object>();
-		final JList <Object> listMim = new JList<Object>();
+		final JList<Object> listMim = new JList<Object>();
 		this.padre = v;
 		this.editando = editando;
 		this.ventana = ventana;
 		this.chatCargado = chatCargado;
-		
+
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		GridBagLayout gbl_contentPanel = new GridBagLayout();
-		gbl_contentPanel.columnWidths = new int[]{142, 196, 113, 0};
-		gbl_contentPanel.rowHeights = new int[]{218, 0};
-		gbl_contentPanel.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_contentPanel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_contentPanel.columnWidths = new int[] { 142, 196, 113, 0 };
+		gbl_contentPanel.rowHeights = new int[] { 218, 0 };
+		gbl_contentPanel.columnWeights = new double[] { 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gbl_contentPanel.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
 		contentPanel.setLayout(gbl_contentPanel);
 		{
 			JPanel panelzq = new JPanel();
@@ -82,10 +81,10 @@ public class PanelCrearGrupo extends JDialog {
 			gbc_panelzq.gridy = 0;
 			contentPanel.add(panelzq, gbc_panelzq);
 			GridBagLayout gbl_panelzq = new GridBagLayout();
-			gbl_panelzq.columnWidths = new int[]{121, 0};
-			gbl_panelzq.rowHeights = new int[]{218, 0};
-			gbl_panelzq.columnWeights = new double[]{0.0, Double.MIN_VALUE};
-			gbl_panelzq.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+			gbl_panelzq.columnWidths = new int[] { 121, 0 };
+			gbl_panelzq.rowHeights = new int[] { 218, 0 };
+			gbl_panelzq.columnWeights = new double[] { 0.0, Double.MIN_VALUE };
+			gbl_panelzq.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
 			panelzq.setLayout(gbl_panelzq);
 			{
 				JScrollPane scrollPane = new JScrollPane();
@@ -96,32 +95,34 @@ public class PanelCrearGrupo extends JDialog {
 				gbc_scrollPane.gridy = 0;
 				panelzq.add(scrollPane, gbc_scrollPane);
 				{
-					//JList<Object> listCont = new JList<Object>();
+					// JList<Object> listCont = new JList<Object>();
 					scrollPane.setViewportView(listCont);
 					listCont.setValueIsAdjusting(true);
 					listCont.setBackground(SystemColor.controlHighlight);
-					listCont.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Contactos", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 120, 215)));
+					listCont.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Contactos",
+							TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 120, 215)));
 					listCont.setModel(modeloCont);
-					
-					if(editando) { //Cargar lo que ya es Miembro
+
+					if (editando) { // Cargar lo que ya es Miembro
 						LinkedList<ChatIndividual> aux = chatCargado.getMiembros();
-						for(ChatIndividual i : aux) {
-							if(!i.getContacto().equals(ControladorUsuarios.getUnicaInstancia().getusuarioActual())){
-								modeloMim.addElement(i); //i.getNombre()
+						for (ChatIndividual i : aux) {
+							if (!i.getContacto().equals(ControladorUsuarios.getUnicaInstancia().getusuarioActual())) {
+								modeloMim.addElement(i); // i.getNombre()
 							}
 						}
-					} //Fin id editandto
-						HashSet<ChatIndividual> aux =(ControladorUsuarios.getUnicaInstancia().getusuarioActual().getChatsInd());
-						for(ChatIndividual i : aux) {
-							if(!i.getContacto().equals(ControladorUsuarios.getUnicaInstancia().getusuarioActual())){
-								modeloCont.addElement(i); //i.getNombre()
-							}
+					} // Fin id editandto
+					HashSet<ChatIndividual> aux = (ControladorUsuarios.getUnicaInstancia().getusuarioActual()
+							.getChatsInd());
+					for (ChatIndividual i : aux) {
+						if (!i.getContacto().equals(ControladorUsuarios.getUnicaInstancia().getusuarioActual())) {
+							modeloCont.addElement(i); // i.getNombre()
 						}
-					
 					}
+
 				}
 			}
-		
+		}
+
 		{
 			JPanel Central = new JPanel();
 			GridBagConstraints gbc_Central = new GridBagConstraints();
@@ -131,10 +132,10 @@ public class PanelCrearGrupo extends JDialog {
 			gbc_Central.gridy = 0;
 			contentPanel.add(Central, gbc_Central);
 			GridBagLayout gbl_Central = new GridBagLayout();
-			gbl_Central.columnWidths = new int[]{40, 125, 34, 0};
-			gbl_Central.rowHeights = new int[]{0, 0, 0, 0, 23, 0};
-			gbl_Central.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
-			gbl_Central.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+			gbl_Central.columnWidths = new int[] { 40, 125, 34, 0 };
+			gbl_Central.rowHeights = new int[] { 0, 0, 0, 0, 23, 0 };
+			gbl_Central.columnWeights = new double[] { 0.0, 0.0, 0.0, Double.MIN_VALUE };
+			gbl_Central.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 			Central.setLayout(gbl_Central);
 			{
 				Component horizontalStrut = Box.createHorizontalStrut(20);
@@ -171,11 +172,13 @@ public class PanelCrearGrupo extends JDialog {
 			}
 			{
 				textGroupName = new JTextField();
-				
-				if (editando) { textGroupName.setText(chatCargado.getNombre()); } 
-				else {textGroupName.setText("Nombre del Grupo");}
-				
-				
+
+				if (editando) {
+					textGroupName.setText(chatCargado.getNombre());
+				} else {
+					textGroupName.setText("Nombre del Grupo");
+				}
+
 				GridBagConstraints gbc_textGroupName = new GridBagConstraints();
 				gbc_textGroupName.fill = GridBagConstraints.HORIZONTAL;
 				gbc_textGroupName.insets = new Insets(0, 0, 5, 5);
@@ -184,12 +187,12 @@ public class PanelCrearGrupo extends JDialog {
 				Central.add(textGroupName, gbc_textGroupName);
 				textGroupName.setColumns(10);
 			}
-			JButton btnAdd = new JButton("-->"); //boton para pasar de contactos a grupos
+			JButton btnAdd = new JButton("-->"); // boton para pasar de contactos a grupos
 			btnAdd.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {	
+				public void actionPerformed(ActionEvent arg0) {
 					try {
 						ChatIndividual contacto = (ChatIndividual) listCont.getSelectedValue();
-						if(!modeloMim.contains(contacto)) {
+						if (!modeloMim.contains(contacto)) {
 							modeloMim.addElement(contacto);
 							miembrosPotenciales.addLast(contacto);
 						}
@@ -213,25 +216,33 @@ public class PanelCrearGrupo extends JDialog {
 			gbc_btnAdd.gridy = 3;
 			Central.add(btnAdd, gbc_btnAdd);
 			{
-				JButton btnDelete = new JButton("<--"); //boton para pasar de miembros a contactos (no lo quieres en el grupo)
+				JButton btnDelete = new JButton("<--"); // boton para pasar de miembros a contactos (no lo quieres en el
+														// grupo)
 				btnDelete.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						try {
-							int aux = listMim.getSelectedIndex();
-							if(editando) {
-								ChatIndividual contacto = (ChatIndividual)listMim.getSelectedValue();
-								if( (!miembrosEliminados.contains(contacto)) && (chatCargado.getMiembros().contains(contacto))  ) {
-									miembrosEliminados.add(contacto);
-								}
-								
+						int aux = listMim.getSelectedIndex();
+						if (editando) {
+							ChatIndividual contacto = (ChatIndividual) listMim.getSelectedValue();
+							if ((!miembrosEliminados.contains(contacto))
+									&& (chatCargado.getMiembros().contains(contacto))) {
+								miembrosEliminados.add(contacto);
 							}
 							
+							if(miembrosPotenciales.contains(contacto) && miembrosEliminados.contains(contacto)) {
+								miembrosEliminados.remove(contacto);
+							}
+							
+
+						}
+						
+						try {
+
 							modeloMim.remove(aux);
-							miembrosPotenciales.remove(aux); //guardo el chat, aunque se muestre solo el nombre
+							miembrosPotenciales.remove(aux); // guardo el chat, aunque se muestre solo el nombre
 						} catch (Exception e) {
 						}
 					}
-					
+
 				});
 				GridBagConstraints gbc_btnDelete = new GridBagConstraints();
 				gbc_btnDelete.insets = new Insets(0, 0, 0, 5);
@@ -250,10 +261,10 @@ public class PanelCrearGrupo extends JDialog {
 			gbc_panelDer.gridy = 0;
 			contentPanel.add(panelDer, gbc_panelDer);
 			GridBagLayout gbl_panelDer = new GridBagLayout();
-			gbl_panelDer.columnWidths = new int[]{103, 0};
-			gbl_panelDer.rowHeights = new int[]{218, 0};
-			gbl_panelDer.columnWeights = new double[]{0.0, Double.MIN_VALUE};
-			gbl_panelDer.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+			gbl_panelDer.columnWidths = new int[] { 103, 0 };
+			gbl_panelDer.rowHeights = new int[] { 218, 0 };
+			gbl_panelDer.columnWeights = new double[] { 0.0, Double.MIN_VALUE };
+			gbl_panelDer.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
 			panelDer.setLayout(gbl_panelDer);
 			{
 				JScrollPane scrollPane = new JScrollPane();
@@ -264,11 +275,12 @@ public class PanelCrearGrupo extends JDialog {
 				gbc_scrollPane.gridy = 0;
 				panelDer.add(scrollPane, gbc_scrollPane);
 				{
-					//JList <Object> list = new JList<Object>();
+					// JList <Object> list = new JList<Object>();
 					listMim.setModel(modeloMim);
 					scrollPane.setViewportView(listMim);
 					listMim.setBackground(SystemColor.controlHighlight);
-					listMim.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Miembros", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 120, 215)));
+					listMim.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Miembros",
+							TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 120, 215)));
 				}
 			}
 		}
@@ -277,45 +289,48 @@ public class PanelCrearGrupo extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("OK"); //quiero crear el grupo
+				JButton okButton = new JButton("OK"); // quiero crear el grupo
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						//Cada persona al crearse el usuario lo primero que debe tener es a sí mismo de contacto.
-						//creamos el grupo. LLamamos directamente al controlador xd lo haga todo como debe ser.
-						
-						
-						if(editando) {
-							//Miembros potenciales me sirve para agregar, como antes elimina no hay problema, se volverian a añadir
-							//Miembors eliminados, los que pasaron con <-- una vez y pertenecen a los miembros del grupo
-							
-							ControladorUsuarios.getUnicaInstancia().modificarGrupo(chatCargado, miembrosPotenciales, miembrosEliminados, textGroupName.getText());
-							JOptionPane
-							.showMessageDialog(ventana,
-									"Grupo editado satisfactoriamente",
-									"¡Bingo!", JOptionPane.INFORMATION_MESSAGE);
-							
-							
+						// Cada persona al crearse el usuario lo primero que debe tener es a sí mismo de
+						// contacto.
+						// creamos el grupo. LLamamos directamente al controlador xd lo haga todo como
+						// debe ser.
+
+						if (editando) {
+							// Miembros potenciales me sirve para agregar, como antes elimina no hay
+							// problema, se volverian a añadir
+							// Miembors eliminados, los que pasaron con <-- una vez y pertenecen a los
+							// miembros del grupo
+
+							ControladorUsuarios.getUnicaInstancia().modificarGrupo(chatCargado, miembrosPotenciales,
+									miembrosEliminados, textGroupName.getText());
+							JOptionPane.showMessageDialog(ventana, "Grupo editado satisfactoriamente", "¡Bingo!",
+									JOptionPane.INFORMATION_MESSAGE);
+
 						} else {
-							ChatIndividual[] auxG = miembrosPotenciales.toArray(new ChatIndividual[miembrosPotenciales.size()]);
-							ChatGrupo cg1 = ControladorUsuarios.getUnicaInstancia().crearGrupo(textGroupName.getText(), auxG);
+							ChatIndividual[] auxG = miembrosPotenciales
+									.toArray(new ChatIndividual[miembrosPotenciales.size()]);
+							ChatGrupo cg1 = ControladorUsuarios.getUnicaInstancia().crearGrupo(textGroupName.getText(),
+									auxG);
 							padre.addChatsRecientes(cg1);
-							ControladorUsuarios.getUnicaInstancia().addChatRecienteToUser(cg1, ControladorUsuarios.getUnicaInstancia().getusuarioActual()); //Un grupo sin mensajes ya se guarda
-							
-							JOptionPane
-							.showMessageDialog(ventana,
-									"Grupo creado con éxito :)",
-									"¡Bingo!", JOptionPane.INFORMATION_MESSAGE);
+							ControladorUsuarios.getUnicaInstancia().addChatRecienteToUser(cg1,
+									ControladorUsuarios.getUnicaInstancia().getusuarioActual()); // Un grupo sin
+																									// mensajes ya se
+																									// guarda
+
+							JOptionPane.showMessageDialog(ventana, "Grupo creado con éxito :)", "¡Bingo!",
+									JOptionPane.INFORMATION_MESSAGE);
 						}
 					}
-						
-						 
+
 				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
 		}
-		
+
 	}
 
 }

@@ -143,7 +143,7 @@ public class VentanaPrincipal extends JFrame {
 						   "Selector de grupos",
 						   JOptionPane.QUESTION_MESSAGE,
 						   null,  // null para icono defecto
-						   gruposAux, gruposAux[1]
+						   gruposAux, gruposAux[0]
 						   );
 				
 				ChatGrupo c = (ChatGrupo) seleccion;
