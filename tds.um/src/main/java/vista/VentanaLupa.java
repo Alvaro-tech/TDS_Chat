@@ -1,48 +1,32 @@
 package vista;
 
-import java.awt.BorderLayout;
-import java.awt.Dialog;
 import java.awt.FlowLayout;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionListener;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.awt.event.ActionEvent;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JTextPane;
-import javax.swing.SwingConstants;
 import com.toedter.calendar.JDateChooser;
-
 import complementosGUI.MostrarBusquedas;
 import controlador.ControladorUsuarios;
 import modelo.Chat;
 import modelo.ChatGrupo;
 import modelo.ChatIndividual;
 import modelo.Mensaje;
-import modelo.Usuario;
-
-import java.awt.Component;
-import javax.swing.Box;
 import javax.swing.JTextField;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JRadioButton;
-import java.awt.List;
 import javax.swing.DefaultComboBoxModel;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
+@SuppressWarnings("serial")
 public class VentanaLupa extends JDialog {
 
 	private final JPanel usuariosPanel = new JPanel();
@@ -54,6 +38,7 @@ public class VentanaLupa extends JDialog {
 	private JDateChooser fInicio;
 	private JDateChooser fFinal;
 	private Chat chatCargado;
+	@SuppressWarnings("unused")
 	private JFrame ventana;
 	private ChatIndividual userSelect;
 	/**
@@ -87,7 +72,6 @@ public class VentanaLupa extends JDialog {
 			comboBox.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					userSelect = (ChatIndividual)comboBox.getSelectedItem();
-					System.out.println("MOVIL SELECCIONADO: " + userSelect.getMovil());
 				}
 			});
 			comboBox.setMaximumRowCount(15);

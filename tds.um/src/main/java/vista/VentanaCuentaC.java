@@ -1,22 +1,12 @@
 package vista;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import complementosGUI.JPanelBackground;
 import modelo.Usuario;
 import java.awt.Image;
-
-
 import java.awt.GridBagLayout;
-import java.awt.Image;
-
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -24,9 +14,11 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.SwingConstants;
 
+@SuppressWarnings("serial")
 public class VentanaCuentaC extends JFrame {
 
 	private JPanelBackground contentPane;
+	@SuppressWarnings("unused")
 	private Usuario contacto;
 	private JTextField textTelefono;
 	private JTextField textNombre;

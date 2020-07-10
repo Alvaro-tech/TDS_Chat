@@ -2,7 +2,6 @@ package vista;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -11,7 +10,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
-
 import java.awt.event.ActionListener;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -32,8 +30,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.UIManager;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingUtilities;
 
+@SuppressWarnings("serial")
 public class PanelCrearGrupo extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
@@ -47,8 +45,11 @@ public class PanelCrearGrupo extends JDialog {
 	private PanelCrearGrupo yo;
 
 	private VentanaPrincipal padre;
+	@SuppressWarnings("unused")
 	private boolean editando;
+	@SuppressWarnings("unused")
 	private JFrame ventana;
+	@SuppressWarnings("unused")
 	private ChatGrupo chatCargado;
 
 	/**

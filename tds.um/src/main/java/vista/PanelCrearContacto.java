@@ -2,16 +2,13 @@ package vista;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import controlador.ControladorUsuarios;
-
 import java.awt.GridBagLayout;
 import javax.swing.JTextField;
 import java.awt.GridBagConstraints;
@@ -19,11 +16,11 @@ import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
-import javax.swing.SwingConstants;
 import java.awt.Color;
 import javax.swing.JTextPane;
 import java.awt.SystemColor;
 
+@SuppressWarnings("serial")
 public class PanelCrearContacto extends JDialog {
 	private JFrame ventana = new JFrame();
 	private final JPanel contentPanel = new JPanel();

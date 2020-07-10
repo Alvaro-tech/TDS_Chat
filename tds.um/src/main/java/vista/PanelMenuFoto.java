@@ -5,32 +5,25 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.BorderLayout;
 import javax.swing.JTextField;
-
 import controlador.ControladorUsuarios;
 import modelo.Usuario;
-
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-
-import java.awt.Component;
-import java.awt.Dimension;
-
-import javax.swing.Box;
-import java.awt.SystemColor;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 
+@SuppressWarnings("serial")
 public class PanelMenuFoto extends JPanel {
 	private JTextField textNameField;
 	private JTextField textSaludoField;
+	@SuppressWarnings("unused")
 	private JPanel panelImagen;
 	private JLabel lblFoto;
 	private JPanel panelBotones;
@@ -76,13 +69,10 @@ public class PanelMenuFoto extends JPanel {
 		panelPrincipal.revalidate();
 		panelPrincipal.repaint();
 		
-		lblFoto.setSize(248, 282); //TODO: Que no sea puesto el número a mano 
+		lblFoto.setSize(248, 282);
 		 
 		//-------Tratemiento de la imagen de perfil ------
 		ImageIcon imagen = new ImageIcon(usuariop.getFotoPerfil());
-		System.out.println("Esta es la ruta de la foto: " + imagen.toString() );
-		System.out.println("Y su alto es : " + imagen.getIconHeight());
-		System.out.println("Y su alto de la lbl : " + lblFoto.getHeight());
 		
 		Icon icono = new ImageIcon (imagen.getImage().getScaledInstance(lblFoto.getWidth(), lblFoto.getHeight(), Image.SCALE_DEFAULT));
 		lblFoto.setIcon(icono);
@@ -106,7 +96,6 @@ public class PanelMenuFoto extends JPanel {
 						File file = fc.getSelectedFile();
 						String foto = file.toString();
 						
-						System.out.println("Lo que carga el file.tostring: " + foto);
 						//-----Redimensionar el tamaña de un label------
 						ImageIcon imagen = new ImageIcon(foto);
 						Icon icono = new ImageIcon (imagen.getImage().getScaledInstance(lblFoto.getWidth(), lblFoto.getHeight(), Image.SCALE_DEFAULT));
@@ -128,7 +117,6 @@ public class PanelMenuFoto extends JPanel {
 		btnCambiarSaludo = new JButton("Cambiar Saludo");
 		btnCambiarSaludo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("Texto en saludo: " + usuario.getSaludo());  /////////////////////////////
 				String nuevoSaludo = textSaludoField.getText();
 				ControladorUsuarios.getUnicaInstancia().updateSaludo(usuario, nuevoSaludo);
 			}
@@ -148,7 +136,6 @@ public class PanelMenuFoto extends JPanel {
 		textNameField.setColumns(10);
 		
 		textSaludoField = new JTextField();
-		System.out.println("El saludo antes de hacer nada de nada: " + usuario.getSaludo() + " y su id es " + usuario.getId()); ///////////////////
 		textSaludoField.setText(usuario.getSaludo());
 		GridBagConstraints gbc_textSaludoField = new GridBagConstraints();
 		gbc_textSaludoField.insets = new Insets(0, 0, 5, 0);

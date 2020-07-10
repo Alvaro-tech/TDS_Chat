@@ -1,35 +1,29 @@
 package vista;
 
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-
 import complementosGUI.ContactoRenderer;
 import modelo.Chat;
 import modelo.ChatIndividual;
 import modelo.Usuario;
 import java.awt.BorderLayout;
 import java.awt.Color;
-
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
-
-import java.awt.Scrollbar;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+@SuppressWarnings("serial")
 public class PanelShowCont extends JPanel {
 
 	private  Usuario usuario;
 	private ChatIndividual contactoSelect = null;
 	private JFrame ventana;
-	
 	private VentanaPrincipal padre;
 	
 	/**
@@ -57,9 +51,7 @@ public class PanelShowCont extends JPanel {
 		list.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				contactoSelect = list.getSelectedValue();
-				System.out.println("Selected: " + contactoSelect.getNombre());
-				
+				contactoSelect = list.getSelectedValue();	
 			}
 		});
 		list.setBackground(new Color(135, 206, 235));
