@@ -2,13 +2,10 @@
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import java.util.StringTokenizer;
-
 import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
 import beans.Entidad;
@@ -23,8 +20,6 @@ import modelo.Usuario;
  * Clase que implementa el Adaptador DAO concreto de Usuario para el tipo H2.
  * 
  */
-
-//TODO: Hacer todas las propiedades necesarias para Usuario (los conjuntos de chat y el premium).
 public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 	
 	private ServicioPersistencia servPersistencia;
@@ -113,9 +108,7 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 		boolean existe = true; 
 		// Si la entidad está registrada no la registra de nuevo
 		try {
-			System.out.println("111Entre en en primer step de la pool");
 			eUsuario = servPersistencia.recuperarEntidad(Usuario.getId());
-			System.out.println("Entre en en primer step de la pool");
 		} catch (Exception e) {
 			existe = false;
 		}
@@ -128,12 +121,9 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 		
 		
 		//Si no habrá que registrar al usuario en el servidor de persistencia
-		System.out.println("*-*-*-*--Estoy en el create");
 		eUsuario = this.UsuarioToEntidad(Usuario);
 		eUsuario = servPersistencia.registrarEntidad(eUsuario); //MUY IMPORTANTE QUE ESTO SEA ASI, AUNQUE SEA REDUNDANTE
-		System.out.println("id autogenerada " + eUsuario.getId() );
 		Usuario.setId(eUsuario.getId());
-		System.out.println("Usuario registrado con la id: " + Usuario.getId()); //TODO: Quitar Luego
 	}
 	
 	public boolean delete(Usuario Usuario) {
@@ -161,10 +151,8 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 	
 	public Usuario get(int id) { //2º 
 		//*-*-*--*-*-*- Pool para recuperar esos Objetos con solo propiedad Unidireccionales que les falta la bidriec
-		System.out.println("entre en el get con el id: " + id);
 		// Si la entidad está en el pool la devuelve directamente
 		if (PoolDAO.getUnicaInstancia().contiene(id)) {
-			System.out.println("Supuestamente lo he cogio de la pool");
 			return (Usuario) PoolDAO.getUnicaInstancia().getObjeto(id);
 		}
 		
@@ -172,9 +160,7 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 		Usuario usuarioAux = entidadToUsuario(eUsuario);
 		//*-*-*-*-*-*-*-*-*-*-*--*-*- IMPORTANTE:añadir el Usuario al pool antes de llamar a otros
 		// adaptadores
-		System.out.println("En teoria lo he guardado de la pool");
-				PoolDAO.getUnicaInstancia().addObjeto(id, usuarioAux);
-				
+		PoolDAO.getUnicaInstancia().addObjeto(id, usuarioAux);
 				
 		return usuarioAux;
 	}
@@ -197,14 +183,12 @@ public final class AdaptadorUsuarioDAO implements IAdaptadorUsuarioDAO {
 	
 	public void updateFoto(Usuario usuario) {
 		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getId());
-		System.out.println("en Adaptador usuario, recupere el id en update foto");
 		servPersistencia.eliminarPropiedadEntidad(eUsuario, "fotoPerfil");
 		servPersistencia.anadirPropiedadEntidad(eUsuario, "fotoPerfil",usuario.getFotoPerfil());		
 	}
 	
 	public void updateConversaciones(Usuario usuario) {
 		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getId());
-		System.out.println("en Adaptador usuario, updateo updateConversaciones");
 		servPersistencia.eliminarPropiedadEntidad(eUsuario, "conversacionesAbiertas");
 		servPersistencia.anadirPropiedadEntidad(eUsuario, "conversacionesAbiertas",usuario.getConversacionesAbiertas());
 	}

@@ -84,8 +84,6 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 		eChatGrupo = servPersistencia.registrarEntidad(eChatGrupo);
 		grupo.setId(eChatGrupo.getId());
 		
-		System.out.println("Termino el create del grupo con id: " + grupo.getId());
-
 	}
 
 	private ChatGrupo entidadToChatGrupo(Entidad eGrupo) {
@@ -109,32 +107,19 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 		String duenyo = servPersistencia.recuperarPropiedadEntidad(eGrupo, "duenyo");
 		String gruposHijo = servPersistencia.recuperarPropiedadEntidad(eGrupo, "gruposHijo");
 		
-		System.out.println("Comienzo a intentar recuperar miembors y eso de grupos");
 		grupo.setMiembros(obtenerMiembrosDesdeId(miembros));
 		grupo.setAdministradores(obtenerAdministradoresDesdeId(administradores));
 		
-		System.out.println("recuperar al dueño");
 		Usuario u = AdaptadorUsuarioDAO.getUnicaInstancia().get(Integer.parseInt(duenyo));
 		grupo.setDuenyo(u);
-		
-		
-			System.out.println("Recuperar los hijos");
-			grupo.setGruposHijo(obtenerGruposDesdeId(gruposHijo));
+		grupo.setGruposHijo(obtenerGruposDesdeId(gruposHijo));
 		
 		
 		
-		System.out.println("Comienzo a intentar recuperar mensjes de grupos");
-		System.out.println("----#####----pre cargarhisto");
 		if(!historial.equals("")) {
 			grupo.setHistorial(obtenerHistorialDesdeId(historial));
-			System.out.println("----######----post cargarhisto");
-			for (Mensaje m : grupo.getHistorial()) {
-				System.out.println("soy el grupo " + grupo.getNombre() + " id " + grupo.getId() +" cargando el mensaje: " + m.getTexto());
-			}
 		}
 		try { //Evitar null pointerExceptions
-			
-
 			grupo.setUltimoMensaje(obtenerUltimoMensaje(ultimoMensaje));
 		} catch (Exception e) {
 			
@@ -169,7 +154,6 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 		StringTokenizer tok = new StringTokenizer(miems, " ");
 		while (tok.hasMoreTokens()) {
 			String id = (String) tok.nextElement();
-			System.out.println("##########obtenerMiembrosDesde id: " + id);
 			ChatIndividual aux = AdaptadorChatIndividualDAO.getUnicaInstancia().get(Integer.valueOf(id));
 			miembros.add(aux);
 		}
@@ -184,7 +168,6 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 		while (tok.hasMoreTokens()) {
 			String id = (String) tok.nextElement();
 			Mensaje aux = AdaptadorMensajeDAO.getUnicaInstancia().get(Integer.valueOf(id));
-			System.out.println(".-.-.-.-.-.-.-.-.-recupere el mensaje de grupo: " + aux.getId());
 			historial.add(aux);
 		}
 
@@ -267,8 +250,6 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 		Entidad eGrupo = servPersistencia.recuperarEntidad(grupo.getId());
 		servPersistencia.eliminarPropiedadEntidad(eGrupo, "gruposHijo");
 		servPersistencia.anadirPropiedadEntidad(eGrupo, "gruposHijo", obtenerGruposHijos(grupo.getGruposHijo()));
-		System.out.println("++++++++  mis id hijos guardados: " + servPersistencia.recuperarPropiedadEntidad(eGrupo, "gruposHijo"));
-
 	}
 	
 	@Override
@@ -305,8 +286,6 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 		for (Mensaje iterador : mens) {
 			aux += iterador.getId() + " ";
 		}
-		
-		System.out.println("Mensajes en grupo que guarde sus id: " + aux);
 		return aux.trim();
 	}
 
@@ -324,7 +303,6 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 		for (ChatIndividual iterador : miembros) {
 			aux += iterador.getId() + " ";
 		}
-		System.out.println("Adapt chat grupo  obtenerMiebmros " + aux);
 		return aux.trim();
 	}
 
@@ -345,7 +323,6 @@ public final class AdaptadorChatGrupoDAO implements IAdaptadorChatGrupoDAO {
 		for (ChatGrupo iterador : miembros) {
 			aux += iterador.getId() + " ";
 		}
-		System.out.println("obtenerGruposHijos " + aux);
 		return aux.trim();
 	}
 	
