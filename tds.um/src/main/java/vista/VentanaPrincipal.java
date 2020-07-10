@@ -104,7 +104,8 @@ public class VentanaPrincipal extends JFrame {
 		Component horizontalStrut = Box.createHorizontalStrut(135);
 		menuBar.add(horizontalStrut);
 
-		JMenu mnMenu = new JMenu("Opciones");
+		JMenu mnMenu = new JMenu(); 
+		mnMenu.setIcon( new ImageIcon("./interfaz/Options.png")); 
 		menuBar.add(mnMenu);
 
 		JMenuItem mntmCrearContacto = new JMenuItem("Añadir Contacto");
@@ -243,7 +244,8 @@ public class VentanaPrincipal extends JFrame {
 		Component horizontalStrut_1 = Box.createHorizontalStrut(254);
 		menuBar.add(horizontalStrut_1);
 
-		JMenu mnOpciones2 = new JMenu("Opciones2");
+		JMenu mnOpciones2 = new JMenu();
+		mnOpciones2.setIcon( new ImageIcon("./interfaz/Options.png")); 
 		menuBar.add(mnOpciones2);
 
 		JMenuItem mntmVaciarChat = new JMenuItem("Vaciar Chat");
@@ -336,7 +338,8 @@ public class VentanaPrincipal extends JFrame {
 		});
 		mnOpciones2.add(mntmExpotarConversacin);
 
-		JButton btnLupa = new JButton("Lupa");
+		JButton btnLupa = new JButton();
+		btnLupa.setIcon( new ImageIcon("./interfaz/Lupa.png")); 
 		btnLupa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (chatActual != null) {
