@@ -2,6 +2,7 @@ package vista;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.swing.JButton;
@@ -11,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import modelo.ChatGrupo;
+import modelo.ChatIndividual;
 import modelo.Usuario;
 
 import javax.swing.JSplitPane;
@@ -20,9 +22,11 @@ import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+@SuppressWarnings("serial")
 public class GestionAdmins extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
+	@SuppressWarnings("unused")
 	private JFrame ventana;
 	private ChatGrupo chatGrupo;
 
@@ -49,6 +53,8 @@ public class GestionAdmins extends JDialog {
 					}
 				});
 				panelMiembros.add(comboBoxAdd);
+				List<ChatIndividual> miembros = chatGrupo.getMiembros().stream().filter(m -> ! (chatGrupo.getAdministradores().contains(m.getContacto())))
+												.collect(Collectors.toList());
 				//chatGrupo.getMiembros().stream().filter(m -> ! (chatGrupo.getAdministradores().contains(m.getContacto()))
 										//		.collect(Collectors.toList()));
 			}
