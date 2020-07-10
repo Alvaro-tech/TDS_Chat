@@ -1,6 +1,5 @@
 package controlador;
 
-import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Iterator;
@@ -20,6 +19,7 @@ import modelo.GestorGraficas;
 import modelo.Mensaje;
 import modelo.MensajeWhatsApp;
 import modelo.PDFGenerator;
+import modelo.Plataforma;
 import modelo.Usuario;
 import persistencia.AdaptadorChatGrupoDAO;
 import persistencia.AdaptadorChatIndividualDAO;
@@ -275,7 +275,6 @@ public class ControladorUsuarios  implements MensajesListener{
 	}
 	
 	
-	//TODO: VER SI PODEMOS EVITAR VIOLAR EL CREADOR.
 		/**
 		 * Funcion que crea un mensaje que se quiere enviar.
 		 * @param emisor
@@ -908,6 +907,20 @@ public class ControladorUsuarios  implements MensajesListener{
 	}
 
 
+	/**
+	 * Funcion que lee un fichero.
+	 * @param fileS
+	 * @param plataforma
+	 */
+	public void setFichero(String fileS, String plataforma) {
+		CargadorMensajes c = new CargadorMensajes();
+		c.addObserver(this);
+		if(plataforma.equals("IOS")) {
+			c.setFichero(fileS, Plataforma.IOS);
+		}else {
+			c.setFichero(fileS, Plataforma.ANDROID);
+		}
+	}
 	
 	/**
 	 * Funcion "ActionPerformed" de EventoMensaje.
@@ -974,10 +987,5 @@ public class ControladorUsuarios  implements MensajesListener{
 	public void hacerUserPremium() {
 		this.usuarioActual.setPremium(true);
 		AdaptadorUsuarioDAO.getUnicaInstancia().updatePremium(usuarioActual);
-	}
-
-	public void setFichero(String fileS, String plataforma) {
-		// TODO Auto-generated method stub
-		
 	}
 }

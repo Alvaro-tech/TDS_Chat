@@ -412,7 +412,10 @@ public class VentanaPrincipal extends JFrame {
 							listString, listString[0]);
 					plataforma = (String) seleccion;
 					ControladorUsuarios.getUnicaInstancia().setFichero(fileS, plataforma);
-					
+					JOptionPane
+					.showMessageDialog(ventana,
+							"Se han guardado los mensajes en la base de datos. \n",
+							"Success", JOptionPane.INFORMATION_MESSAGE);
 					}
 			}
 		});
