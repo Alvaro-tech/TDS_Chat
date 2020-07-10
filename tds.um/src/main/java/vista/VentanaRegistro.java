@@ -2,33 +2,24 @@ package vista;
 
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-
-import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.awt.GridBagLayout;
 import javax.swing.JTextField;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import javax.swing.JTextArea;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.SwingConstants;
 import javax.swing.JTextPane;
 import java.awt.SystemColor;
 import java.awt.Font;
 import java.awt.event.ActionListener;
-import java.util.Date;
-import java.util.StringTokenizer;
 import java.awt.event.ActionEvent;
-import com.toedter.calendar.JCalendar;
 import controlador.ControladorUsuarios;
-import modelo.Mensaje;
-import persistencia.AdaptadorMensajeDAO;
-
 import com.toedter.calendar.JDateChooser;
 
 
+@SuppressWarnings("serial")
 public class VentanaRegistro extends JPanel {
 	private JFrame ventana;
 	private JPanel jpanelAnterior;
@@ -76,7 +67,6 @@ public class VentanaRegistro extends JPanel {
 										textPhone_W.getText(),										
 										new String(passwordClave_W.getPassword()));
 						if (registrado) {
-							System.out.println("fechaN : " + dateChooser.getDateFormatString());
 							JOptionPane.showMessageDialog(
 										ventana,
 										"Asistente registrado correctamente.",

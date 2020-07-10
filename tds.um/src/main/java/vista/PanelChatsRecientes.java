@@ -2,22 +2,17 @@ package vista;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.LinkedList;
-
 import javax.swing.DefaultListModel;
-import javax.swing.JButton;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
 import complementosGUI.ChatRenderer;
 import modelo.Chat;
 
+@SuppressWarnings("serial")
 public class PanelChatsRecientes extends JPanel {
 
 	private Chat chatSelected;
@@ -38,10 +33,8 @@ public class PanelChatsRecientes extends JPanel {
 		contentPanel.setLayout(new BorderLayout(0, 0));
 		
 		
-		System.out.println("Comienzo a cargar los chats recientes");
 		for(Chat c : chatRec) {
 			listModel.addElement(c);
-			System.out.println("cargado mensajes en panelChatRecientes " + c.getId());
 		}
 		
 		
@@ -50,7 +43,6 @@ public class PanelChatsRecientes extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				chatSelected = list.getSelectedValue();
-				System.out.println("Selected: " + chatSelected.getNombre() + " id " + chatSelected.getId());
 				padre.setChatActual(chatSelected); //TODO: Herejia
 			}
 		});
@@ -69,7 +61,6 @@ public class PanelChatsRecientes extends JPanel {
 	
 	public void updateChatsRecientes(Chat chat) {
 		listModel.addElement(chat);
-		System.out.println("termine el updateChatsRecientes de panelChatsRecientes");
 	}
 	
 	public void deleteChatReciente(Chat chat) {

@@ -2,16 +2,13 @@ package vista;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import controlador.ControladorUsuarios;
-
 import java.awt.GridBagLayout;
 import javax.swing.JTextField;
 import java.awt.GridBagConstraints;
@@ -19,11 +16,11 @@ import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
-import javax.swing.SwingConstants;
 import java.awt.Color;
 import javax.swing.JTextPane;
 import java.awt.SystemColor;
 
+@SuppressWarnings("serial")
 public class PanelCrearContacto extends JDialog {
 	private JFrame ventana = new JFrame();
 	private final JPanel contentPanel = new JPanel();
@@ -59,10 +56,10 @@ public class PanelCrearContacto extends JDialog {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel);
 		GridBagLayout gbl_contentPanel = new GridBagLayout();
-		gbl_contentPanel.columnWidths = new int[]{103, 106, 129, 92, 0};
-		gbl_contentPanel.rowHeights = new int[]{52, 29, 0, 0, 41, 39, 0};
-		gbl_contentPanel.columnWeights = new double[]{0.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
-		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPanel.columnWidths = new int[] { 103, 106, 129, 92, 0 };
+		gbl_contentPanel.rowHeights = new int[] { 52, 29, 0, 0, 41, 39, 0 };
+		gbl_contentPanel.columnWeights = new double[] { 0.0, 1.0, 1.0, 0.0, Double.MIN_VALUE };
+		gbl_contentPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		contentPanel.setLayout(gbl_contentPanel);
 		{
 			txtCrear = new JTextPane();
@@ -145,16 +142,14 @@ public class PanelCrearContacto extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						try {
-							ControladorUsuarios.getUnicaInstancia().addChatToUser(textNombreArea.getText(), textTelefonoArea.getText());
-							JOptionPane.showMessageDialog(ventana,
-									"Contacto añadido correctamente",
-									"Añadir conctacto",
+							ControladorUsuarios.getUnicaInstancia().addChatToUser(textNombreArea.getText(),
+									textTelefonoArea.getText());
+							JOptionPane.showMessageDialog(ventana, "Contacto añadido correctamente", "Añadir conctacto",
 									JOptionPane.INFORMATION_MESSAGE);
 						} catch (Exception e) {
 							JOptionPane.showMessageDialog(ventana,
 									"No se ha podido llevar a cabo el registro. Parámetros incorrectos\n",
-									"Añadir conctacto",
-									JOptionPane.ERROR_MESSAGE);
+									"Añadir conctacto", JOptionPane.ERROR_MESSAGE);
 						}
 					}
 				});

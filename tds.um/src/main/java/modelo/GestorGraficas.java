@@ -34,9 +34,10 @@ public class GestorGraficas {
 		List<ChatGrupo> sixTopGrups = ControladorUsuarios.getUnicaInstancia().get6GruposTop();
 		for (int i = 0; i < sixTopGrups.size(); i++) {
 			ChatGrupo g = sixTopGrups.get(i);
-			chart.addSeries(g.getNombre(), g.porcentajeDelTotal(ControladorUsuarios.getUnicaInstancia().getusuarioActual()));
+			chart.addSeries(g.getNombre(),
+					g.porcentajeDelTotal(ControladorUsuarios.getUnicaInstancia().getusuarioActual()));
 		}
-		
+
 		return chart;
 	}
 
@@ -60,8 +61,8 @@ public class GestorGraficas {
 			y[i] = (double) ControladorUsuarios.getUnicaInstancia().getMensajesTotalesDelMes(i);
 		}
 
-		XYChart chart = new XYChartBuilder().xAxisTitle("Mes").yAxisTitle("Mensajes envíados").width(600).height(400).title("Mensajes al mes")
-				.build();
+		XYChart chart = new XYChartBuilder().xAxisTitle("Mes").yAxisTitle("Mensajes envíados").width(600).height(400)
+				.title("Mensajes al mes").build();
 		chart.getStyler().setYAxisMin((double) -50); // lo hago pequeño por ahora
 		chart.getStyler().setYAxisMax((double) 50);
 

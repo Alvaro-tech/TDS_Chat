@@ -2,18 +2,15 @@ package complementosGUI;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.Scrollbar;
-
-import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
-import javax.swing.JEditorPane;
 import java.awt.Font;
 import java.awt.Color;
 
+@SuppressWarnings("serial")
 public class MostrarBusquedas extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
