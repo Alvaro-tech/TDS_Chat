@@ -177,25 +177,34 @@ public class VentanaPrincipal extends JFrame {
 		});
 		mnMenu.add(mntmMostrarContactos);
 
+		// TODO: Mostrar esta opcion cuando te haces premium al momento.
+				JMenuItem mntmMostrarEstadis = new JMenuItem("Mostrar Estadísticas");
+				mntmMostrarEstadis.setEnabled(false); 
+				if(ControladorUsuarios.getUnicaInstancia().getusuarioActual().isPremium()) { mntmMostrarEstadis.setEnabled(true); }
+				mntmMostrarEstadis.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						VentanaEstadisticas frame = new VentanaEstadisticas();
+						frame.setVisible(true);
+					}
+				});
+				mnMenu.add(mntmMostrarEstadis);
+				
 		// TODO: Disable esta opcion si ya eres premium
 		JMenuItem mntmPremium = new JMenuItem("Premium");
+		if(ControladorUsuarios.getUnicaInstancia().getusuarioActual().isPremium()) { mntmPremium.setEnabled(false); }
 		mntmPremium.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PanelAltaPremiun nuevo = new PanelAltaPremiun(ventana, venPrinAc);
 				nuevo.setVisible(true);
+				if(ControladorUsuarios.getUnicaInstancia().getusuarioActual().isPremium()) { 
+					mntmMostrarEstadis.setEnabled(true); 
+					 mntmPremium.setEnabled(false);
+				}
 			}
 		});
 		mnMenu.add(mntmPremium);
 
-		// TODO: Mostrar esta opcion SOLO si eres Premium
-		JMenuItem mntmMostrarEstadis = new JMenuItem("Mostrar Estadísticas");
-		mntmMostrarEstadis.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				VentanaEstadisticas frame = new VentanaEstadisticas();
-				frame.setVisible(true);
-			}
-		});
-		mnMenu.add(mntmMostrarEstadis);
+		
 
 		// TODO: Implementar esta función
 		JMenuItem mntmCerrarSesion = new JMenuItem("Cerrar Sesión");
