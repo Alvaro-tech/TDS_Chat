@@ -8,7 +8,6 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import complementosGUI.JPanelBackground;
 import controlador.ControladorUsuarios;
 import modelo.Usuario;
 
@@ -34,7 +33,7 @@ import javax.swing.SwingConstants;
 
 public class PanelAltaPremiun extends JDialog {
 
-	private final JPanelBackground contentPanel = new JPanelBackground();
+	private final JPanel contentPanel = new JPanel();
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JTextField textPrecio;
 	private JFrame ventana;
@@ -50,14 +49,12 @@ public class PanelAltaPremiun extends JDialog {
 		
 		setBounds(80, 80, 500, 320);
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{434, 0};
+		gridBagLayout.columnWidths = new int[]{484, 0};
 		gridBagLayout.rowHeights = new int[]{228, 33, 0};
 		gridBagLayout.columnWeights = new double[]{0.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		getContentPane().setLayout(gridBagLayout);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-
-		contentPanel.setBackground("./interfaz/Premium_Fondo.jpg");
 		
 		GridBagConstraints gbc_contentPanel = new GridBagConstraints();
 		gbc_contentPanel.fill = GridBagConstraints.BOTH;
@@ -68,17 +65,17 @@ public class PanelAltaPremiun extends JDialog {
 		contentPanel.setLayout(new BorderLayout(0, 0));
 		{
 			JEditorPane dtrpnconvierteteEnPremium = new JEditorPane();
-			dtrpnconvierteteEnPremium.setBackground(SystemColor.menu);
+			dtrpnconvierteteEnPremium.setBackground(new Color(255, 255, 255));
 			dtrpnconvierteteEnPremium.setFont(new Font("Tahoma", Font.BOLD, 16));
 			dtrpnconvierteteEnPremium.setForeground(SystemColor.textHighlight);
 			dtrpnconvierteteEnPremium.setEditable(false);
-			dtrpnconvierteteEnPremium.setText("              ¡¡¡Conviertete en Premium hoy!!!");
+			dtrpnconvierteteEnPremium.setText("                    ¡¡¡Conviertete en Premium hoy!!!");
 			contentPanel.add(dtrpnconvierteteEnPremium, BorderLayout.NORTH);
 		}
 		{
 			//El numero cambia antes de darle al ok
-			JPanelBackground panel = new JPanelBackground();
-			panel.setOpaque(false);
+			JPanel panel = new JPanel();
+			panel.setBackground(new Color(175, 238, 238));
 			panel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 			contentPanel.add(panel, BorderLayout.CENTER);
 			GridBagLayout gbl_panel = new GridBagLayout();
@@ -89,6 +86,8 @@ public class PanelAltaPremiun extends JDialog {
 			panel.setLayout(gbl_panel);
 			{
 				JRadioButton rdbtnMensajes = new JRadioButton("Descuento para Jovenes");
+				rdbtnMensajes.setBackground(new Color(175, 238, 238));
+				rdbtnMensajes.setFont(new Font("Tahoma", Font.BOLD, 11));
 				rdbtnMensajes.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						mostrarPrecioSinCompromiso();
@@ -97,6 +96,8 @@ public class PanelAltaPremiun extends JDialog {
 				});
 				{
 					JRadioButton rdbtnSinDescuento = new JRadioButton("Sin descuento");
+					rdbtnSinDescuento.setFont(new Font("Tahoma", Font.BOLD, 11));
+					rdbtnSinDescuento.setBackground(new Color(175, 238, 238));
 					rdbtnSinDescuento.setHorizontalAlignment(SwingConstants.LEFT);
 					rdbtnSinDescuento.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
@@ -123,6 +124,8 @@ public class PanelAltaPremiun extends JDialog {
 			}
 			{
 				JRadioButton rdbtnEspecialVerano = new JRadioButton("Descuento para Viciados");
+				rdbtnEspecialVerano.setFont(new Font("Tahoma", Font.BOLD, 11));
+				rdbtnEspecialVerano.setBackground(new Color(175, 238, 238));
 				rdbtnEspecialVerano.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						mostrarPrecioSinCompromiso();
@@ -139,6 +142,8 @@ public class PanelAltaPremiun extends JDialog {
 			}
 			{
 				JRadioButton rdbtnEstandar = new JRadioButton("Descuento de Santa Tecla");
+				rdbtnEstandar.setBackground(new Color(175, 238, 238));
+				rdbtnEstandar.setFont(new Font("Tahoma", Font.BOLD, 11));
 				rdbtnEstandar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						mostrarPrecioSinCompromiso();
@@ -156,10 +161,10 @@ public class PanelAltaPremiun extends JDialog {
 			{
 				JTextPane txtpnPrecio = new JTextPane();
 				txtpnPrecio.setEditable(false);
-				txtpnPrecio.setBackground(SystemColor.menu);
+				txtpnPrecio.setBackground(new Color(245, 255, 250));
 				txtpnPrecio.setFont(new Font("Tahoma", Font.BOLD, 17));
 				txtpnPrecio.setForeground(SystemColor.textHighlight);
-				txtpnPrecio.setText("         Precio:");
+				txtpnPrecio.setText("     Precio:");
 				GridBagConstraints gbc_txtpnPrecio = new GridBagConstraints();
 				gbc_txtpnPrecio.insets = new Insets(0, 0, 0, 5);
 				gbc_txtpnPrecio.fill = GridBagConstraints.BOTH;
@@ -169,6 +174,7 @@ public class PanelAltaPremiun extends JDialog {
 			}
 			{
 				textPrecio = new JTextField();
+				textPrecio.setBackground(new Color(245, 255, 250));
 				textPrecio.setFont(new Font("Tahoma", Font.BOLD, 14));
 				textPrecio.setText("???");//texto donde aparece el precio.
 				textPrecio.setEditable(false);
@@ -181,8 +187,9 @@ public class PanelAltaPremiun extends JDialog {
 			}
 		}
 		{
-			JPanelBackground buttonPane = new JPanelBackground();
-			buttonPane.setOpaque(false);
+			JPanel buttonPane = new JPanel();
+			buttonPane.setBackground(new Color(175, 238, 238));
+			
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			GridBagConstraints gbc_buttonPane = new GridBagConstraints();
 			gbc_buttonPane.anchor = GridBagConstraints.NORTH;
