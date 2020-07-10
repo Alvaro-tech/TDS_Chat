@@ -1,33 +1,43 @@
 package vista;
 
 import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
 import complementosGUI.PanelEmojis;
 import controlador.ControladorUsuarios;
 import modelo.Chat;
 import modelo.ChatGrupo;
 import modelo.ChatIndividual;
 import modelo.Usuario;
+
+import javax.swing.JToolBar;
 import java.awt.GridBagLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
+
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JMenuBar;
+import javax.swing.JTextField;
 import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
+
 import java.awt.Color;
+import javax.swing.JSplitPane;
+import javax.swing.JTable;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
 import java.awt.event.ActionEvent;
 
-@SuppressWarnings("serial")
 public class VentanaPrincipal extends JFrame {
 	JPanel panellzq = new JPanel();
 	JPanel panelDividido = new JPanel();
@@ -122,6 +132,10 @@ public class VentanaPrincipal extends JFrame {
 				
 				ChatGrupo[] gruposAux = new ChatGrupo[usuario.getChatsGroup().size()];
 			     usuario.getChatsGroup().toArray(gruposAux);
+			     
+			     for (ChatGrupo chatGrupo : gruposAux) {
+					System.out.println(chatGrupo.getNombre());
+				}
 				
 				Object seleccion = JOptionPane.showInputDialog(
 						   ventana,
@@ -133,6 +147,7 @@ public class VentanaPrincipal extends JFrame {
 						   );
 				
 				ChatGrupo c = (ChatGrupo) seleccion;
+				System.out.println("###" + c.getNombre());
 				PanelCrearGrupo nuevo = new PanelCrearGrupo(venPrinAc, true, ventana, c);
 				nuevo.setVisible(true);
 			}
@@ -162,34 +177,25 @@ public class VentanaPrincipal extends JFrame {
 		});
 		mnMenu.add(mntmMostrarContactos);
 
-		// TODO: Mostrar esta opcion cuando te haces premium al momento.
-				JMenuItem mntmMostrarEstadis = new JMenuItem("Mostrar Estadísticas");
-				mntmMostrarEstadis.setEnabled(false); 
-				if(ControladorUsuarios.getUnicaInstancia().getusuarioActual().isPremium()) { mntmMostrarEstadis.setEnabled(true); }
-				mntmMostrarEstadis.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						VentanaEstadisticas frame = new VentanaEstadisticas();
-						frame.setVisible(true);
-					}
-				});
-				mnMenu.add(mntmMostrarEstadis);
-				
 		// TODO: Disable esta opcion si ya eres premium
 		JMenuItem mntmPremium = new JMenuItem("Premium");
-		if(ControladorUsuarios.getUnicaInstancia().getusuarioActual().isPremium()) { mntmPremium.setEnabled(false); }
 		mntmPremium.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PanelAltaPremiun nuevo = new PanelAltaPremiun(ventana, venPrinAc);
 				nuevo.setVisible(true);
-				if(ControladorUsuarios.getUnicaInstancia().getusuarioActual().isPremium()) { 
-					mntmMostrarEstadis.setEnabled(true); 
-					 mntmPremium.setEnabled(false);
-				}
 			}
 		});
 		mnMenu.add(mntmPremium);
 
-		
+		// TODO: Mostrar esta opcion SOLO si eres Premium
+		JMenuItem mntmMostrarEstadis = new JMenuItem("Mostrar Estadísticas");
+		mntmMostrarEstadis.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				VentanaEstadisticas frame = new VentanaEstadisticas();
+				frame.setVisible(true);
+			}
+		});
+		mnMenu.add(mntmMostrarEstadis);
 
 		// TODO: Implementar esta función
 		JMenuItem mntmCerrarSesion = new JMenuItem("Cerrar Sesión");
