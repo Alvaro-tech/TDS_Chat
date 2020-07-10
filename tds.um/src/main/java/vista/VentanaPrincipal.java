@@ -350,10 +350,26 @@ public class VentanaPrincipal extends JFrame {
 		mntmGadmin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				//TODO no entrar si el chat actual es nulo, un chatIndividual o tu no eres admin del chat selccionado
-				ChatGrupo c = (ChatGrupo) chatActual;
-				GestionAdmins aux = new GestionAdmins(ventana, c);
-				aux.setVisible(true);
+				if(chatActual == null || chatActual.getClass().getSimpleName().equals("ChatIndividual")) {
+					JOptionPane
+					.showMessageDialog(ventana,
+							"Se ha producido un error, o no has seleccionado ningun chat o este chat\n"
+							+ "es individual. \n" ,
+							"Error", JOptionPane.ERROR_MESSAGE);
+				}else {
+					ChatGrupo c = (ChatGrupo) chatActual;
+					if(c.getAdministradores().contains(ControladorUsuarios.getUnicaInstancia().getusuarioActual())) {
+						GestionAdmins aux = new GestionAdmins(ventana, c);
+						aux.setVisible(true);
+					}else {//no eres admin.
+						JOptionPane
+						.showMessageDialog(ventana,
+								"No puedes gestionar los administradores si no eres un administrador. \n",
+								"Error", JOptionPane.ERROR_MESSAGE);
+					}
+					
+				}
+				
 			}
 		});
 		mnOpciones2.add(mntmGadmin);
