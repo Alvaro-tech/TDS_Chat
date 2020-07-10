@@ -2,6 +2,7 @@ package vista;
 
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import org.knowm.xchart.PieChart;
@@ -33,7 +34,7 @@ public class VentanaEstadisticas extends JFrame {
 	 * Create the frame.
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public VentanaEstadisticas() {
+	public VentanaEstadisticas(JFrame ventana) {
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 500);
 		contentPane = new JPanel();
@@ -101,10 +102,14 @@ public class VentanaEstadisticas extends JFrame {
 				
 			}
 		});
+		
 		btnImprimir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				ControladorUsuarios.getUnicaInstancia().imprimirChart(formatoSelect, aux);
-				
+				JOptionPane
+				.showMessageDialog(ventana,
+						"Se ha importado la foto en la carpeta estadísticas. \n",
+						"Success.", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 	}
