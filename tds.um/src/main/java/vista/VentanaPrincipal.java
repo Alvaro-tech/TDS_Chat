@@ -54,7 +54,7 @@ public class VentanaPrincipal extends JFrame {
 	private PanelConversacion panelConver;
 	private VentanaPrincipal venPrinAc;
 	private PanelEmojis panelEmojis;
-	
+
 	private JPanel panelExtra;
 
 	/**
@@ -104,8 +104,8 @@ public class VentanaPrincipal extends JFrame {
 		Component horizontalStrut = Box.createHorizontalStrut(135);
 		menuBar.add(horizontalStrut);
 
-		JMenu mnMenu = new JMenu(); 
-		mnMenu.setIcon( new ImageIcon("./interfaz/Options.png")); 
+		JMenu mnMenu = new JMenu();
+		mnMenu.setIcon(new ImageIcon("./interfaz/Options.png"));
 		menuBar.add(mnMenu);
 
 		JMenuItem mntmCrearContacto = new JMenuItem("Añadir Contacto");
@@ -126,27 +126,22 @@ public class VentanaPrincipal extends JFrame {
 		});
 		mnMenu.add(mntmCrearGrupo);
 
-		//####### MODIFICA GRUPO #########
+		// ####### MODIFICA GRUPO #########
 		JMenuItem mntmModificarGrupo = new JMenuItem("Modificar Grupo");
 		mntmModificarGrupo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				ChatGrupo[] gruposAux = new ChatGrupo[usuario.getChatsGroup().size()];
-			     usuario.getChatsGroup().toArray(gruposAux);
-			     
-			     for (ChatGrupo chatGrupo : gruposAux) {
+				usuario.getChatsGroup().toArray(gruposAux);
+
+				for (ChatGrupo chatGrupo : gruposAux) {
 					System.out.println(chatGrupo.getNombre());
 				}
-				
-				Object seleccion = JOptionPane.showInputDialog(
-						   ventana,
-						   "Seleccione el grupo en cuestión",
-						   "Selector de grupos",
-						   JOptionPane.QUESTION_MESSAGE,
-						   null,  // null para icono defecto
-						   gruposAux, gruposAux[0]
-						   );
-				
+
+				Object seleccion = JOptionPane.showInputDialog(ventana, "Seleccione el grupo en cuestión",
+						"Selector de grupos", JOptionPane.QUESTION_MESSAGE, null, // null para icono defecto
+						gruposAux, gruposAux[0]);
+
 				ChatGrupo c = (ChatGrupo) seleccion;
 				System.out.println("###" + c.getNombre());
 				PanelCrearGrupo nuevo = new PanelCrearGrupo(venPrinAc, true, ventana, c);
@@ -170,7 +165,7 @@ public class VentanaPrincipal extends JFrame {
 				gbc_panelExtra.gridx = 2;
 				gbc_panelExtra.gridy = 0;
 				panelDividido.add(panelExtra, gbc_panelExtra);
-				
+
 				panelDividido.revalidate();
 				panelDividido.repaint();
 			};
@@ -178,31 +173,40 @@ public class VentanaPrincipal extends JFrame {
 		});
 		mnMenu.add(mntmMostrarContactos);
 
-		// TODO: Disable esta opcion si ya eres premium
-		JMenuItem mntmPremium = new JMenuItem("Premium");
-		mntmPremium.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				PanelAltaPremiun nuevo = new PanelAltaPremiun(ventana, venPrinAc);
-				nuevo.setVisible(true);
-			}
-		});
-		mnMenu.add(mntmPremium);
-
-		// TODO: Mostrar esta opcion SOLO si eres Premium
 		JMenuItem mntmMostrarEstadis = new JMenuItem("Mostrar Estadísticas");
+		mntmMostrarEstadis.setEnabled(false);
+		if (ControladorUsuarios.getUnicaInstancia().getusuarioActual().isPremium()) {
+			mntmMostrarEstadis.setEnabled(true);
+		}
 		mntmMostrarEstadis.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				VentanaEstadisticas frame = new VentanaEstadisticas();
 				frame.setVisible(true);
 			}
 		});
+
+		
+		JMenuItem mntmPremium = new JMenuItem("Premium");
+		if (ControladorUsuarios.getUnicaInstancia().getusuarioActual().isPremium()) {
+			mntmPremium.setEnabled(false);
+		}
+		mntmPremium.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PanelAltaPremiun nuevo = new PanelAltaPremiun(ventana, venPrinAc);
+				nuevo.setVisible(true);
+				mntmMostrarEstadis.setEnabled(true);
+				mntmPremium.setEnabled(false);
+			}
+		});
+		
+		mnMenu.add(mntmPremium);
 		mnMenu.add(mntmMostrarEstadis);
 
 		// TODO: Implementar esta función
 		JMenuItem mntmCerrarSesion = new JMenuItem("Cerrar Sesión");
 		mntmCerrarSesion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				VentanaLogin framePrincipal = new VentanaLogin(); 
+				VentanaLogin framePrincipal = new VentanaLogin();
 				framePrincipal.setVisible(true);
 				frame.dispose();
 			}
@@ -245,7 +249,7 @@ public class VentanaPrincipal extends JFrame {
 		menuBar.add(horizontalStrut_1);
 
 		JMenu mnOpciones2 = new JMenu();
-		mnOpciones2.setIcon( new ImageIcon("./interfaz/Options.png")); 
+		mnOpciones2.setIcon(new ImageIcon("./interfaz/Options.png"));
 		menuBar.add(mnOpciones2);
 
 		JMenuItem mntmVaciarChat = new JMenuItem("Vaciar Chat");
@@ -259,43 +263,34 @@ public class VentanaPrincipal extends JFrame {
 			}
 		});
 		mnOpciones2.add(mntmVaciarChat);
-		
-		
+
 		JMenuItem mntmAgregarDesconodico = new JMenuItem("Agregar contacto desconocido");
 		mntmAgregarDesconodico.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
-				if(chatActual.getClass().getSimpleName().equals("ChatIndividual")) {
+
+				if (chatActual.getClass().getSimpleName().equals("ChatIndividual")) {
 					ChatIndividual chat = (ChatIndividual) chatActual;
-					String nuevoNombre = JOptionPane.showInputDialog("Escribeme el nombre de contacto que quieres ponerle");
-					if(nuevoNombre == null || nuevoNombre.equals("")) {
-						JOptionPane
-						.showMessageDialog(ventana,
-								"No has introducido ningún nombre.\n",
-								"Error", JOptionPane.ERROR_MESSAGE);
+					String nuevoNombre = JOptionPane
+							.showInputDialog("Escribeme el nombre de contacto que quieres ponerle");
+					if (nuevoNombre == null || nuevoNombre.equals("")) {
+						JOptionPane.showMessageDialog(ventana, "No has introducido ningún nombre.\n", "Error",
+								JOptionPane.ERROR_MESSAGE);
 						return;
 					}
-					
-					if(ControladorUsuarios.getUnicaInstancia().pasarDeDesconocidoAContacto(chat, nuevoNombre)) {
-						JOptionPane
-						.showMessageDialog(ventana,
-								"Ha sido agregado el contacto sin problemas.\n",
-								"Done", JOptionPane.INFORMATION_MESSAGE);
-					}else {
-						JOptionPane
-						.showMessageDialog(ventana,
-								"No ha sido posible agregar a este contacto.\n",
-								"Error", JOptionPane.ERROR_MESSAGE);
+
+					if (ControladorUsuarios.getUnicaInstancia().pasarDeDesconocidoAContacto(chat, nuevoNombre)) {
+						JOptionPane.showMessageDialog(ventana, "Ha sido agregado el contacto sin problemas.\n", "Done",
+								JOptionPane.INFORMATION_MESSAGE);
+					} else {
+						JOptionPane.showMessageDialog(ventana, "No ha sido posible agregar a este contacto.\n", "Error",
+								JOptionPane.ERROR_MESSAGE);
 					}
-					
-				}else {
-					JOptionPane
-					.showMessageDialog(ventana,
-							"No puedes seleccionar un grupo.\n",
-							"Error", JOptionPane.ERROR_MESSAGE);
+
+				} else {
+					JOptionPane.showMessageDialog(ventana, "No puedes seleccionar un grupo.\n", "Error",
+							JOptionPane.ERROR_MESSAGE);
 				}
-				
-				
+
 			}
 		});
 		mnMenu.add(mntmAgregarDesconodico);
@@ -339,7 +334,7 @@ public class VentanaPrincipal extends JFrame {
 		mnOpciones2.add(mntmExpotarConversacin);
 
 		JButton btnLupa = new JButton();
-		btnLupa.setIcon( new ImageIcon("./interfaz/Lupa.png")); 
+		btnLupa.setIcon(new ImageIcon("./interfaz/Lupa.png"));
 		btnLupa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (chatActual != null) {
@@ -386,7 +381,7 @@ public class VentanaPrincipal extends JFrame {
 		gbc_panelzq.gridy = 0;
 		panellzq.setBackground(new Color(135, 206, 250));
 		panelDividido.add(panellzq, gbc_panelzq);
-		
+
 		panelExtra = new JPanel();
 		panelExtra.setBackground(new Color(176, 196, 222));
 		GridBagConstraints gbc_panelExtra = new GridBagConstraints();
@@ -434,7 +429,7 @@ public class VentanaPrincipal extends JFrame {
 		panelDividido.repaint();
 
 	}
-	
+
 	public void mostrarListadoEmojis() {
 		panelEmojis = new PanelEmojis(venPrinAc);
 		panelDividido.remove(panelExtra);
@@ -446,17 +441,17 @@ public class VentanaPrincipal extends JFrame {
 		gbc_panelExtra.gridx = 2;
 		gbc_panelExtra.gridy = 0;
 		panelDividido.add(panelExtra, gbc_panelExtra);
-		
+
 		panelDividido.revalidate();
 		panelDividido.repaint();
-		
+
 	}
-	
+
 	public void mandarEmoji(int nEmoji) {
 		panelConver.peticionDeEmoji(nEmoji);
-		
+
 	}
-	
+
 	public void refrescarVentana() {
 		this.revalidate();
 		this.repaint();
