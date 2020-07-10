@@ -2,15 +2,13 @@ package complementosGUI;
 
 import java.awt.Component;
 import java.awt.Image;
-
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
-
 import modelo.ChatIndividual;
-import modelo.Usuario;
 
+@SuppressWarnings("serial")
 public class ContactoRenderer  extends JLabel implements ListCellRenderer<ChatIndividual> {
 
 	public ContactoRenderer() {

@@ -18,6 +18,7 @@ import javax.swing.JPanel;
  * 
  */
  
+@SuppressWarnings("serial")
 public class JPanelBackground extends JPanel {
  
 	// Atributo que guardara la imagen de Background que le pasemos.

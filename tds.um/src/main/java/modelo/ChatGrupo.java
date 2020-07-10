@@ -32,7 +32,6 @@ public class ChatGrupo extends Chat {
 	public ChatGrupo(String nombreg, ChatIndividual... mi) {
 		super(nombreg);
 		for (ChatIndividual m : mi) {
-			System.out.println("ejecucion de chatGrupo");
 			miembros.addFirst(m);
 		}
 		this.idPadre = "0"; // Se sobrescribira luego con el correcto. Evitar nulos
@@ -47,7 +46,6 @@ public class ChatGrupo extends Chat {
 	public ChatGrupo(String nombreg, LinkedList<ChatIndividual> mi) {
 		super(nombreg);
 		for (ChatIndividual m : mi) {
-			System.out.println("ejecucion de chatGrupo");
 			miembros.addFirst(m);
 		}
 	}

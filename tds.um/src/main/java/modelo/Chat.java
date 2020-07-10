@@ -197,7 +197,6 @@ public abstract class Chat implements Comparator<Chat> {
 	@Override
 	public int compare(Chat o1, Chat o2) {
 		int a = o2.getUltimoMensaje().getFecha().compareTo(o1.getUltimoMensaje().getFecha());
-		System.out.println(a);
 		return a;
 	}
 

@@ -13,6 +13,7 @@ import modelo.ChatIndividual;
 import modelo.Mensaje;
 import modelo.Usuario;
 
+@SuppressWarnings("serial")
 public class ChatRenderer  extends JLabel implements ListCellRenderer<Chat> {
 
 	public ChatRenderer() {

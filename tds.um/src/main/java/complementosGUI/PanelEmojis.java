@@ -1,29 +1,21 @@
 package complementosGUI;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
 
-import modelo.Chat;
-import modelo.ChatIndividual;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import tds.BubbleText;
 import vista.VentanaPrincipal;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
-import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
-
-import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import javax.swing.JList;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+@SuppressWarnings("serial")
 public class PanelEmojis extends JPanel {
 
 	private VentanaPrincipal padre;
