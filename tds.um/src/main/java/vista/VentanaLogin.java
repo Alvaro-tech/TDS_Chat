@@ -8,31 +8,20 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.SystemColor;
 import javax.swing.JPanel;
-import java.awt.FlowLayout;
 import javax.swing.JTextField;
 import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.SwingConstants;
 import javax.swing.JButton;
-import java.awt.GridLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import java.awt.Panel;
-import java.awt.TextField;
 import java.awt.event.ActionListener;
-import java.awt.font.TextMeasurer;
 import java.awt.event.ActionEvent;
-import java.awt.Color;
-import java.awt.ComponentOrientation;
-import javax.swing.JTextArea;
 import java.awt.Component;
 import javax.swing.JPasswordField;
-
 import controlador.ControladorUsuarios;
-import modelo.CatalogoUsuarios;
 
 
+@SuppressWarnings("serial")
 public class VentanaLogin extends JFrame{
 
 	private JFrame frame;
@@ -108,7 +97,6 @@ public class VentanaLogin extends JFrame{
 				
 				//Cambio de panel
 				if (ControlUser) {
-				System.out.println(ControladorUsuarios.getUnicaInstancia().getusuarioActual().getMovil());
 			//	VentanaPrincipal framePrincipal = new VentanaPrincipal(ControladorUsuarios.getUnicaInstancia().getusuarioActual()); 
 				VentanaPrincipal framePrincipal = new VentanaPrincipal(frame); 
 				framePrincipal.setVisible(true);

@@ -131,16 +131,11 @@ public class VentanaPrincipal extends JFrame {
 				gruposQueNecesito.toArray(gruposAux);
 				
 				if(gruposQueNecesito.size() != 0) {
-					for (ChatGrupo chatGrupo : gruposAux) {
-						System.out.println(chatGrupo.getNombre());
-					}
-
 					Object seleccion = JOptionPane.showInputDialog(ventana, "Seleccione el grupo en cuestión",
 							"Selector de grupos", JOptionPane.QUESTION_MESSAGE, null, // null para icono defecto
 							gruposAux, gruposAux[0]);
 
 					ChatGrupo c = (ChatGrupo) seleccion;
-					System.out.println("###" + c.getNombre());
 					PanelCrearGrupo nuevo = new PanelCrearGrupo(venPrinAc, true, ventana, c);
 					nuevo.setVisible(true);
 				}else {
