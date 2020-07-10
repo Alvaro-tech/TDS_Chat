@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import complementosGUI.PanelEmojis;
 import controlador.ControladorUsuarios;
@@ -16,6 +17,8 @@ import java.awt.Image;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JMenu;
@@ -28,6 +31,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -390,6 +394,29 @@ public class VentanaPrincipal extends JFrame {
 			}
 		});
 		mnOpciones2.add(mntmGadmin);
+		
+		JMenuItem mntmImportaM = new JMenuItem("Importar Mensajes de un txt");
+		mntmImportaM.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				final JFileChooser fc = new JFileChooser(".");
+				String plataforma = "";
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("TEXT FILES", "txt", "text");
+				fc.setFileFilter(filter);
+				int returnVal = fc.showOpenDialog(venPrinAc);
+				if(returnVal == JFileChooser.APPROVE_OPTION) {
+					File file = fc.getSelectedFile();
+					String fileS = file.getAbsolutePath();
+					String[] listString = {"IOS", "ANDROID"};
+					Object seleccion = JOptionPane.showInputDialog(ventana, "Seleccione el formato de la plataforma",
+							"Selector de plataforma", JOptionPane.QUESTION_MESSAGE, null, // null para icono defecto
+							listString, listString[0]);
+					plataforma = (String) seleccion;
+					ControladorUsuarios.getUnicaInstancia().setFichero(fileS, plataforma);
+					
+					}
+			}
+		});
+		mnOpciones2.add(mntmImportaM);
 
 
 		//############# LUPA ######################

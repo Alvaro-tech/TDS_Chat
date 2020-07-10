@@ -1,5 +1,6 @@
 package controlador;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Iterator;
@@ -973,5 +974,10 @@ public class ControladorUsuarios  implements MensajesListener{
 	public void hacerUserPremium() {
 		this.usuarioActual.setPremium(true);
 		AdaptadorUsuarioDAO.getUnicaInstancia().updatePremium(usuarioActual);
+	}
+
+	public void setFichero(String fileS, String plataforma) {
+		// TODO Auto-generated method stub
+		
 	}
 }
