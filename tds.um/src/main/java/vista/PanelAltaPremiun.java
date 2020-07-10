@@ -8,6 +8,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import complementosGUI.JPanelBackground;
 import controlador.ControladorUsuarios;
 import modelo.Usuario;
 
@@ -33,7 +34,7 @@ import javax.swing.SwingConstants;
 
 public class PanelAltaPremiun extends JDialog {
 
-	private final JPanel contentPanel = new JPanel();
+	private final JPanelBackground contentPanel = new JPanelBackground();
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JTextField textPrecio;
 	private JFrame ventana;
@@ -55,6 +56,9 @@ public class PanelAltaPremiun extends JDialog {
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		getContentPane().setLayout(gridBagLayout);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		contentPanel.setBackground("./interfaz/Premium_Fondo.jpg");
+		
 		GridBagConstraints gbc_contentPanel = new GridBagConstraints();
 		gbc_contentPanel.fill = GridBagConstraints.BOTH;
 		gbc_contentPanel.insets = new Insets(0, 0, 5, 0);
@@ -73,7 +77,8 @@ public class PanelAltaPremiun extends JDialog {
 		}
 		{
 			//El numero cambia antes de darle al ok
-			JPanel panel = new JPanel();
+			JPanelBackground panel = new JPanelBackground();
+			panel.setOpaque(false);
 			panel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 			contentPanel.add(panel, BorderLayout.CENTER);
 			GridBagLayout gbl_panel = new GridBagLayout();
@@ -176,7 +181,8 @@ public class PanelAltaPremiun extends JDialog {
 			}
 		}
 		{
-			JPanel buttonPane = new JPanel();
+			JPanelBackground buttonPane = new JPanelBackground();
+			buttonPane.setOpaque(false);
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			GridBagConstraints gbc_buttonPane = new GridBagConstraints();
 			gbc_buttonPane.anchor = GridBagConstraints.NORTH;
