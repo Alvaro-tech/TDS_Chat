@@ -344,6 +344,16 @@ public class VentanaPrincipal extends JFrame {
 			}
 		});
 		mnOpciones2.add(mntmEliminarUsuario);
+		
+		JMenuItem mntmGadmin = new JMenuItem("Gestionar Administradores");
+		mntmGadmin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ChatGrupo c = (ChatGrupo) chatActual;
+				GestionAdmins aux = new GestionAdmins(ventana, c);
+				aux.setVisible(true);
+			}
+		});
+		mnOpciones2.add(mntmGadmin);
 
 
 		//############# LUPA ######################

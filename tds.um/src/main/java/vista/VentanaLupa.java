@@ -43,6 +43,8 @@ public class VentanaLupa extends JDialog {
 	@SuppressWarnings("unused")
 	private JFrame ventana;
 	private ChatIndividual userSelect;
+	private JPanel panelSuperior;
+	private JPanel panelPenUlti;
 	/**
 	 * Launch the application.
 	 */
@@ -58,8 +60,17 @@ public class VentanaLupa extends JDialog {
 		gridBagLayout.columnWidths = new int[]{323, 0};
 		gridBagLayout.rowHeights = new int[]{39, 37, 61, 59, 30, 33, 0};
 		gridBagLayout.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 1.0, 1.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
 		getContentPane().setLayout(gridBagLayout);
+		{
+			panelSuperior = new JPanel();
+			GridBagConstraints gbc_panelSuperior = new GridBagConstraints();
+			gbc_panelSuperior.insets = new Insets(0, 0, 5, 0);
+			gbc_panelSuperior.fill = GridBagConstraints.BOTH;
+			gbc_panelSuperior.gridx = 0;
+			gbc_panelSuperior.gridy = 0;
+			getContentPane().add(panelSuperior, gbc_panelSuperior);
+		}
 		
 		usuariosPanel.setLayout(new FlowLayout());
 		usuariosPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -133,6 +144,15 @@ public class VentanaLupa extends JDialog {
 				fFinal = new JDateChooser();							//fecha a buscar final
 				panelFechas.add(fFinal);
 			}
+		}
+		{
+			panelPenUlti = new JPanel();
+			GridBagConstraints gbc_panelPenUlti = new GridBagConstraints();
+			gbc_panelPenUlti.insets = new Insets(0, 0, 5, 0);
+			gbc_panelPenUlti.fill = GridBagConstraints.BOTH;
+			gbc_panelPenUlti.gridx = 0;
+			gbc_panelPenUlti.gridy = 4;
+			getContentPane().add(panelPenUlti, gbc_panelPenUlti);
 		}
 		{
 			JPanel buttonPane = new JPanel();
