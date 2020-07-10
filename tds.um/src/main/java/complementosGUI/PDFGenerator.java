@@ -1,4 +1,4 @@
-package modelo;
+package complementosGUI;
 
 
 import java.io.FileOutputStream;
@@ -11,6 +11,8 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
+
+import modelo.Usuario;
 
 
 public class PDFGenerator {

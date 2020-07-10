@@ -1,4 +1,4 @@
-package modelo;
+package complementosGUI;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -12,6 +12,7 @@ import org.knowm.xchart.XYSeries;
 import org.knowm.xchart.BitmapEncoder.BitmapFormat;
 import org.knowm.xchart.style.markers.SeriesMarkers;
 import controlador.ControladorUsuarios;
+import modelo.ChatGrupo;
 
 /**
  * Clase que gestiona la creación de gráficas estadísticas.

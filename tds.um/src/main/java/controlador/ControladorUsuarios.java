@@ -15,11 +15,8 @@ import modelo.Chat;
 import modelo.ChatGrupo;
 import modelo.ChatIndividual;
 import modelo.Descuento;
-import modelo.GestorGraficas;
 import modelo.Mensaje;
 import modelo.MensajeWhatsApp;
-import modelo.PDFGenerator;
-import modelo.Plataforma;
 import modelo.Usuario;
 import persistencia.AdaptadorChatGrupoDAO;
 import persistencia.AdaptadorChatIndividualDAO;
@@ -28,6 +25,8 @@ import persistencia.AdaptadorUsuarioDAO;
 import persistencia.DAOException;
 import persistencia.FactoriaDAO;
 import CargadorMensajes.*;
+import complementosGUI.GestorGraficas;
+import complementosGUI.PDFGenerator;
 
 /**
  * Clase Controlador del sistema. Separa la vista de la lógica del dominio y la
