@@ -3,7 +3,6 @@ package modelo;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
-import persistencia.AdaptadorChatGrupoDAO;
 
 /**
  * Un chat de grupo es un conjunto de contacto individual (chat individual) Con
@@ -176,8 +175,7 @@ public class ChatGrupo extends Chat {
 	/**
 	 * Añade un nuevo miembro al grupo.
 	 * 
-	 * @param ChatIndividual m, nuevo miembro (contacto del usuario dueño del
-	 *                       grupo.)
+	 * @param ChatIndividual m, nuevo miembro (contacto del usuario dueño del grupo.)
 	 */
 	public void addMiembro(ChatIndividual m) {
 		this.miembros.add(m);
@@ -228,16 +226,14 @@ public class ChatGrupo extends Chat {
 	 * @return int porcentaje de mensajes que ha enviado el usuario.
 	 */
 	public double porcentajeDelTotal(Usuario u) {
-		int totales = this.getMensajesTotales();
 		int usuario = (int) this.getHistorial().stream().filter(m -> m.getEmisor().equals(u)).count();
-		
-		System.out.println("totales: " + totales);
-		System.out.println("usarios: " + usuario);
-		// si para TOtales --> usuario
-		// para 100 --> x
 		return (double) usuario;
 	}
 
+	/**
+	 * Funcion que devuelve la información de grupos.
+	 * @return String información de los grupos.
+	 */
 	public String getInfo() {
 		String infoTot = "";
 		infoTot = "[ Nombre de grupo= " + this.getNombre() + "Miembros: \n";

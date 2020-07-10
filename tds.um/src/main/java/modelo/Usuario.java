@@ -4,20 +4,12 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import persistencia.AdaptadorChatGrupoDAO;
-import persistencia.AdaptadorChatIndividualDAO;
 
 /**
  * Clase que representa a un Usuario del sistema en el modelo de este.
@@ -385,13 +377,6 @@ public class Usuario {
 		this.chatsGroup.add(grupoPadre);
 
 		return grupoPadre;
-		/*
-		 * grupoPadre.getMiembros().stream() .forEach(m ->
-		 * m.getContacto().CrearGrupoHijo(grupoPadre));
-		 * 
-		 * //TODO Lo he añadido para poder retornar el grupo y que aparezca en chats
-		 * recientes (Parche) return grupoPadre;
-		 */
 	}
 
 	/**
@@ -407,7 +392,6 @@ public class Usuario {
 			ChatIndividual aux = iterator.next();
 			if (aux.getContacto().equals(this)) {
 				grupo.addMiembro(aux);
-				System.out.println("anyadirmeAGrupo, me añadi (movil): " + aux.getMovil());
 			}
 		}
 	}
@@ -431,7 +415,6 @@ public class Usuario {
 			if (miembroBien == null) {
 				return c;
 			}
-			System.out.println("añadi como miembro en crearGrupoHijo a: " + miembroBien.getNombre());
 			nuevosMiembros.add(miembroBien);
 		}
 
@@ -446,14 +429,9 @@ public class Usuario {
 		// pongo al usuario como su dueño
 		grupoHijo.setDuenyo(this);
 
-		// TODO: Puede no haber mensajes aun y eso daría un error, sigo sin corregir
-		// persistencia
-		// Pero el objeto per se está creado, no debería dar null nunca...
-
 		try {
 			grupoHijo.setHistorial(grupoPadre.getHistorial());
 		} catch (Exception e) {
-			// TODO: handle exception
 		}
 
 		// le pongo los mismo administradores
@@ -506,10 +484,7 @@ public class Usuario {
 		ChatIndividual aux = null;
 		while (iterator.hasNext()) {
 			aux = iterator.next();
-			System.out.println("###En contacto equivalante, movil en agenda" + aux.getMovil());
-			System.out.println("###En contacto equivalante, miembro del grupo " + m.getMovil());
 			if (aux.getMovil().equals(m.getMovil())) { // si tienen el mismo movil, son el mismo. (no mismo objeto)
-				System.out.println("encontre contacto equivalente");
 				return aux; // Se encontro el chat equivalente de la otra persona
 			}
 
@@ -557,23 +532,17 @@ public class Usuario {
 	 */
 	public List<ChatGrupo> get6GruposTop() {
 		List<ChatGrupo> grupos = new LinkedList<ChatGrupo>(chatsGroup);
-		
-		grupos.stream().sorted((p1, p2) -> ((Integer)p2.getMensajesTotales()).compareTo((Integer)p1.getMensajesTotales()))
-        .forEach(person -> System.out.println(person.getNombre() + " " + person.getMensajesTotales()));
-		
-		int cont = 0;
+
+		grupos.stream()
+				.sorted((p1, p2) -> ((Integer) p2.getMensajesTotales()).compareTo((Integer) p1.getMensajesTotales()));
+
 		ArrayList<ChatGrupo> grupoReturn = new ArrayList<ChatGrupo>();
-		for(int i = 0; i < grupos.size() ; i++) {
+		for (int i = 0; i < grupos.size(); i++) {
 			if (i == 6) {
 				break;
 			}
 			grupoReturn.add(i, grupos.get(i));
-			
-
 		}
-		
-		
-		
 		return grupoReturn;
 	}
 
@@ -592,6 +561,10 @@ public class Usuario {
 		return totales;
 	}
 
+	/**
+	 * Funcion que devuelve la informacion de los contactos del usuario.
+	 * @return String infoTot
+	 */
 	public String getInfoChatsIndividuales() {
 		String infoTot = "";
 		for (ChatIndividual c : this.getCHatsIndividualesYDesconocidos()) {
@@ -601,6 +574,10 @@ public class Usuario {
 		return infoTot;
 	}
 
+	/**
+	 * Funcion que devuelve la informacion de los grupos del usuario.
+	 * @return String infoTot
+	 */
 	public String getInfoGrupo() {
 		String infoTot = "";
 		for (ChatGrupo c : this.chatsGroup) {
@@ -623,7 +600,10 @@ public class Usuario {
 		return desconocido;
 	}
 
-	
+	/**
+	 * Funcion qeu elimina el chat pasado como parámetro.
+	 * @param Chat chatActual
+	 */
 	public void eliminarChat(Chat chatActual) {
 		switch (chatActual.getClass().getSimpleName()) {
 		case "ChatIndividual":
@@ -633,9 +613,7 @@ public class Usuario {
 			this.conversacionesAbiertas.replace(idC, "");
 			break;
 		case "ChatGrupo":
-
-			System.out.println("mirame, SI QUE ENTRO EN EL PUTO CASE ######_____________");
-			ChatGrupo grupo = (ChatGrupo)chatActual;
+			ChatGrupo grupo = (ChatGrupo) chatActual;
 			this.eliminarGrupoEquivalente(grupo);
 			String id = grupo.getId() + "";
 			this.conversacionesAbiertas.replace(id, "");
@@ -645,22 +623,31 @@ public class Usuario {
 
 	}
 
+	/**
+	 * Funcion que indica si un chat esta en la lista de los desconocidos del
+	 * usuario.
+	 * 
+	 * @param ChatIndividual c
+	 * @return true si lo es, false si no.
+	 */
 	public boolean isDesconocido(ChatIndividual c) {
 		return this.chatsDesconocido.contains(c);
 	}
 
+	/**
+	 * Funcion que elimina un grupo equivalente al dado.
+	 * 
+	 * @param ChatGrupo grupo
+	 */
 	public void eliminarGrupoEquivalente(ChatGrupo grupo) {
 
-		System.out.println("mirame, SI QUE ENTRO EN LA FUNCION ANA QUIEREME ######_____________");
 		boolean fin = false;
 		Iterator<ChatGrupo> it = this.chatsGroup.iterator();
-		
-		while((fin == false) && it.hasNext()) {
+
+		while ((fin == false) && it.hasNext()) {
 			ChatGrupo g = it.next();
-			System.out.println("mirame, no estoy aun en el bucle uuuhhhhh ######_____________");
-			//g.getIdPadre().equals(Integer.valueOf(grupo.getId()).toString()
-			if(grupo.getId() == (int) Integer.valueOf(g.getIdPadre())) {
-				System.out.println("mirame, entro en el bucle uuuhhhhh MIRAME MIRAME MIRAME MIRAAAAAAAAA");
+			// g.getIdPadre().equals(Integer.valueOf(grupo.getId()).toString()
+			if (grupo.getId() == (int) Integer.valueOf(g.getIdPadre())) {
 				it.remove();
 				fin = true;
 			}

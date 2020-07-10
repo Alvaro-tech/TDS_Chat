@@ -13,10 +13,11 @@ import org.knowm.xchart.BitmapEncoder.BitmapFormat;
 import org.knowm.xchart.style.markers.SeriesMarkers;
 import controlador.ControladorUsuarios;
 
-//mostrando el número de mensajes enviados por el usuario en cada mes del año en curso y un diagrama de tarta
-//mostrando los 6 grupos a los que se han enviado más mensajes y para cada grupo qué porcentaje del total de
-//mensajes enviados por ese usuario supone.
-
+/**
+ * Clase que gestiona la creación de gráficas estadísticas.
+ * @author Ana y Álvaro.
+ *
+ */
 public class GestorGraficas {
 
 	public static PieChart getPieChart() {
