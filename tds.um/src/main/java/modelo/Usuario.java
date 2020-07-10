@@ -4,12 +4,18 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import persistencia.AdaptadorChatGrupoDAO;
+import persistencia.AdaptadorChatIndividualDAO;
 
 /**
  * Clase que representa a un Usuario del sistema en el modelo de este.
@@ -399,6 +405,7 @@ public class Usuario {
 			ChatIndividual aux = iterator.next();
 			if (aux.getContacto().equals(this)) {
 				grupo.addMiembro(aux);
+				System.out.println("anyadirmeAGrupo, me añadi (movil): " + aux.getMovil());
 			}
 		}
 	}
@@ -422,6 +429,7 @@ public class Usuario {
 			if (miembroBien == null) {
 				return c;
 			}
+			System.out.println("añadi como miembro en crearGrupoHijo a: " + miembroBien.getNombre());
 			nuevosMiembros.add(miembroBien);
 		}
 
@@ -496,7 +504,10 @@ public class Usuario {
 		ChatIndividual aux = null;
 		while (iterator.hasNext()) {
 			aux = iterator.next();
+			System.out.println("###En contacto equivalante, movil en agenda" + aux.getMovil());
+			System.out.println("###En contacto equivalante, miembro del grupo " + m.getMovil());
 			if (aux.getMovil().equals(m.getMovil())) { // si tienen el mismo movil, son el mismo. (no mismo objeto)
+				System.out.println("encontre contacto equivalente");
 				return aux; // Se encontro el chat equivalente de la otra persona
 			}
 
@@ -625,6 +636,8 @@ public class Usuario {
 			this.conversacionesAbiertas.replace(idC, "");
 			break;
 		case "ChatGrupo":
+
+			System.out.println("mirame, SI QUE ENTRO EN EL PUTO CASE ######_____________");
 			ChatGrupo grupo = (ChatGrupo)chatActual;
 			this.eliminarGrupoEquivalente(grupo);
 			String id = grupo.getId() + "";
@@ -641,13 +654,16 @@ public class Usuario {
 
 	public void eliminarGrupoEquivalente(ChatGrupo grupo) {
 
+		System.out.println("mirame, SI QUE ENTRO EN LA FUNCION ANA QUIEREME ######_____________");
 		boolean fin = false;
 		Iterator<ChatGrupo> it = this.chatsGroup.iterator();
 		
 		while((fin == false) && it.hasNext()) {
 			ChatGrupo g = it.next();
+			System.out.println("mirame, no estoy aun en el bucle uuuhhhhh ######_____________");
 			//g.getIdPadre().equals(Integer.valueOf(grupo.getId()).toString()
 			if(grupo.getId() == (int) Integer.valueOf(g.getIdPadre())) {
+				System.out.println("mirame, entro en el bucle uuuhhhhh MIRAME MIRAME MIRAME MIRAAAAAAAAA");
 				it.remove();
 				fin = true;
 			}

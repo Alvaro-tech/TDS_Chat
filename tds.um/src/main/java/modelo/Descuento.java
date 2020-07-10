@@ -19,7 +19,9 @@ public interface Descuento {
 	 */
 	public double calcularDescuento(double pago);
 		public static int MENSAJESVICIO = 2000;
-			
+		
+		
+	//TODO: consultar con alvaro si no es mejor especificar y punto...	
 	/**
 	 * Funcion para saber qué estrategia de descuento se ha de seleccionar según un
 	 * tipo dado.

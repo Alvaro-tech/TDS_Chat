@@ -1,24 +1,34 @@
 package vista;
 
 import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
 import org.knowm.xchart.PieChart;
+import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XChartPanel;
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.internal.chartpart.Chart;
+import org.knowm.xchart.style.markers.SeriesMarkers;
+
+
 import controlador.ControladorUsuarios;
+
+import javax.swing.BoxLayout;
+import java.awt.FlowLayout;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
+import javax.swing.JRadioButton;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.Component;
 import javax.swing.Box;
 
-@SuppressWarnings("serial")
 public class VentanaEstadisticas extends JFrame {
 
 	private JPanel contentPane;
