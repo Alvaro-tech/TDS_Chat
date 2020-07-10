@@ -161,13 +161,17 @@ public class ChatGrupo extends Chat {
 	 * @return true si lo añade, false en otro caso.
 	 */
 	public boolean addAdmin(Usuario u) {
-		Integer id = (Integer) this.getId();
-
-		if (id.toString() == this.idPadre) { // es el grupo Padre
-			this.getGruposHijo().stream().forEach(h -> h.addAdmin(u));
-		}
-
 		return administradores.add(u);
+	}
+	
+	/**
+	 * Elimina un  administrador del grupo.
+	 * 
+	 * @param Usuario u
+	 * @return true si lo elimina, false en otro caso.
+	 */
+	public boolean removeAdmin(Usuario u) {
+		return administradores.remove(u);
 	}
 
 	/**

@@ -529,8 +529,6 @@ public class ControladorUsuarios  implements MensajesListener{
 		cg1.setIdPadre(Integer.toString(cg1.getId()));
 		AdaptadorChatGrupoDAO.getUnicaInstancia().updateIdPadre(cg1);
 		
-		
-		
 		//Tratamiento de los hijos en memoria
 		for (ChatIndividual ci : cg1.getMiembros()) {
 			this.crearGrupoHijo(cg1, ci);
@@ -542,7 +540,62 @@ public class ControladorUsuarios  implements MensajesListener{
 		AdaptadorChatGrupoDAO.getUnicaInstancia().updateMiembros(cg1);
 		
 		return cg1; 
-		
+	}
+	
+	public boolean agregarAdmins(ChatGrupo grupo, List<ChatIndividual> admins) {
+		if(grupo.getAdministradores().contains(this.usuarioActual)) {//eres administrador, puedes.
+			if(grupo.getId() == Integer.valueOf(grupo.getIdPadre())) { //llama el padre a esta funcion
+				
+				List<Usuario> adminis = admins.stream().map(c -> c.getContacto()).collect(Collectors.toList());
+				
+				for (Usuario u : adminis) {  //los ha añadido en memoria.
+					grupo.getGruposHijo().stream()
+						.forEach(h -> h.addAdmin(u));//lo añade en memoria
+				
+					grupo.addAdmin(u);	
+				}
+				
+				//los añado en persistencia
+				grupo.getGruposHijo().stream()
+					.forEach(h -> AdaptadorChatGrupoDAO.getUnicaInstancia().updateAdmins(h));
+				
+				AdaptadorChatGrupoDAO.getUnicaInstancia().updateAdmins(grupo);
+				return true;
+				
+			}else { //no eres el grupo padre, lo consigo.
+				ChatGrupo padre = AdaptadorChatGrupoDAO.getUnicaInstancia().get((int) Integer.valueOf(grupo.getIdPadre()));
+				this.agregarAdmins(padre, admins);
+			}
+		}//no eres, no puedes
+		return false;
+	}
+	
+	public boolean eliminarAdmins(ChatGrupo grupo, List<ChatIndividual> admins) {
+		if(grupo.getAdministradores().contains(this.usuarioActual)) {//eres administrador, puedes.
+			if(grupo.getId() == Integer.valueOf(grupo.getIdPadre())) { //llama el padre a esta funcion
+				
+				List<Usuario> adminis = admins.stream().map(c -> c.getContacto()).collect(Collectors.toList());
+				
+				for (Usuario u : adminis) {  //los ha añadido en memoria.
+					grupo.getGruposHijo().stream()
+						.forEach(h -> h.removeAdmin(u));//lo añade en memoria
+				
+					grupo.removeAdmin(u);	
+				}
+				
+				//los añado en persistencia
+				grupo.getGruposHijo().stream()
+					.forEach(h -> AdaptadorChatGrupoDAO.getUnicaInstancia().updateAdmins(h));
+				
+				AdaptadorChatGrupoDAO.getUnicaInstancia().updateAdmins(grupo);
+				return true;
+				
+			}else { //no eres el grupo padre, lo consigo.
+				ChatGrupo padre = AdaptadorChatGrupoDAO.getUnicaInstancia().get((int) Integer.valueOf(grupo.getIdPadre()));
+				this.agregarAdmins(padre, admins);
+			}
+		}//no eres, no puedes
+		return false;
 	}
 			
 	/**
