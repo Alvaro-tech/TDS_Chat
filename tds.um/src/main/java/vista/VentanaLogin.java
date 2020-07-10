@@ -255,5 +255,9 @@ public class VentanaLogin extends JFrame{
 		gbc_verticalStrut_3.gridy = 5;
 		panel_Org.add(verticalStrut_3, gbc_verticalStrut_3);
 	}
+	
+	public JFrame getFrame() {
+		return this.frame;
+	}
 
 }

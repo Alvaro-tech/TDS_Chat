@@ -10,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 
 import complementosGUI.JPanelBackground;
 import tds.BubbleText;
+import vista.VentanaLogin;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -21,6 +22,7 @@ public class PruebaJFrame extends JFrame {
 
 	private JPanel contentPane;
 	private JLabel lblLabel;
+	private PruebaJFrame yo;
 
 	/**
 	 * Launch the application.
@@ -42,6 +44,9 @@ public class PruebaJFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public PruebaJFrame() {
+		
+		this.yo=this;
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -75,12 +80,12 @@ public class PruebaJFrame extends JFrame {
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				for (int i = 0; i < 500 ; i++) {
+				VentanaLogin11 a = new VentanaLogin11();
+				a.getFrame().setVisible(true);
+				a.revalidate();
+				a.repaint();
 				
-					lblLabel.setIcon(BubbleText.getEmoji(24));
-					
-					
-				}
+				yo.dispose();
 				
 			}
 		});
