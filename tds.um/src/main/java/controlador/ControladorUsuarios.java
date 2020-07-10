@@ -140,8 +140,6 @@ public class ControladorUsuarios  implements MensajesListener{
 		Usuario Usuario = CatalogoUsuarios.getUnicaInstancia().getUsuario(movil);
 		if (Usuario != null && Usuario.getClave().equals(password)) {
 			this.usuarioActual = Usuario;
-			System.out.println("En controlador mi usuario actual es: " + usuarioActual.getMovil() + " id "
-					+ usuarioActual.getId());
 			return true;
 		}
 		return false;
@@ -203,7 +201,6 @@ public class ControladorUsuarios  implements MensajesListener{
 	public void updateFoto(Usuario usuario, String foto) {
 		usuario.setFotoPerfil(foto);
 		AdaptadorUsuarioDAO UsuarioDAO = (AdaptadorUsuarioDAO) factoria.getUsuarioDAO();
-		System.out.println("Controlador - Update foto, voy a entrar a actualizar foto");
 		UsuarioDAO.updateFoto(usuario);
 
 	}
@@ -223,7 +220,6 @@ public class ControladorUsuarios  implements MensajesListener{
 			ChatIndividual chatAux = (ChatIndividual) newChat;
 			AdaptadorChatIndividualDAO.getUnicaInstancia().create(chatAux);
 			this.getusuarioActual().agregarChatIndividual(chatAux);
-			System.out.println("Controler-addChatUser idChatAux  " + chatAux.getId());
 			break;
 
 		case "ChatGrupo":
@@ -233,7 +229,6 @@ public class ControladorUsuarios  implements MensajesListener{
 			break;
 		}
 
-		System.out.println("Controlador-AddchattoUser  llaamo a updateChats");
 		AdaptadorUsuarioDAO.getUnicaInstancia().updateChats(this.usuarioActual, newChat);
 
 	}
@@ -451,7 +446,6 @@ public class ControladorUsuarios  implements MensajesListener{
 		}
 
 		if (mensajes == null) {
-			System.out.println("No se han encontrado coincidencias");
 			return null;
 		} else
 			return mensajes;
@@ -469,7 +463,6 @@ public class ControladorUsuarios  implements MensajesListener{
 	public double getPrecioPremiumConDescuento(String tipo) {
 		// calcular con la clase descuento según lo que necesitemos.
 		Usuario u = this.getusuarioActual();
-		System.out.println("EL TIPO DE DESCUENTO ES= " + tipo);
 		if (tipo != "") {
 			Descuento des = Descuento.seleccionarDescuento(tipo, u);
 			if (!(des == null)) { // cumple los requisitos.
@@ -514,9 +507,6 @@ public class ControladorUsuarios  implements MensajesListener{
 		
 		for (ChatGrupo cAux : grupoPadre.getGruposHijo()) {
 			cAux.addMensajeHistorial(m);
-			for (Mensaje m1 : cAux.getHistorial()) {
-				System.out.println("çççççççççççç -> mensajes en el historial de un  grupo hijo : " + m1.getTexto());
-			}
 			AdaptadorChatGrupoDAO.getUnicaInstancia().updateHistorial(cAux);
 		}
 		
@@ -536,7 +526,6 @@ public class ControladorUsuarios  implements MensajesListener{
 		AdaptadorChatGrupoDAO.getUnicaInstancia().updateAdmins(cg1);
 		
 		//Actualizar el idPadre
-		System.out.println("id del grupo padre: " + cg1.getId());
 		cg1.setIdPadre(Integer.toString(cg1.getId()));
 		AdaptadorChatGrupoDAO.getUnicaInstancia().updateIdPadre(cg1);
 		
@@ -720,7 +709,6 @@ public class ControladorUsuarios  implements MensajesListener{
 		
 		switch (tipo) {
 		case "Pie":
-			System.out.println("entre a generar el pie en el controlador");
 			Chart<?, ?> aPie= GestorGraficas.getPieChart();
 			return aPie;
 
@@ -748,7 +736,6 @@ public class ControladorUsuarios  implements MensajesListener{
 			gg.convertirChartEn(aux, tipo);
 			break;
 		case "PieChart":
-			System.out.println("Entro a en el PieChart de Imprimir");
 			PieChart aux1= (PieChart) chart;
 			gg.convertirChartEn(aux1, tipo);
 			break;
@@ -844,7 +831,6 @@ public class ControladorUsuarios  implements MensajesListener{
 			break;
 		}
 		fechaBien = diaMes + "/" + mes + "/" + anyo;
-		// System.out.println("DIA BIEN PARSEADO: " + fechaBien);
 		return fechaBien;
 	}
 
