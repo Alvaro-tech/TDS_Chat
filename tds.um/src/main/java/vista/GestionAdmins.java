@@ -31,6 +31,7 @@ import javax.swing.JTextField;
 import javax.swing.JList;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.Font;
 
 @SuppressWarnings("serial")
 public class GestionAdmins extends JDialog {
@@ -44,8 +45,8 @@ public class GestionAdmins extends JDialog {
 	private JTextField txtMiembrosAdmin;
 	private JTextField txtMiembrosAQuitar;
 	
-	private LinkedList<ChatIndividual> listQuitar = new LinkedList<ChatIndividual>();
 	private LinkedList<Usuario> listAdd = new LinkedList<Usuario>();
+	private LinkedList<Usuario> listQuitar = new LinkedList<Usuario>();
 	private DefaultListModel<Object> modeloAdd = new DefaultListModel<Object>(); // contactos disponibles
 	private DefaultListModel<Object> modeloquitar = new DefaultListModel<Object>(); // los añades al grupo
 	
@@ -88,6 +89,7 @@ public class GestionAdmins extends JDialog {
 			panelMiembros.setLayout(gbl_panelMiembros);
 			{
 				txtMiembrosNoAdmin = new JTextField();
+				txtMiembrosNoAdmin.setFont(new Font("Tahoma", Font.BOLD, 11));
 				txtMiembrosNoAdmin.setEditable(false);
 				txtMiembrosNoAdmin.setText("Miembros NO Admin");
 				GridBagConstraints gbc_txtMiembrosNoAdmin = new GridBagConstraints();
@@ -100,6 +102,7 @@ public class GestionAdmins extends JDialog {
 			}
 			{
 				txtMiembrosAAgregar = new JTextField();
+				txtMiembrosAAgregar.setFont(new Font("Tahoma", Font.BOLD, 11));
 				txtMiembrosAAgregar.setEditable(false);
 				txtMiembrosAAgregar.setText("Miembros A Agregar");
 				GridBagConstraints gbc_txtMiembrosAAgregar = new GridBagConstraints();
@@ -112,6 +115,7 @@ public class GestionAdmins extends JDialog {
 			}
 			{
 				txtMiembrosAdmin = new JTextField();
+				txtMiembrosAdmin.setFont(new Font("Tahoma", Font.BOLD, 11));
 				txtMiembrosAdmin.setEditable(false);
 				txtMiembrosAdmin.setText("Miembros Admin");
 				GridBagConstraints gbc_txtMiembrosAdmin = new GridBagConstraints();
@@ -124,6 +128,7 @@ public class GestionAdmins extends JDialog {
 			}
 			{
 				txtMiembrosAQuitar = new JTextField();
+				txtMiembrosAQuitar.setFont(new Font("Tahoma", Font.BOLD, 11));
 				txtMiembrosAQuitar.setEditable(false);
 				txtMiembrosAQuitar.setText("Miembros a Quitar");
 				GridBagConstraints gbc_txtMiembrosAQuitar = new GridBagConstraints();
@@ -140,9 +145,9 @@ public class GestionAdmins extends JDialog {
 					@Override
 					public void mouseClicked(MouseEvent arg0) {
 						ChatIndividual c = (ChatIndividual) listNA.getSelectedValue();
-					
 						if(!modeloAddB.contains(c)) {
 							modeloAddB.addElement(c);
+							listAdd.add(c.getContacto());
 						}
 					}
 				});
@@ -162,6 +167,8 @@ public class GestionAdmins extends JDialog {
 					public void mouseClicked(MouseEvent e) {
 						int i = listADDB.getSelectedIndex();
 						modeloAddB.remove(i);
+						ChatIndividual ci = (ChatIndividual) listADDB.getSelectedValue();
+						listAdd.remove(ci.getContacto());
 					}
 				});
 				listADDB.setModel(modeloAddB);
@@ -189,6 +196,7 @@ public class GestionAdmins extends JDialog {
 						Usuario u = (Usuario)listAD.getSelectedValue();
 						if( (chatGrupo.getDuenyo() != u) && (!modeloquitarB.contains(u))) {
 							modeloquitarB.addElement(u);
+							listQuitar.add(u);
 						}
 					}
 				});
@@ -202,6 +210,15 @@ public class GestionAdmins extends JDialog {
 			}
 			{
 				JList listQuitarB = new JList();
+				listQuitarB.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						int i = listQuitarB.getSelectedIndex();
+						modeloquitarB.remove(i);
+						Usuario ci = (Usuario) listQuitarB.getSelectedValue();
+						listQuitar.remove(ci);
+					}
+				});
 				listQuitarB.setModel(modeloquitarB);
 				GridBagConstraints gbc_listQuitarB = new GridBagConstraints();
 				gbc_listQuitarB.insets = new Insets(0, 0, 5, 0);
@@ -212,6 +229,12 @@ public class GestionAdmins extends JDialog {
 			}
 			{
 				JButton btnAgregar = new JButton("Agregar");
+				btnAgregar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						ControladorUsuarios.getUnicaInstancia().agregarAdmins(cg, listAdd);
+						
+					}
+				});
 				GridBagConstraints gbc_btnAgregar = new GridBagConstraints();
 				gbc_btnAgregar.insets = new Insets(0, 0, 0, 5);
 				gbc_btnAgregar.gridx = 2;
@@ -220,6 +243,11 @@ public class GestionAdmins extends JDialog {
 			}
 			{
 				JButton btnQuitar = new JButton("Quitar");
+				btnQuitar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						ControladorUsuarios.getUnicaInstancia().eliminarAdmins(cg, listQuitar);
+					}
+				});
 				GridBagConstraints gbc_btnQuitar = new GridBagConstraints();
 				gbc_btnQuitar.gridx = 5;
 				gbc_btnQuitar.gridy = 2;
