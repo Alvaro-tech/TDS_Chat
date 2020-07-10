@@ -34,7 +34,7 @@ public class GestorGraficas {
 		List<ChatGrupo> sixTopGrups = ControladorUsuarios.getUnicaInstancia().get6GruposTop();
 		for (int i = 0; i < sixTopGrups.size(); i++) {
 			ChatGrupo g = sixTopGrups.get(i);
-			chart.addSeries(g.getNombre(), g.porcentajeDelTotal(ControladorUsuarios.getUnicaInstancia().getusuarioActual()));
+			chart.addSeries(g.getNombre(), g.porcentajeDelTotal(ControladorUsuarios.getUnicaInstancia().getusuarioActual())); //g.porcentajeDelTotal(ControladorUsuarios.getUnicaInstancia().getusuarioActual()
 		}
 		
 		return chart;

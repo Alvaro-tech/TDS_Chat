@@ -230,9 +230,12 @@ public class ChatGrupo extends Chat {
 	public double porcentajeDelTotal(Usuario u) {
 		int totales = this.getMensajesTotales();
 		int usuario = (int) this.getHistorial().stream().filter(m -> m.getEmisor().equals(u)).count();
+		
+		System.out.println("totales: " + totales);
+		System.out.println("usarios: " + usuario);
 		// si para TOtales --> usuario
 		// para 100 --> x
-		return (double) usuario * 100 / totales;
+		return (double) usuario;
 	}
 
 	public String getInfo() {

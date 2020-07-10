@@ -5,6 +5,8 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -554,30 +556,25 @@ public class Usuario {
 	 * @return List<ChatGrupo> top6Grupos
 	 */
 	public List<ChatGrupo> get6GruposTop() {
-		ArrayList<ChatGrupo> grupos = new ArrayList<ChatGrupo>(6);
-
-		for (ChatGrupo g : chatsGroup) { // recorro todos los grupos a los que pertenece el usuario
-			int aux = g.getMensajesTotales(); // aux = mensajes totales del grupo
-			// vemos si lo añadimos
-			
-			
-			if(grupos.isEmpty()) {
-				grupos.add(0,g); //lo añado en la primera posicion.
-			}else {
-				int i = 0;
-				boolean fin = false;
-				while(!fin && i < 6) {
-					int aux1 = grupos.get(i).getMensajesTotales();
-					if(aux > aux1) {
-						grupos.remove(i);
-						grupos.add(i, g);
-						fin = true;
-					}
-					i++;
-				}
+		List<ChatGrupo> grupos = new LinkedList<ChatGrupo>(chatsGroup);
+		
+		grupos.stream().sorted((p1, p2) -> ((Integer)p2.getMensajesTotales()).compareTo((Integer)p1.getMensajesTotales()))
+        .forEach(person -> System.out.println(person.getNombre() + " " + person.getMensajesTotales()));
+		
+		int cont = 0;
+		ArrayList<ChatGrupo> grupoReturn = new ArrayList<ChatGrupo>();
+		for(int i = 0; i < grupos.size() ; i++) {
+			if (i == 6) {
+				break;
 			}
+			grupoReturn.add(i, grupos.get(i));
+			
+
 		}
-		return grupos;
+		
+		
+		
+		return grupoReturn;
 	}
 
 	/**
