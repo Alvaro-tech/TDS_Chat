@@ -44,6 +44,7 @@ public class PanelCrearGrupo extends JDialog {
 	// llevar cuenta de los que pasan de un lado a otro.
 	private LinkedList<ChatIndividual> miembrosPotenciales = new LinkedList<ChatIndividual>();
 	private LinkedList<ChatIndividual> miembrosEliminados = new LinkedList<ChatIndividual>();
+	private PanelCrearGrupo yo;
 
 	private VentanaPrincipal padre;
 	private boolean editando;
@@ -60,6 +61,7 @@ public class PanelCrearGrupo extends JDialog {
 		this.editando = editando;
 		this.ventana = ventana;
 		this.chatCargado = chatCargado;
+		this.yo = this;
 
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
@@ -221,17 +223,12 @@ public class PanelCrearGrupo extends JDialog {
 				btnDelete.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						int aux = listMim.getSelectedIndex();
+						ChatIndividual contacto = (ChatIndividual) listMim.getSelectedValue();
 						if (editando) {
-							ChatIndividual contacto = (ChatIndividual) listMim.getSelectedValue();
 							if ((!miembrosEliminados.contains(contacto))
 									&& (chatCargado.getMiembros().contains(contacto))) {
 								miembrosEliminados.add(contacto);
 							}
-							
-							if(miembrosPotenciales.contains(contacto) && miembrosEliminados.contains(contacto)) {
-								miembrosEliminados.remove(contacto);
-							}
-							
 
 						}
 						
@@ -241,6 +238,8 @@ public class PanelCrearGrupo extends JDialog {
 							miembrosPotenciales.remove(aux); // guardo el chat, aunque se muestre solo el nombre
 						} catch (Exception e) {
 						}
+						
+						
 					}
 
 				});
@@ -321,6 +320,9 @@ public class PanelCrearGrupo extends JDialog {
 
 							JOptionPane.showMessageDialog(ventana, "Grupo creado con éxito :)", "¡Bingo!",
 									JOptionPane.INFORMATION_MESSAGE);
+							
+							yo.dispose();
+							padre.setChatActual(cg1);
 						}
 					}
 
