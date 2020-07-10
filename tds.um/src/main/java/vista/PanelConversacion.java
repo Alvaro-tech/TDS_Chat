@@ -3,40 +3,34 @@ package vista;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.JTextField;
-
 import modelo.Chat;
 import modelo.ChatGrupo;
 import modelo.ChatIndividual;
 import modelo.Mensaje;
 import modelo.Usuario;
-import persistencia.AdaptadorMensajeDAO;
 import tds.BubbleText;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Rectangle;
 import java.awt.event.ActionListener;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.Scrollable;
-
 import controlador.ControladorUsuarios;
-
 import javax.swing.BoxLayout;
-import java.awt.Scrollbar;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+@SuppressWarnings("serial")
 public class PanelConversacion extends JPanel {
 	private JTextField textTexto;
 	private Chat chat;
+	@SuppressWarnings("unused")
 	private JFrame ventana;
+	@SuppressWarnings("unused")
 	private VentanaPrincipal padre;
 	private JPanel panelMensajes;
 	private JPanel panelPrincipal;
@@ -158,8 +152,6 @@ public class PanelConversacion extends JPanel {
 	private void burbujaMensajeEnviada(Mensaje m) {
 		BubbleText burbuja;
 		Usuario emisor = m.getEmisor();
-		System.out.println(".-.-.-crearBurBuMensaje: " + m.getTexto());
-		System.out.println(".-.-.-crearBurBuMensaje: " + emisor.getNombre());
 		
 		if(m.isEmoji()) {
 			burbuja = new BubbleText(panelMensajes, Integer.parseInt(m.getTexto()), Color.GREEN, emisor.getNombre(), BubbleText.SENT, 18);
@@ -188,7 +180,6 @@ public class PanelConversacion extends JPanel {
 			
 			//Guardamos el mensaje en persistencia, para que tenga un idPropio
 			ControladorUsuarios.getUnicaInstancia().guardarEmojiEnPersistencia(m);
-			System.out.println("Controlador | enviarMensaje, id del mensaje: " + m.getId());
 
 			//From me (usuarioAcutal) to un chatIndv con un texto
 			ControladorUsuarios.getUnicaInstancia().enviarMensajeAChatInd(m, c1);
@@ -212,18 +203,15 @@ public class PanelConversacion extends JPanel {
 	}
 	
 	private void cargarBurbujas() {
-		System.out.println(".-.-.-.-.-.-.-.-.-Procedo a cargar burbujis");
 		Usuario yo = ControladorUsuarios.getUnicaInstancia().getusuarioActual();
 		LinkedList<Mensaje> aux = new LinkedList<Mensaje>(chat.getHistorial());
 		 Collections.reverse(aux);
 		for (Mensaje m : aux) {
 			if(m.getEmisor().equals(yo)) {
-				System.out.println("------ cargar burbu " + m.getTexto());
 				burbujaMensajeEnviada(m);
 				
 			}else {
 				burbujaMensajeRecibida(m);
-				System.out.println("------ cargar burbu " + m.getTexto());
 			}
 			panelMensajes.revalidate();
 			panelMensajes.repaint();

@@ -2,15 +2,11 @@ package vista;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import controlador.ControladorUsuarios;
-import modelo.Usuario;
-
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -27,16 +23,17 @@ import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.border.BevelBorder;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import javax.swing.SwingConstants;
 
+@SuppressWarnings("serial")
 public class PanelAltaPremiun extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JTextField textPrecio;
+	@SuppressWarnings("unused")
 	private JFrame ventana;
+	@SuppressWarnings("unused")
 	private VentanaPrincipal padre;
 
 	
@@ -208,7 +205,6 @@ public class PanelAltaPremiun extends JDialog {
 						if (!(buttonGroup.getSelection() ==null)) { 
 							//si no se ha seleccionado nada no se trata.
 							String tipoDescuento = buttonGroup.getSelection().getActionCommand(); //string tipo descuento
-							System.out.println("TIPO DE DESCUENTO (VENTANA PREMIUM)= "+ tipoDescuento);
 							//consigo el pago mensual con el descuento seleccionado
 							double precio = ControladorUsuarios.getUnicaInstancia().getPrecioPremiumConDescuento(tipoDescuento);
 							if(precio != 0.0) {
