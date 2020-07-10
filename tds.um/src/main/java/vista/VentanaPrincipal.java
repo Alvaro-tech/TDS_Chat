@@ -1,48 +1,37 @@
 package vista;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import complementosGUI.PanelEmojis;
 import controlador.ControladorUsuarios;
 import modelo.Chat;
 import modelo.ChatGrupo;
 import modelo.ChatIndividual;
 import modelo.Usuario;
-
-import javax.swing.JToolBar;
 import java.awt.GridBagLayout;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
-
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JMenuBar;
-import javax.swing.JTextField;
 import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
-
 import java.awt.Color;
-import javax.swing.JSplitPane;
-import javax.swing.JTable;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
 import java.awt.event.ActionEvent;
 
+@SuppressWarnings("serial")
 public class VentanaPrincipal extends JFrame {
 	JPanel panellzq = new JPanel();
 	JPanel panelDividido = new JPanel();
 	JPanel panelDer = new JPanel();
-	Usuario usuario;
 	ControladorUsuarios controler = ControladorUsuarios.getUnicaInstancia(); // okei good
 
 	private static Chat chatActual = null;
@@ -63,7 +52,6 @@ public class VentanaPrincipal extends JFrame {
 	public VentanaPrincipal(JFrame frame) {
 		ventana = frame;
 		venPrinAc = this;
-		usuario = ControladorUsuarios.getUnicaInstancia().getusuarioActual(); // TODO: Preguntar esto
 		// La vista solo debe hablar con el controlador, esto es bastante una herejía
 		// bebe
 
@@ -84,7 +72,7 @@ public class VentanaPrincipal extends JFrame {
 		btnFoto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				PanelMenuFoto nuevo = new PanelMenuFoto(usuario);
+				PanelMenuFoto nuevo = new PanelMenuFoto(ControladorUsuarios.getUnicaInstancia().getusuarioActual());
 				panelDividido.remove(panelExtra);
 				panelExtra = nuevo;
 				GridBagConstraints gbc_panelExtra = new GridBagConstraints();
@@ -131,8 +119,8 @@ public class VentanaPrincipal extends JFrame {
 		mntmModificarGrupo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				ChatGrupo[] gruposAux = new ChatGrupo[usuario.getChatsGroup().size()];
-				usuario.getChatsGroup().toArray(gruposAux);
+				ChatGrupo[] gruposAux = new ChatGrupo[ControladorUsuarios.getUnicaInstancia().getusuarioActual().getChatsGroup().size()];
+				ControladorUsuarios.getUnicaInstancia().getusuarioActual().getChatsGroup().toArray(gruposAux);
 
 				for (ChatGrupo chatGrupo : gruposAux) {
 					System.out.println(chatGrupo.getNombre());
@@ -155,7 +143,7 @@ public class VentanaPrincipal extends JFrame {
 		mntmMostrarContactos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				panelShowCont = new PanelShowCont(usuario, frame, venPrinAc);
+				panelShowCont = new PanelShowCont(ControladorUsuarios.getUnicaInstancia().getusuarioActual(), frame, venPrinAc);
 				panelDividido.remove(panelExtra);
 				panelExtra = panelShowCont;
 
@@ -173,6 +161,7 @@ public class VentanaPrincipal extends JFrame {
 		});
 		mnMenu.add(mntmMostrarContactos);
 
+		
 		JMenuItem mntmMostrarEstadis = new JMenuItem("Mostrar Estadísticas");
 		mntmMostrarEstadis.setEnabled(false);
 		if (ControladorUsuarios.getUnicaInstancia().getusuarioActual().isPremium()) {
@@ -185,6 +174,17 @@ public class VentanaPrincipal extends JFrame {
 			}
 		});
 
+
+		JMenuItem mntmExportarContactos = new JMenuItem("Exportar Info. Contactos a PDF");
+		mntmExportarContactos.setEnabled(false);
+		if (ControladorUsuarios.getUnicaInstancia().getusuarioActual().isPremium()) {
+			mntmExportarContactos.setEnabled(true);
+		}
+		mntmExportarContactos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ControladorUsuarios.getUnicaInstancia().getPDFInfo();
+			}
+		});
 		
 		JMenuItem mntmPremium = new JMenuItem("Premium");
 		if (ControladorUsuarios.getUnicaInstancia().getusuarioActual().isPremium()) {
@@ -196,11 +196,13 @@ public class VentanaPrincipal extends JFrame {
 				nuevo.setVisible(true);
 				mntmMostrarEstadis.setEnabled(true);
 				mntmPremium.setEnabled(false);
+				mntmExportarContactos.setEnabled(true);
 			}
 		});
 		
 		mnMenu.add(mntmPremium);
 		mnMenu.add(mntmMostrarEstadis);
+		mnMenu.add(mntmExportarContactos);
 
 		// TODO: Implementar esta función
 		JMenuItem mntmCerrarSesion = new JMenuItem("Cerrar Sesión");
@@ -213,13 +215,6 @@ public class VentanaPrincipal extends JFrame {
 		});
 		mnMenu.add(mntmCerrarSesion);
 
-		JMenuItem mntmExportarContactos = new JMenuItem("Exportar Info. Contactos a PDF");
-		mntmExportarContactos.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ControladorUsuarios.getUnicaInstancia().getPDFInfo();
-			}
-		});
-		mnMenu.add(mntmExportarContactos);
 
 		// ------------------MENU CUENTA----------------------------
 		JButton btnCuenta = new JButton("Cuenta");
@@ -295,7 +290,7 @@ public class VentanaPrincipal extends JFrame {
 		});
 		mnMenu.add(mntmAgregarDesconodico);
 
-		// TODO: Solo mostrar cuando estes dentro de un chat
+
 		JMenuItem mntmEliminarUsuario = new JMenuItem("Eliminar Chat Seleccionado");
 		mntmEliminarUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -303,7 +298,6 @@ public class VentanaPrincipal extends JFrame {
 					ControladorUsuarios.getUnicaInstancia().eliminarChatActual(chatActual);
 					pChatRec.deleteChatReciente(chatActual);
 
-					// TODO: COmo volver a tener un panel vacio
 					JPanel panelAux = new JPanel();
 					panelAux.setBackground(new Color(135, 206, 250));
 					panelDividido.remove(panellzq);
@@ -324,14 +318,6 @@ public class VentanaPrincipal extends JFrame {
 		});
 		mnOpciones2.add(mntmEliminarUsuario);
 
-		// TODO: Solo mostrar cuando eres Premium
-		JMenuItem mntmExpotarConversacin = new JMenuItem("Expotar Conversación");
-		mntmExpotarConversacin.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
-			}
-		});
-		mnOpciones2.add(mntmExpotarConversacin);
 
 		JButton btnLupa = new JButton();
 		btnLupa.setIcon(new ImageIcon("./interfaz/Lupa.png"));
@@ -342,7 +328,6 @@ public class VentanaPrincipal extends JFrame {
 					venLupa.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 					venLupa.setVisible(true);
 				}
-				;
 			}
 		});
 		menuBar.add(btnLupa);
